@@ -34,8 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
-
 /*
  * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
  * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
@@ -45,56 +43,34 @@ import org.firstinspires.ftc.robotcore.external.JavaUtil;
 @TeleOp(name="CenterstageDc")
 //@Disabled
 public class CenterstageDrive extends LinearOpMode {
+    private RobotHardware robotHardware;
+    private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
 
     //Motor and servo identification
-    private DcMotor Frontleft;
-    private DcMotor Backleft;
-    private DcMotor Frontright;
-    private DcMotor Backright;
 
     @Override
     public void runOpMode() {
 
-        // Initialize the hardware variables
-        Frontleft  = hardwareMap.get(DcMotor.class, "Frontleft");
-        Backleft  = hardwareMap.get(DcMotor.class, "Backleft");
-        Frontright = hardwareMap.get(DcMotor.class, "Frontright");
-        Backright = hardwareMap.get(DcMotor.class, "Backright");
-
-        //Motor direction
-
-        Frontleft.setDirection(DcMotor.Direction.REVERSE);
-        Backleft.setDirection(DcMotor.Direction.REVERSE);
-        Frontright.setDirection(DcMotor.Direction.FORWARD);
-        Backright.setDirection(DcMotor.Direction.FORWARD);
-
-        Frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Backleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        Frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Backleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Backright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        robotHardware = new RobotHardware(this);
+        robotHardware.init();
+        motorControl = new MotorControl(robotHardware);
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         waitForStart();
         runtime.reset();
-        Frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robotHardware.Frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robotHardware.Frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //define variables
             double maxPower = 0.9;
-            double denominator;
+            double denominator = 0;
             //Joystick movement
             double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.left_stick_x;
@@ -103,19 +79,7 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
             }
-
-            // Combine the joystick requests for each axis-motion to determine each wheel's power.
-            double leftFrontPower  = axial + lateral + yaw;
-            double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial - lateral + yaw;
-            double rightBackPower  = axial + lateral - yaw;
-//            If the code below does not work, comment it out. Uncomment out the code below this code below.
-            denominator = JavaUtil.maxOfList(JavaUtil.createListWith(JavaUtil.sumOfList(JavaUtil.createListWith(Math.abs(axial), Math.abs(lateral), Math.abs(yaw))), 1));
-            Frontleft.setPower(((axial + lateral + yaw) /denominator)* maxPower);
-            Backleft.setPower((((axial - lateral) + yaw) /denominator)* maxPower);
-            Frontright.setPower((((axial - lateral) - yaw) /denominator) * maxPower);
-            Backright.setPower((((axial + lateral) - yaw) /denominator) * maxPower);
-
+            motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -137,8 +101,6 @@ public class CenterstageDrive extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
         }
     }}
