@@ -6,6 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 @Autonomous
 public class BasicAuto extends OpMode {
     private RobotHardware robotHardware;
+    private MotorControl motorControl;
+    //define variables
+    double maxPower = 0.9;
+    double denominator = 0;
+    //Joystick movement
+    double axial   = 0;
+    double lateral =  0;
+    double yaw     =  0;
 
 
     @Override
@@ -21,6 +29,7 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void start() {
+        motorControl.drive( axial, lateral, yaw, maxPower, denominator);
 
     }
 
@@ -29,3 +38,4 @@ public class BasicAuto extends OpMode {
 
     }
 }
+

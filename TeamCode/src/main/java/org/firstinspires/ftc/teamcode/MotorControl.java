@@ -23,3 +23,4 @@ public class MotorControl {
             robotHardware.Backright.setPower((((axial + lateral) - yaw) / denominator) * maxPower);
         }
 }
+
