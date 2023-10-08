@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     private OpMode myOpMode = null;
@@ -10,14 +12,23 @@ public class RobotHardware {
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
+    public IMU imu;
 
-    public RobotHardware (OpMode opMode) {myOpMode = opMode;}
+    public RobotHardware(OpMode opMode) {
+        myOpMode = opMode;
+    }
 
     public void init() {
-        Frontleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
-        Backleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
+        Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
+        Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         //Motor direction
         Frontleft.setDirection(DcMotor.Direction.REVERSE);
