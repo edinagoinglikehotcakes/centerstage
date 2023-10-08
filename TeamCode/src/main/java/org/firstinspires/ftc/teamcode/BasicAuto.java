@@ -51,7 +51,7 @@ public class BasicAuto extends OpMode {
     public void loop() {
         telemetry.addData("runTime", runTime.seconds());
         telemetry.update();
-        motorControl.drive(axial, lateral, yaw, maxPower, denominator);
+        motorControl.drive(axial, lateral, yaw, maxPower);
 //        motorControl.drive(0.1, 0.2, 0.3, -0.9, 0.5);
     }
 }
