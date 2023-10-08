@@ -2,21 +2,22 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class RobotHardware {
     private OpMode myOpMode = null;
-    public DcMotor Frontleft = null;
-    public DcMotor Backleft = null;
-    public DcMotor Frontright = null;
-    public DcMotor Backright = null;
+    public DcMotorEx Frontleft = null;
+    public DcMotorEx Backleft = null;
+    public DcMotorEx Frontright = null;
+    public DcMotorEx Backright = null;
 
     public RobotHardware (OpMode opMode) {myOpMode = opMode;}
 
     public void init() {
-        Frontleft  = myOpMode.hardwareMap.get(DcMotor.class, "Frontleft");
-        Backleft  = myOpMode.hardwareMap.get(DcMotor.class, "Backleft");
-        Frontright = myOpMode.hardwareMap.get(DcMotor.class, "Frontright");
-        Backright = myOpMode.hardwareMap.get(DcMotor.class, "Backright");
+        Frontleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
+        Backleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
+        Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
+        Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
 
         //Motor direction
 
