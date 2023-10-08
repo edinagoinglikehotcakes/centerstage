@@ -20,7 +20,6 @@ public class RobotHardware {
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
 
         //Motor direction
-
         Frontleft.setDirection(DcMotor.Direction.REVERSE);
         Backleft.setDirection(DcMotor.Direction.REVERSE);
         Frontright.setDirection(DcMotor.Direction.FORWARD);
@@ -31,10 +30,9 @@ public class RobotHardware {
         Frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        Frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Backleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Backright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        Frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Backleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Backright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 }
