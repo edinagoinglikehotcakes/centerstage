@@ -47,11 +47,9 @@ public class CenterstageDrive extends LinearOpMode {
     private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
 
-    //Motor and servo identification
-
     @Override
     public void runOpMode() {
-
+//      This is the code for all of the Hardware
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
@@ -79,25 +77,8 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
             }
+//              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
-
-            // Normalize the values so no wheel power exceeds 100%
-            // This ensures that the robot maintains the desired motion.
-//            maxPower = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
-//            maxPower = Math.max(maxPower, Math.abs(leftBackPower));
-//            maxPower = Math.max(maxPower, Math.abs(rightBackPower));
-//
-//            if (maxPower > 1.0) {
-//                leftFrontPower  /= maxPower;
-//                rightFrontPower /= maxPower;
-//                leftBackPower   /= maxPower;
-//                rightBackPower  /= maxPower;
-//            }
-//
-//            Frontleft.setPower(leftFrontPower);
-//            Frontright.setPower(rightFrontPower);
-//            Backleft.setPower(leftBackPower);
-//            Backright.setPower(rightBackPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
