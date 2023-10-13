@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package hotcakes;
 
 /*
 This class manages the actions of hardware defined in RobotHardware.
