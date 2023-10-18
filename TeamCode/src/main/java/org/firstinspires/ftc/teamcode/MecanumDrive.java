@@ -33,6 +33,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -48,9 +49,10 @@ import java.util.List;
 public final class MecanumDrive {
     public static class Params {
         // drive model parameters
-        public double inPerTick = 0;
-        public double lateralInPerTick = 1;
-        public double trackWidthTicks = 0;
+        public double inPerTick = 0.024;
+        public double lateralInPerTick = 0.02545968882;
+//        public double trackWidthTicks = 11009.990678630367;
+        public double trackWidthTicks = 8.603082654245442;
 
         // feedforward parameters (in tick units)
         public double kS = 0;
@@ -178,6 +180,10 @@ public final class MecanumDrive {
         leftBack = hardwareMap.get(DcMotorEx.class, "Backleft");
         rightBack = hardwareMap.get(DcMotorEx.class, "Backright");
         rightFront = hardwareMap.get(DcMotorEx.class, "Frontright");
+
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
