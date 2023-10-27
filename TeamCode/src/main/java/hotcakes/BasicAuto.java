@@ -1,38 +1,45 @@
 package hotcakes;
 
+import android.util.Size;
+
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.processors.ImageProcessor;
+import org.firstinspires.ftc.vision.VisionPortal;
+
 import java.util.Timer;
 
 @Autonomous
 public class BasicAuto extends OpMode {
-    private RobotHardware robotHardware;
+    MecanumDrive drive;
+    private ImageProcessor imageProcessor;
+    private VisionPortal.Builder visionPortalBuilder;
+    private VisionPortal visionPortal;
+    private ImageProcessor.Selected selectedSpike;
     private ElapsedTime runTime;
-    private MotorControl motorControl;
-    //define variables
-    double maxPower = 0.9;
-    double denominator = 0;
-    //Joystick movement
-    double axial = 1;
-    double lateral = 0;
-    double yaw = 0;
-
 
     @Override
     public void init() {
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        imageProcessor = new ImageProcessor(telemetry);
+        visionPortalBuilder = new VisionPortal.Builder();
+        visionPortal = visionPortalBuilder.enableLiveView(true).
+                addProcessor(imageProcessor).
+                setCamera(hardwareMap.get(WebcamName.class, "webcam1")).
+                setCameraResolution(new Size(640, 480)).
+                build();
+
         runTime = new ElapsedTime();
-        robotHardware = new RobotHardware(this);
-        robotHardware.init();
-        motorControl = new MotorControl(robotHardware);
         telemetry.addData("init", "");
         telemetry.update();
-        robotHardware.Frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
@@ -42,17 +49,26 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void start() {
-        telemetry.addData("start", "");
+        selectedSpike = imageProcessor.getSelection();
+        telemetry.addData("Spike Identified", selectedSpike);
         telemetry.update();
         runTime.reset();
     }
 
     @Override
     public void loop() {
+        TrajectoryActionBuilder ab = drive.actionBuilder(new Pose2d(new Vector2d(0, 0), Math.toRadians(0)));
+        switch (selectedSpike) {
+            case LEFT:
+            case MIDDLE:
+            case RIGHT:
+            case NONE:
+            default:
+        }
+
+        drive.updatePoseEstimate();
         telemetry.addData("runTime", runTime.seconds());
         telemetry.update();
-        motorControl.drive(axial, lateral, yaw, maxPower);
-//        motorControl.drive(0.1, 0.2, 0.3, -0.9, 0.5);
     }
 }
 
