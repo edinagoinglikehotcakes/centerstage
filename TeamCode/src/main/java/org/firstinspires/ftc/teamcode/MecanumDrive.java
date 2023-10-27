@@ -51,7 +51,7 @@ public final class MecanumDrive {
         // drive model parameters
         public double inPerTick = 0.024;
         public double lateralInPerTick = 0.02545968882;
-//        public double trackWidthTicks = 11009.990678630367;
+        //        public double trackWidthTicks = 11009.990678630367;
         public double trackWidthTicks = 8.603082654245442;
 
         // feedforward parameters (in tick units)
@@ -217,6 +217,7 @@ public final class MecanumDrive {
         rightBack.setPower(wheelVels.rightBack.get(0) / maxPowerMag);
         rightFront.setPower(wheelVels.rightFront.get(0) / maxPowerMag);
     }
+
     public final class FollowTrajectoryAction implements Action {
         public final TimeTrajectory timeTrajectory;
         private double beginTs = -1;
@@ -228,7 +229,7 @@ public final class MecanumDrive {
 
             List<Double> disps = com.acmerobotics.roadrunner.Math.range(
                     0, t.path.length(),
-                    (int) Math.ceil(t.path.length() / 2));
+                    Math.max(2, (int) Math.ceil(t.path.length() / 2)));
             xPoints = new double[disps.size()];
             yPoints = new double[disps.size()];
             for (int i = 0; i < disps.size(); i++) {
