@@ -46,6 +46,8 @@ public class AutoTestEOCV extends OpMode {
     @Override
     public void loop() {
         // Do your paths here.
+
+
         telemetry.addData("Identified", imageProcessor.getSelection());
         telemetry.update();
     }
