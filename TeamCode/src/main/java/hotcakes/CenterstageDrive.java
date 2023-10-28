@@ -31,7 +31,7 @@ package hotcakes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -59,10 +59,10 @@ public class CenterstageDrive extends LinearOpMode {
 
         waitForStart();
         runtime.reset();
-        robotHardware.Frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robotHardware.Frontleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
