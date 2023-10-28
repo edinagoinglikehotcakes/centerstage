@@ -29,8 +29,11 @@
 
 package hotcakes;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -46,10 +49,15 @@ public class CenterstageDrive extends LinearOpMode {
     private RobotHardware robotHardware;
     private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
+    GamepadEx gamePadEx;
+    GamepadEx gamePadEx2;
 
     @Override
     public void runOpMode() {
 //      This is the code for all of the Hardware
+        GamepadEx gamePadEx = new GamepadEx(gamepad1);
+        GamepadEx gamePadEx2 = new GamepadEx(gamepad2);
+
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
@@ -63,12 +71,15 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
+        robotHardware.TurnMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            gamePadEx.readButtons();
+            gamePadEx2.readButtons();
             //define variables
             double maxPower = 0.9;
             double denominator = 0;
+
             //Joystick movement
             double axial   = -gamepad1.left_stick_y;
             double lateral =  gamepad1.left_stick_x;
@@ -78,11 +89,15 @@ public class CenterstageDrive extends LinearOpMode {
                 maxPower = 0.3;
             }
 //            Controls for the arm
-            if (gamepad2.dpad_left) {
+            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
                 motorControl.rotateArm(MotorControl.armDirection.LEFT);
+            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)){
+                motorControl.rotateArm(MotorControl.armDirection.STOP);
             }
-            if (gamepad2.dpad_right) {
+            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.rotateArm(MotorControl.armDirection.RIGHT);
+            }  else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)){
+                motorControl.rotateArm(MotorControl.armDirection.STOP);
             }
 
 //              This line is the whole drive code from the Motor Control class
@@ -90,6 +105,8 @@ public class CenterstageDrive extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("ArmTurnPosition", robotHardware.TurnMotor.getCurrentPosition());
             telemetry.update();
+
         }
     }}

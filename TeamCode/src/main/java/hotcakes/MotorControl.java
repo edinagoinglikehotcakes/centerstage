@@ -1,5 +1,6 @@
 package hotcakes;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
@@ -8,12 +9,14 @@ public class MotorControl {
 //    set limits
     private final int ARM_LIMIT = 200;
     private final double TURN_SPEED = 0.3;
+    private final double ARM_SPEED = 0.6;
 
     private RobotHardware robotHardware;
 //    Which direction the arm is currently going
     public enum armDirection {
         LEFT,
         RIGHT,
+        STOP,
     }
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
@@ -25,6 +28,7 @@ public class MotorControl {
             if (robotHardware.TurnMotor.getCurrentPosition() >= -ARM_LIMIT) {
                 robotHardware.TurnMotor.setPower(-TURN_SPEED);
             } else {
+                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robotHardware.TurnMotor.setPower(0);
             }
         }
@@ -33,10 +37,15 @@ public class MotorControl {
             if (robotHardware.TurnMotor.getCurrentPosition() <= ARM_LIMIT) {
                 robotHardware.TurnMotor.setPower(TURN_SPEED);
             } else {
+                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 robotHardware.TurnMotor.setPower(0);
             }
         }
+        if (direction == armDirection.STOP) {
+            robotHardware.TurnMotor.setPower(0);
+        }
     }
+
     public void drive (double axial, double lateral, double yaw, double maxPower,
         double denominator) {
 
