@@ -77,6 +77,14 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
             }
+//            Controls for the arm
+            if (gamepad2.dpad_left) {
+                motorControl.rotateArm(MotorControl.armDirection.LEFT);
+            }
+            if (gamepad2.dpad_right) {
+                motorControl.rotateArm(MotorControl.armDirection.RIGHT);
+            }
+
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
