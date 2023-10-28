@@ -40,12 +40,12 @@ public class AutoTestEOCV extends OpMode {
 
     @Override
     public void start() {
-        Actions.runBlocking(
-                mecanumDrive.actionBuilder(mecanumDrive.pose)
+            Actions.runBlocking(
+                    mecanumDrive.actionBuilder(mecanumDrive.pose)
 //                        .splineTo(new Vector2d(30,30),Math.PI /2)
 //                        .splineTo(new Vector2d(60,0),Math.PI)
-                        .turn(Math.toRadians(30))
-                        .build());
+                            .turn(Math.toRadians(90))
+                            .build());
         selectedSpike = imageProcessor.getSelection();
         telemetry.addData("Start Identified", selectedSpike);
         telemetry.update();
@@ -57,7 +57,6 @@ public class AutoTestEOCV extends OpMode {
     @Override
     public void loop() {
         // Do your paths here.
-
         telemetry.addData("Identified", imageProcessor.getSelection());
         telemetry.update();
     }
