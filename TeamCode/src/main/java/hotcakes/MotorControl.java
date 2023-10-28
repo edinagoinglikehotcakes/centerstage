@@ -3,9 +3,19 @@ package hotcakes;
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
 public class MotorControl {
+    private final int LEFT_ARM_LIMIT = 0;
+    private final int RIGHT_ARM_LIMIT = 0;
+
     private RobotHardware robotHardware;
+    public enum armDirection {
+        LEFT,
+        RIGHT,
+    }
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
+    }
+    public void rotateArm () {
+
     }
     public void drive (double axial, double lateral, double yaw, double maxPower,
         double denominator) {
