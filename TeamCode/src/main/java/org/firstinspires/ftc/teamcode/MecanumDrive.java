@@ -55,7 +55,7 @@ public final class MecanumDrive {
         public double trackWidthTicks = 8.603082654245442;
 
         // feedforward parameters (in tick units)
-        public double kS = 0;
+        public double kS =  9.276966199288676;
         public double kV = 0;
         public double kA = 0;
 
@@ -192,8 +192,8 @@ public final class MecanumDrive {
 
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
