@@ -31,10 +31,10 @@ package hotcakes;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -43,58 +43,70 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
  */
 
-@TeleOp(name = "CenterstageDc")
+@TeleOp(name="CenterstageDc")
 //@Disabled
 public class CenterstageDrive extends LinearOpMode {
-    private final double MAX_POWER = 1;
     private RobotHardware robotHardware;
     private MotorControl motorControl;
-    private GamepadEx gamepad;
-    // Left bumper to implement slow mode.
-    private ToggleButtonReader leftBumper;
-    private final double SLOW_FACTOR = .3;
     private ElapsedTime runtime = new ElapsedTime();
-
-    //Motor and servo identification
+    GamepadEx gamePadEx;
+    GamepadEx gamePadEx2;
 
     @Override
     public void runOpMode() {
+//      This is the code for all of the Hardware
+        GamepadEx gamePadEx = new GamepadEx(gamepad1);
+        GamepadEx gamePadEx2 = new GamepadEx(gamepad2);
+
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
-        robotHardware.Frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robotHardware.Backright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        gamepad = new GamepadEx(gamepad1);
-        ToggleButtonReader leftBumper = new ToggleButtonReader(gamepad, GamepadKeys.Button.LEFT_BUMPER);
+        // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-
+        robotHardware.Frontleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.TurnMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            gamepad.readButtons();
+            gamePadEx.readButtons();
+            gamePadEx2.readButtons();
             //define variables
-            //Joystick movement
-            double axial = -gamepad.getLeftY();
-            double lateral = gamepad.getLeftX();
-            double yaw = gamepad.getRightX() * 1.1;
+            double maxPower = 0.9;
+            double denominator = 0;
 
-            // Drive slow
-            double runPower = leftBumper.getState() ? MAX_POWER * SLOW_FACTOR : MAX_POWER;
-            motorControl.drive(axial, lateral, yaw, runPower);
+            //Joystick movement
+            double axial   = -gamepad1.left_stick_y;
+            double lateral =  gamepad1.left_stick_x;
+            double yaw     =  gamepad1.right_stick_x*1.1;
+
+            if (gamepad1.left_bumper) {
+                maxPower = 0.3;
+            }
+//            Controls for the arm
+            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
+                motorControl.rotateArm(MotorControl.armDirection.LEFT);
+            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)){
+                motorControl.rotateArm(MotorControl.armDirection.STOP);
+            }
+            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
+                motorControl.rotateArm(MotorControl.armDirection.RIGHT);
+            }  else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)){
+                motorControl.rotateArm(MotorControl.armDirection.STOP);
+            }
+
+//              This line is the whole drive code from the Motor Control class
+            motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Left Front", robotHardware.Frontleft.getPower());
-            telemetry.addData("Right Front", robotHardware.Frontright.getPower());
-            telemetry.addData("Left Back", robotHardware.Backleft.getPower());
-            telemetry.addData("Right Back", robotHardware.Backright.getPower());
+            telemetry.addData("ArmTurnPosition", robotHardware.TurnMotor.getCurrentPosition());
             telemetry.update();
+
         }
-    }
-}
+    }}

@@ -1,10 +1,7 @@
 package hotcakes;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     private OpMode myOpMode = null;
@@ -12,38 +9,35 @@ public class RobotHardware {
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
-    public IMU imu;
+    public DcMotorEx TurnMotor = null;
+    public DcMotorEx ArmMotor = null;
 
-    public RobotHardware(OpMode opMode) {
-        myOpMode = opMode;
-    }
+    public RobotHardware (OpMode opMode) {myOpMode = opMode;}
 
     public void init() {
-        Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
-        Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
+        Frontleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
+        Backleft  = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
-
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class,"Turnmotor");
+        ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class,"Armmotor");
 
         //Motor direction
-        Frontleft.setDirection(DcMotor.Direction.REVERSE);
-        Backleft.setDirection(DcMotor.Direction.REVERSE);
-        Frontright.setDirection(DcMotor.Direction.FORWARD);
-        Backright.setDirection(DcMotor.Direction.FORWARD);
 
-        Frontleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Backleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Frontright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Backright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Frontright.setDirection(DcMotorEx.Direction.FORWARD);
+        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
-        Frontleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        Backleft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        Frontright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        Backright.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Frontleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        Backleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        Frontright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        Backright.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        Frontleft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Backleft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Frontright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Backright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
     }
 }
