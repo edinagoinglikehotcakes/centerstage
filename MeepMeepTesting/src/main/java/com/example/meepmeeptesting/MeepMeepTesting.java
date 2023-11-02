@@ -8,6 +8,7 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
     public static void main(String[] args) {
+        Pose2d homePose = new Pose2d(-36, -60,Math.toRadians(90));
         MeepMeep meepMeep = new MeepMeep(800);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -16,16 +17,26 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(0, 0, 0))
                                 .forward(30)
-                                .turn(Math.toRadians(90))
-                                .forward(30)
-                                .turn(Math.toRadians(90))
-                                .forward(30)
+                                .back(5)
+                                .turn(Math.toRadians(-90))
+                                .forward(80)
+                                .back(5)
                                 .waitSeconds(2)
-                                .turn(Math.toRadians(90))
-                                .forward(30)
-                                .turn(Math.toRadians(90))
-                                .strafeTo(new Vector2d(56,30))
-                                .splineTo(new Vector2d(-20,-40), Math.toRadians(33))
+                                .splineToLinearHeading(homePose, Math.toRadians(90))
+                                .splineTo(new Vector2d(-46, -30), Math.toRadians(90))
+                                .back(5)
+                                .turn(Math.toRadians(-90))
+                                .forward(90)
+                                .back(5)
+                                .waitSeconds(2)
+                                .splineToLinearHeading(homePose, Math.toRadians(90))
+                                .splineTo(new Vector2d(-24, -30), Math.toRadians(90))
+                                .back(5)
+                                .turn(Math.toRadians(-90))
+                                .forward(70)
+                                .back(5)
+                                .waitSeconds(2)
+                                .splineToLinearHeading(homePose, Math.toRadians(90))
                                 .build()
                 );
 
