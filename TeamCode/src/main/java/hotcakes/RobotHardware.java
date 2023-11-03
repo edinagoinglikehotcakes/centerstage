@@ -3,10 +3,15 @@ package hotcakes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     private OpMode myOpMode = null;
     public DcMotorEx Frontleft = null;
+    public IMU imu = null;
+
+
+
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;

@@ -16,7 +16,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import hotcakes.processors.ImageProcessor;
 
-@Autonomous
+@Autonomous(name = "auto")
 public class BasicAuto extends OpMode {
     MecanumDrive drive;
     private ImageProcessor imageProcessor;
@@ -33,7 +33,6 @@ public class BasicAuto extends OpMode {
     @Override
     public void init() {
         gamepad = new GamepadEx(gamepad1);
-        autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
         imageProcessor = new ImageProcessor(telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder.enableLiveView(true).
@@ -43,18 +42,19 @@ public class BasicAuto extends OpMode {
                 build();
 
         runTime = new ElapsedTime();
-        telemetry.addData("init", "");
-        telemetry.update();
+//        telemetry.addData("init", "");
+//        telemetry.update();
+        autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
     }
 
     @Override
     public void init_loop() {
         // Keep checking the camera
-        selectedSpike = imageProcessor.getSelection();
-        telemetry.addData("Spike Identified", selectedSpike);
-        telemetry.update();
         // Get the menu options
         autonomousConfiguration.init_loop();
+        selectedSpike = imageProcessor.getSelection();
+//        telemetry.addData("Spike Identified", selectedSpike);
+//        telemetry.update();
     }
 
     @Override
