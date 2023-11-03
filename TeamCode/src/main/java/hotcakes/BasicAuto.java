@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -23,6 +24,7 @@ public class BasicAuto extends OpMode {
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
     private ImageProcessor.Selected selectedSpike;
+    private Telemetry.Item teleSelected;
     private ElapsedTime runTime;
     private GamepadEx gamepad;
     private double startPositionX = 36f;
@@ -42,19 +44,17 @@ public class BasicAuto extends OpMode {
                 build();
 
         runTime = new ElapsedTime();
-//        telemetry.addData("init", "");
-//        telemetry.update();
+        teleSelected=telemetry.addData("Selected", teleSelected);
         autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
     }
 
     @Override
     public void init_loop() {
         // Keep checking the camera
+        selectedSpike = imageProcessor.getSelection();
+        teleSelected.setValue(selectedSpike);
         // Get the menu options
         autonomousConfiguration.init_loop();
-        selectedSpike = imageProcessor.getSelection();
-//        telemetry.addData("Spike Identified", selectedSpike);
-//        telemetry.update();
     }
 
     @Override
