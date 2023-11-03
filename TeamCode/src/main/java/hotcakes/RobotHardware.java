@@ -16,6 +16,7 @@ public class RobotHardware {
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
     public DcMotorEx TurnMotor = null;
+    public IMU imu = null;
     public DcMotorEx ArmMotor = null;
 
     public RobotHardware(OpMode opMode) {
@@ -29,11 +30,11 @@ public class RobotHardware {
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
         TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
 
-        ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
-        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
+        TurnMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        TurnMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //TODO Default to built-in PIDF. Tune this if needed.
-        ArmMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        TurnMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, TurnMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
 
         //Motors direction
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
