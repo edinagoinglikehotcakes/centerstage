@@ -30,6 +30,18 @@ public class BasicAuto extends OpMode {
     private double startHeading = Math.toRadians(90);
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
+    private enum AutoState {
+        START,
+        SPIKE,
+        DELAY,
+        BACKSTAGE,
+        PARK,
+        DONE,
+
+    }
+
+    AutoState currentAutoState = AutoState.START;
+
     @Override
     public void init() {
         gamepad = new GamepadEx(gamepad1);
@@ -86,10 +98,35 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void loop() {
-        if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
-            placePropOnSpike();
-        }
+        switch (currentAutoState) {
+            case START:
+                currentAutoState = AutoState.SPIKE;
+                break;
+            case SPIKE:
 
+                if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
+                    placePropOnSpike();
+                }
+                currentAutoState = AutoState.DELAY;
+                break;
+            case DELAY:
+                if (autonomousConfiguration.getDelayStartSeconds() > 0) {
+                    //TODO Put delay here
+                }
+                currentAutoState = AutoState.BACKSTAGE;
+                break;
+            case BACKSTAGE:
+                currentAutoState = AutoState.PARK;
+                break;
+            case PARK:
+                currentAutoState = AutoState.DONE;
+                break;
+            case DONE:
+                break;
+            default:
+                break;
+
+        }
         drive.updatePoseEstimate();
         telemetry.addData("runTime", runTime.seconds());
         telemetry.update();
@@ -102,6 +139,7 @@ public class BasicAuto extends OpMode {
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
                                 .splineTo(new Vector2d(-46, -30), Math.toRadians(90))
+                                .setTangent(0)
                                 .lineToX(-5)
                                 .turn(Math.toRadians(-90))
                                 .lineToX(90)
@@ -112,6 +150,7 @@ public class BasicAuto extends OpMode {
             case MIDDLE:
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
+                                .setTangent(0)
                                 .lineToX(30)
                                 .lineToX(-5)
                                 .turn(Math.toRadians(-90))
@@ -124,6 +163,7 @@ public class BasicAuto extends OpMode {
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
                                 .splineTo(new Vector2d(-24, -30), Math.toRadians(90))
+                                .setTangent(0)
                                 .lineToX(-5)
                                 .turn(Math.toRadians(-90))
                                 .lineToX(70)
