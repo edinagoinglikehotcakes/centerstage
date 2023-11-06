@@ -32,6 +32,18 @@ public class BasicAuto extends OpMode {
     private double startHeading = Math.toRadians(90);
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
+    private enum AutoState {
+        START,
+        SPIKE,
+        DELAY,
+        BACKSTAGE,
+        PARK,
+        DONE,
+
+    }
+
+    AutoState currentAutoState = AutoState.START;
+
     @Override
     public void init() {
         gamepad = new GamepadEx(gamepad1);
@@ -86,10 +98,37 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void loop() {
-        if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
-            placePropOnSpike();
-        }
+        switch (currentAutoState) {
+            case START:
+                currentAutoState = AutoState.SPIKE;
+                break;
+            case SPIKE:
+                if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
+                    placePropOnSpike();
+                }
+                currentAutoState = AutoState.DONE;
+                break;
+            case DELAY:
+                if (autonomousConfiguration.getDelayStartSeconds() > 0) {
+                    //TODO Put delay here
+                }
+                currentAutoState = AutoState.BACKSTAGE;
+                break;
+            case BACKSTAGE:
+                if (autonomousConfiguration.getPlacePixelsInBackstage() == AutonomousOptions.PlacePixelsInBackstage.Yes) {
+                    placePixelInBackstage();
+                }
+                currentAutoState = AutoState.PARK;
+                break;
+            case PARK:
+                currentAutoState = AutoState.DONE;
+                break;
+            case DONE:
+                break;
+            default:
+                break;
 
+        }
         drive.updatePoseEstimate();
         telemetry.addData("runTime", runTime.seconds());
         telemetry.update();
@@ -97,21 +136,146 @@ public class BasicAuto extends OpMode {
 
     private void placePropOnSpike() {
         AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
+        AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
+        if (allianceColor == AutonomousOptions.AllianceColor.Red) {
+            if(startPosition == AutonomousOptions.StartPosition.Left) {
+                //TODO THIS IS THE CODE FOR RED LEFT
+                switch (selectedSpike) {
+                    case LEFT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .build());
+                        break;
+                    case MIDDLE:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        .lineToY(-30)
+                                        .lineToY(-35)
+                                        .turn(Math.toRadians(-90))
+                                        .build());
+                        break;
+                    case RIGHT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        .lineToY(-40)
+                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
+                                        .lineToY(-35)
+                                        .build());
+                        break;
+                    case NONE:
+                    default:
+                }
+            } else {
+                switch (selectedSpike) {
+                    case LEFT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT
+                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .build());
+                        break;
+                    case MIDDLE:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT
+                                        .lineToY(-30)
+                                        .lineToY(-35)
+                                        .turn(Math.toRadians(-90))
+                                        .build());
+                        break;
+                    case RIGHT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT
+                                        .lineToY(-40)
+                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
+                                        .lineToY(-35)
+                                        .build());
+                        break;
+                    case NONE:
+                    default:
+                }
+            }
+        } else {
+            if (startPosition == AutonomousOptions.StartPosition.Left) {
+                switch (selectedSpike) {
+                    case LEFT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers BLUE LEFT
+                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .build());
+                        break;
+                    case MIDDLE:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers FOR BLUE LEFT
+                                        .lineToY(-30)
+                                        .lineToY(-35)
+                                        .turn(Math.toRadians(-90))
+                                        .build());
+                        break;
+                    case RIGHT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers FOR BLUE LEFT
+                                        .lineToY(-40)
+                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
+                                        .lineToY(-35)
+                                        .build());
+                        break;
+                    case NONE:
+                    default:
+                }
+            } else {
+                switch (selectedSpike) {
+                    case LEFT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers FOR BLUE RIGHT
+                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .build());
+                        break;
+                    case MIDDLE:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers FOR BLUE RIGHT
+                                        .lineToY(-30)
+                                        .lineToY(-35)
+                                        .turn(Math.toRadians(-90))
+                                        .build());
+                        break;
+                    case RIGHT:
+                        Actions.runBlocking(
+                                drive.actionBuilder(drive.pose)
+                                        //TODO Change numbers FOR BLUE RIGHT
+                                        .lineToY(-40)
+                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
+                                        .lineToY(-35)
+                                        .build());
+                        break;
+                    case NONE:
+                    default:
+                }
+
+            }
+        }
+    }
+    private void placePixelInBackstage() {
         switch (selectedSpike) {
             case LEFT:
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
-                                .splineTo(new Vector2d(-46, -30), Math.toRadians(90))
-                                .lineToX(-5)
                                 .turn(Math.toRadians(-90))
-                                .lineToX(90)
-                                .lineToX(-5)
-                                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
+                                .lineToY(90)
+                                .splineTo(new Vector2d(40, -34), Math.toRadians(45))
                                 .build());
                 break;
             case MIDDLE:
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
+                                .setTangent(0)
                                 .lineToX(30)
                                 .lineToX(-5)
                                 .turn(Math.toRadians(-90))
@@ -124,6 +288,7 @@ public class BasicAuto extends OpMode {
                 Actions.runBlocking(
                         drive.actionBuilder(drive.pose)
                                 .splineTo(new Vector2d(-24, -30), Math.toRadians(90))
+                                .setTangent(0)
                                 .lineToX(-5)
                                 .turn(Math.toRadians(-90))
                                 .lineToX(70)
@@ -156,10 +321,6 @@ public class BasicAuto extends OpMode {
             }
         }
         drive = new MecanumDrive(hardwareMap, new Pose2d(startPositionX, startPositionY, startHeading));
-    }
-
-    private void placePixelInBackstage() {
-
     }
 
     private void placePixelOnBackDrop() {

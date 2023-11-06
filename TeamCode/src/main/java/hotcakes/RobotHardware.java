@@ -8,10 +8,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 public class RobotHardware {
     private OpMode myOpMode = null;
     public DcMotorEx Frontleft = null;
-    public IMU imu = null;
-
-
-
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
@@ -30,7 +26,7 @@ public class RobotHardware {
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
         TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
 
-        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
+        ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
         TurnMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         TurnMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //TODO Default to built-in PIDF. Tune this if needed.

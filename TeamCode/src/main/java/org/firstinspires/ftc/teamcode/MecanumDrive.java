@@ -98,7 +98,6 @@ public final class MecanumDrive {
     public final VoltageSensor voltageSensor;
 
     public final IMU imu;
-
     public final Localizer localizer;
     public Pose2d pose;
 
