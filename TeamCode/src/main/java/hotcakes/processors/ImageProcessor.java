@@ -13,10 +13,13 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
-    public Rect rectLeft = new Rect(130, 250, 40, 40);
-    public Rect rectMiddle = new Rect(290, 250, 40, 40);
-    public Rect rectRight = new Rect(470, 250, 40, 40);
+    public Rect rectLeft = new Rect(0, 40, 40, 40);
+    public Rect rectMiddle = new Rect(290, 40, 40, 40);
+    public Rect rectRight = new Rect(690, 40, 40, 40);
     Selected selection = Selected.NONE;
+    public double satRectLeft;
+    public double satRectMiddle;
+    public double satRectRight;
     Telemetry telemetry;
     Mat submat = new Mat();
     Mat hsvMat = new Mat();
@@ -33,9 +36,9 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV);
-        double satRectLeft = getAvgSaturation(hsvMat, rectLeft);
-        double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
-        double satRectRight = getAvgSaturation(hsvMat, rectRight);
+        satRectLeft = getAvgSaturation(hsvMat, rectLeft);
+        satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
+        satRectRight = getAvgSaturation(hsvMat, rectRight);
 
         if ((satRectLeft > satRectMiddle) && (satRectLeft > satRectRight)) {
             return Selected.LEFT;
