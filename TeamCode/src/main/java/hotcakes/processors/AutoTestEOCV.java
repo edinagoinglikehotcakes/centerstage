@@ -4,6 +4,8 @@ import android.util.Size;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -21,9 +23,11 @@ public class AutoTestEOCV extends OpMode {
     private ImageProcessor.Selected selectedSpike;
     private WhiteBalanceControl whiteBalanceControl;
     private MecanumDrive mecanumDrive;
+    private GamepadEx gamepadEx;
 
     @Override
     public void init() {
+        gamepadEx = new GamepadEx(gamepad1);
         mecanumDrive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         imageProcessor = new ImageProcessor(telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
@@ -71,6 +75,10 @@ public class AutoTestEOCV extends OpMode {
 
     @Override
     public void loop() {
+        gamepadEx.readButtons();
+        if (gamepadEx.wasJustReleased(GamepadKeys.Button.X)) {
+            visionPortal.saveNextFrameRaw("cameraframe");
+        }
         // Do your paths here.
         telemetry.addData("Identified", imageProcessor.getSelection());
     }
