@@ -171,14 +171,14 @@ public class BasicAuto extends OpMode {
                     case LEFT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
-                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .lineToY(-40)
+                                        .splineTo(new Vector2d(30, -30), Math.toRadians(90))
+                                        .lineToY(-35)
                                         .build());
                         break;
                     case MIDDLE:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
                                         .lineToY(-30)
                                         .lineToY(-35)
                                         .turn(Math.toRadians(-90))
@@ -187,10 +187,7 @@ public class BasicAuto extends OpMode {
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
-                                        .lineToY(-40)
-                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
-                                        .lineToY(-35)
+                                        .splineTo(new Vector2d(46, -40), Math.toRadians(90))
                                         .build());
                         break;
                     case NONE:
@@ -203,26 +200,24 @@ public class BasicAuto extends OpMode {
                     case LEFT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO Change numbers BLUE LEFT
-                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .lineToY(40)
+                                        .splineTo(new Vector2d(-30, 30), Math.toRadians(-90))
+                                        .lineToY(35)
                                         .build());
+
                         break;
                     case MIDDLE:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO Change numbers FOR BLUE LEFT
-                                        .lineToY(-30)
-                                        .lineToY(-35)
-                                        .turn(Math.toRadians(-90))
+                                        .lineToY(30)
+                                        .lineToY(35)
+                                        .turn(Math.toRadians(90))
                                         .build());
                         break;
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO Change numbers FOR BLUE LEFT
-                                        .lineToY(-40)
-                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
-                                        .lineToY(-35)
+                                        .splineTo(new Vector2d(-46, 40), Math.toRadians(-90))
                                         .build());
                         break;
                     case NONE:
