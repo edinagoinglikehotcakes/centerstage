@@ -138,7 +138,7 @@ public class BasicAuto extends OpMode {
         AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
         AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
         if (allianceColor == AutonomousOptions.AllianceColor.Red) {
-            if(startPosition == AutonomousOptions.StartPosition.Left) {
+            if (startPosition == AutonomousOptions.StartPosition.Left) {
                 //TODO THIS IS THE CODE FOR RED LEFT
                 switch (selectedSpike) {
                     case LEFT:
@@ -151,14 +151,14 @@ public class BasicAuto extends OpMode {
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         .lineToY(-30)
-                                        .lineToY(-35)
+                                        .lineToY(-45)
                                         .turn(Math.toRadians(-90))
                                         .build());
                         break;
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        .lineToY(-40)
+                                        .lineToY(-40) 
                                         .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
                                         .lineToY(-35)
                                         .build());
@@ -171,26 +171,29 @@ public class BasicAuto extends OpMode {
                     case LEFT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
-                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT (Ready to test)
+                                        .lineToY(-46)
+                                        .splineTo(new Vector2d(0, -33), Math.toRadians(90))
+                                        .splineTo(new Vector2d(10, -47), Math.toRadians(0))
+                                        .lineToY(-57)
+                                        .turn(Math.toRadians(-90))
                                         .build());
                         break;
                     case MIDDLE:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
-                                        .lineToY(-30)
-                                        .lineToY(-35)
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT (Ready to test)
+                                        .lineToY(-28)
+                                        .lineToY(-45)
                                         .turn(Math.toRadians(-90))
                                         .build());
                         break;
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO CHANGE NUMBERS FOR RED RIGHT
-                                        .lineToY(-40)
-                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
-                                        .lineToY(-35)
+                                        //TODO CHANGE NUMBERS FOR RED RIGHT (Ready to test)
+                                        .splineTo(new Vector2d(22.5, -34), Math.toRadians(90))
+                                        .lineToY(-45)
                                         .build());
                         break;
                     case NONE:
@@ -203,26 +206,28 @@ public class BasicAuto extends OpMode {
                     case LEFT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
-                                        //TODO Change numbers BLUE LEFT
-                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        //TODO Change numbers BLUE LEFT (Ready to test)
+                                        .splineTo(new Vector2d(23, 35), Math.toRadians(90))
+                                        .lineToY(45)
                                         .build());
                         break;
                     case MIDDLE:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         //TODO Change numbers FOR BLUE LEFT
-                                        .lineToY(-30)
-                                        .lineToY(-35)
-                                        .turn(Math.toRadians(-90))
+                                        .lineToY(27)
+                                        .lineToY(45)
+                                        .turn(Math.toRadians(90))
                                         .build());
                         break;
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         //TODO Change numbers FOR BLUE LEFT
-                                        .lineToY(-40)
-                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
-                                        .lineToY(-35)
+                                        .lineToY(47)
+                                        .splineTo(new Vector2d(2, 34), Math.toRadians(90))
+                                        .splineTo(new Vector2d(11, 48), Math.toRadians(0))
+                                        .lineToY(57)
                                         .build());
                         break;
                     case NONE:
@@ -234,25 +239,27 @@ public class BasicAuto extends OpMode {
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         //TODO Change numbers FOR BLUE RIGHT
-                                        .splineTo(new Vector2d(-46, -40), Math.toRadians(90))
+                                        .lineToY(47)
+                                        .splineTo(new Vector2d(-24, 34), Math.toRadians(90))
+                                        .splineTo(new Vector2d(-36, 47), Math.toRadians(0))
+                                        .lineToY(57)
                                         .build());
                         break;
                     case MIDDLE:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         //TODO Change numbers FOR BLUE RIGHT
-                                        .lineToY(-30)
-                                        .lineToY(-35)
-                                        .turn(Math.toRadians(-90))
+                                        .lineToY(25)
+                                        .lineToY(45)
+                                        .turn(Math.toRadians(90))
                                         .build());
                         break;
                     case RIGHT:
                         Actions.runBlocking(
                                 drive.actionBuilder(drive.pose)
                                         //TODO Change numbers FOR BLUE RIGHT
-                                        .lineToY(-40)
-                                        .splineTo(new Vector2d(-30, -30), Math.toRadians(90))
-                                        .lineToY(-35)
+                                        .splineTo(new Vector2d(-46, 35), Math.toRadians(90))
+                                        .lineToY(45)
                                         .build());
                         break;
                     case NONE:
@@ -262,6 +269,7 @@ public class BasicAuto extends OpMode {
             }
         }
     }
+
     private void placePixelInBackstage() {
         switch (selectedSpike) {
             case LEFT:
