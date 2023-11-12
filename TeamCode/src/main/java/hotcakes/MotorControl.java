@@ -1,7 +1,6 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 
@@ -45,6 +44,7 @@ public class MotorControl {
         }
         if (direction == armDirection.STOP) {
             robotHardware.TurnMotor.setPower(0);
+            robotHardware.TurnMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
