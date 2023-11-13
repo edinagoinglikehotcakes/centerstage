@@ -31,6 +31,7 @@ package hotcakes;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -43,7 +44,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
  */
 
-@TeleOp(name="CenterstageDc")
+@TeleOp(name = "CenterstageDc")
 //@Disabled
 public class CenterstageDrive extends LinearOpMode {
     private RobotHardware robotHardware;
@@ -57,7 +58,12 @@ public class CenterstageDrive extends LinearOpMode {
 //      This is the code for all of the Hardware
         GamepadEx gamePadEx = new GamepadEx(gamepad1);
         GamepadEx gamePadEx2 = new GamepadEx(gamepad2);
-
+        TriggerReader triggerReader = new TriggerReader(
+                gamePadEx2, GamepadKeys.Trigger.RIGHT_TRIGGER
+        );
+        TriggerReader triggerReader1 = new TriggerReader(
+                gamePadEx2, GamepadKeys.Trigger.LEFT_TRIGGER
+        );
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
@@ -71,35 +77,49 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        robotHardware.TurnMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robotHardware.TurnMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robotHardware.ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             gamePadEx.readButtons();
             gamePadEx2.readButtons();
+//            trigger reader is the right trigger and trigger1 is the left one
+            triggerReader.readValue();
+            triggerReader1.readValue();
             //define variables
             double maxPower = 0.9;
             double denominator = 0;
 
             //Joystick movement
-            double axial   = -gamepad1.left_stick_y;
-            double lateral =  gamepad1.left_stick_x;
-            double yaw     =  gamepad1.right_stick_x*1.1;
-
+            double axial = -gamepad1.left_stick_y;
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x * 1.1;
+// Reduce speed
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
             }
 //            Controls for the arm
             if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
                 motorControl.rotateArm(MotorControl.armDirection.LEFT);
-            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)){
+            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)) {
                 motorControl.rotateArm(MotorControl.armDirection.STOP);
             }
             if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.rotateArm(MotorControl.armDirection.RIGHT);
-            }  else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)){
+            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.rotateArm(MotorControl.armDirection.STOP);
             }
-
+//           Controls for arm up/down
+            if (triggerReader.isDown()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
+            } else if (triggerReader.wasJustReleased()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
+            }
+            if (triggerReader1.isDown()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
+            } else if (triggerReader1.wasJustReleased()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
@@ -109,4 +129,5 @@ public class CenterstageDrive extends LinearOpMode {
             telemetry.update();
 
         }
-    }}
+    }
+}
