@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBalanceControl;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -63,6 +64,17 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void init_loop() {
+        // Wait for the camera to be open
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
+            return;
+        }
+
+        // Use auto white balance
+        if (visionPortal.getCameraControl(WhiteBalanceControl.class).getMode() != WhiteBalanceControl.Mode.AUTO) {
+            visionPortal.getCameraControl(WhiteBalanceControl.class).setMode(WhiteBalanceControl.Mode.AUTO);
+        }
+
         // Keep checking the camera
         selectedSpike = imageProcessor.getSelection();
         teleSelected.setValue(selectedSpike);
@@ -77,6 +89,7 @@ public class BasicAuto extends OpMode {
             telemetry.addData("Alert", "Not ready to start!");
             telemetry.speak("Not ready to start!");
             runTime.reset();
+            visionPortal.stopStreaming();
             while (runTime.seconds() < 2) {
             }
             requestOpModeStop();
@@ -128,6 +141,11 @@ public class BasicAuto extends OpMode {
         drive.updatePoseEstimate();
         telemetry.addData("runTime", runTime.seconds());
         telemetry.update();
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     private void placePropOnSpike() {

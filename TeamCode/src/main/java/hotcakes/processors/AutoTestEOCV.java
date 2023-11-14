@@ -44,12 +44,11 @@ public class AutoTestEOCV extends OpMode {
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
             return;
-        } else {
-            whiteBalanceControl = visionPortal.getCameraControl(WhiteBalanceControl.class);
         }
 
-        if (whiteBalanceControl.getMode() != WhiteBalanceControl.Mode.AUTO) {
-            whiteBalanceControl.setMode(WhiteBalanceControl.Mode.AUTO);
+        // Use auto white balance
+        if (visionPortal.getCameraControl(WhiteBalanceControl.class).getMode() != WhiteBalanceControl.Mode.AUTO) {
+            visionPortal.getCameraControl(WhiteBalanceControl.class).setMode(WhiteBalanceControl.Mode.AUTO);
         }
 
         telemetry.addData("Init Identified", imageProcessor.getSelection());
