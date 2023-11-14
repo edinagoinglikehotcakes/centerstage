@@ -52,7 +52,7 @@ public class AutoTestEOCV extends OpMode {
             whiteBalanceControl.setMode(WhiteBalanceControl.Mode.AUTO);
         }
 
-        telemetry.addData("Init Identified", imageProcessor.getSelection());
+        telemetry.addData("Identified", imageProcessor.getSelection());
         telemetry.addData("Left", "%5.2f", imageProcessor.satRectLeft);
         telemetry.addData("Middle", "%5.2f", imageProcessor.satRectMiddle);
         telemetry.addData("Right", "%5.2f", imageProcessor.satRectRight);

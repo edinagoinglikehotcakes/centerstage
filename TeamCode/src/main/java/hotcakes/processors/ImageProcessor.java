@@ -15,9 +15,10 @@ import org.opencv.imgproc.Imgproc;
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private int rectY = 320;
     public Rect rectLeft = new Rect(0, rectY, 40, 40);
-    public Rect rectMiddle = new Rect(290, rectY, 40, 40);
-    public Rect rectRight = new Rect(600, rectY, 40, 40);
+    public Rect rectMiddle = new Rect(600, rectY, 40, 40);
+    public Rect rectRight = new Rect(600, rectY - 100, 40, 40);
     Selected selection = Selected.NONE;
+    private final double SAT_THRESHOLD = 50;
     public double satRectLeft;
     public double satRectMiddle;
     public double satRectRight;
@@ -41,12 +42,15 @@ public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProces
         satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
         satRectRight = getAvgSaturation(hsvMat, rectRight);
 
-        if ((satRectLeft > satRectMiddle) && (satRectLeft > satRectRight)) {
+        if (Math.abs(satRectLeft - satRectRight) < SAT_THRESHOLD) {
+            return Selected.RIGHT;
+        }
+
+        if (satRectLeft > satRectMiddle) {
             return Selected.LEFT;
-        } else if ((satRectMiddle > satRectLeft) && (satRectMiddle > satRectRight)) {
+        } else {
             return Selected.MIDDLE;
         }
-        return Selected.RIGHT;
     }
 
     protected double getAvgSaturation(Mat input, Rect rect) {
