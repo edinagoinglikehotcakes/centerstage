@@ -28,7 +28,7 @@ public class AutoTestEOCV extends OpMode {
     @Override
     public void init() {
         gamepadEx = new GamepadEx(gamepad1);
-        mecanumDrive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+//        mecanumDrive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         imageProcessor = new ImageProcessor(telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
         visionPortal = visionPortalBuilder.enableLiveView(true).
@@ -44,11 +44,12 @@ public class AutoTestEOCV extends OpMode {
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
             telemetry.addData("Camera", "Waiting");
             return;
+        } else {
+            whiteBalanceControl = visionPortal.getCameraControl(WhiteBalanceControl.class);
         }
 
-        // Use auto white balance
-        if (visionPortal.getCameraControl(WhiteBalanceControl.class).getMode() != WhiteBalanceControl.Mode.AUTO) {
-            visionPortal.getCameraControl(WhiteBalanceControl.class).setMode(WhiteBalanceControl.Mode.AUTO);
+        if (whiteBalanceControl.getMode() != WhiteBalanceControl.Mode.AUTO) {
+            whiteBalanceControl.setMode(WhiteBalanceControl.Mode.AUTO);
         }
 
         telemetry.addData("Init Identified", imageProcessor.getSelection());
@@ -59,12 +60,12 @@ public class AutoTestEOCV extends OpMode {
 
     @Override
     public void start() {
-        Actions.runBlocking(
-                mecanumDrive.actionBuilder(mecanumDrive.pose)
-//                        .splineTo(new Vector2d(30,30),Math.PI /2)
-//                        .splineTo(new Vector2d(60,0),Math.PI)
-                        .turn(Math.toRadians(90))
-                        .build());
+//        Actions.runBlocking(
+//                mecanumDrive.actionBuilder(mecanumDrive.pose)
+////                        .splineTo(new Vector2d(30,30),Math.PI /2)
+////                        .splineTo(new Vector2d(60,0),Math.PI)
+//                        .turn(Math.toRadians(90))
+//                        .build());
         selectedSpike = imageProcessor.getSelection();
         telemetry.addData("Start Identified", selectedSpike);
         // Save resources
