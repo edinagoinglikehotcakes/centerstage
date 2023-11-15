@@ -56,8 +56,8 @@ public class CenterstageDrive extends LinearOpMode {
     @Override
     public void runOpMode() {
 //      This is the code for all of the Hardware
-        GamepadEx gamePadEx = new GamepadEx(gamepad1);
-        GamepadEx gamePadEx2 = new GamepadEx(gamepad2);
+        gamePadEx = new GamepadEx(gamepad1);
+        gamePadEx2 = new GamepadEx(gamepad2);
         TriggerReader triggerReader = new TriggerReader(
                 gamePadEx2, GamepadKeys.Trigger.RIGHT_TRIGGER
         );
@@ -111,21 +111,24 @@ public class CenterstageDrive extends LinearOpMode {
             }
 //           Controls for arm up/down
             if (triggerReader.isDown()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
+                robotHardware.ArmMotor.setPower(0.8);
+//                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
             } else if (triggerReader.wasJustReleased()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
             }
-            if (triggerReader1.isDown()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
-            } else if (triggerReader1.wasJustReleased()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
-            }
+//            if (triggerReader1.isDown()) {
+//                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
+//            } else if (triggerReader1.wasJustReleased()) {
+//                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
+//            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("ArmTurnPosition", robotHardware.TurnMotor.getCurrentPosition());
+            telemetry.addData("triggerdown",triggerReader.isDown());
+            telemetry.addData("power",robotHardware.ArmMotor.getPower());
             telemetry.update();
 
         }
