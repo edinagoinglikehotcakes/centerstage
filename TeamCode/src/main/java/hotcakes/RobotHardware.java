@@ -3,7 +3,7 @@ package hotcakes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.ServoControllerEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
     private OpMode myOpMode;
@@ -14,8 +14,8 @@ public class RobotHardware {
     public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
-    public ServoControllerEx GripperLeft = null;
-    public ServoControllerEx GripperRight = null;
+    public Servo GripperLeft = null;
+    public Servo GripperRight = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;

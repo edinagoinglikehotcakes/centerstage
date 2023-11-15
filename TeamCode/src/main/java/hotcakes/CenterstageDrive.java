@@ -120,6 +120,13 @@ public class CenterstageDrive extends LinearOpMode {
             } else if (triggerReader1.wasJustReleased()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
             }
+//            Controls Gripper
+            if (gamepad2.left_bumper) {
+                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE);
+            }
+            if (gamepad2.right_bumper) {
+                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 

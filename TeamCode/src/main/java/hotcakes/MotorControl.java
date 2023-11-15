@@ -10,7 +10,7 @@ public class MotorControl {
     private final int ARM_LIMIT = 700;
     private final double TURN_SPEED = 0.3;
     private final double ARM_SPEED = 0.6;
-    private final double GRIPPER_LIMIT = 0.0;
+    private final double GRIPPER_LIMIT = 0.6;
 
     private RobotHardware robotHardware;
 
@@ -26,7 +26,7 @@ public class MotorControl {
         DOWN,
         NONE,
     }
-    public enum gripperState {
+    public enum gripperCurrentState {
         OPEN,
         CLOSE,
     }
@@ -84,6 +84,16 @@ public class MotorControl {
         }
     }
 // TODO CODE GRIPPER MOVEMENTS
+    public void moveGripper (gripperCurrentState gripperState) {
+        if (gripperState == gripperCurrentState.OPEN) {
+            robotHardware.GripperLeft.setPosition(-GRIPPER_LIMIT);
+            robotHardware.GripperRight.setPosition(GRIPPER_LIMIT);
+        }
+        if (gripperState == gripperCurrentState.CLOSE) {
+            robotHardware.GripperLeft.setPosition(0);
+            robotHardware.GripperRight.setPosition(0);
+        }
+    }
     public void drive(double axial, double lateral, double yaw, double maxPower,
                       double denominator) {
 
