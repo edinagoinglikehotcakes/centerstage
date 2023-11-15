@@ -10,6 +10,7 @@ public class MotorControl {
     private final int ARM_LIMIT = 700;
     private final double TURN_SPEED = 0.3;
     private final double ARM_SPEED = 0.6;
+    private final double GRIPPER_LIMIT = 0.0;
 
     private RobotHardware robotHardware;
 
@@ -24,6 +25,10 @@ public class MotorControl {
         UP,
         DOWN,
         NONE,
+    }
+    public enum gripperState {
+        OPEN,
+        CLOSE,
     }
 
     public MotorControl(RobotHardware robotHardware) {
@@ -58,7 +63,6 @@ public class MotorControl {
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(armMovingDirection movingDirection) {
         if (movingDirection == armMovingDirection.UP) {
-//                        TODO Add more parameters (like IF statements for arm limits) if needed on this line
             if (robotHardware.ArmMotor.getCurrentPosition() < ARM_LIMIT) {
                 robotHardware.ArmMotor.setPower(ARM_SPEED);
             } else {
@@ -67,7 +71,6 @@ public class MotorControl {
             }
         }
         if (movingDirection == armMovingDirection.DOWN) {
-//            TODO Add more parameters (like IF statements for arm limits) if needed on this line
             if (robotHardware.ArmMotor.getCurrentPosition() > 0) {
                 robotHardware.ArmMotor.setPower(-ARM_SPEED);
             } else {
@@ -80,7 +83,7 @@ public class MotorControl {
             robotHardware.ArmMotor.setPower(0);
         }
     }
-
+// TODO CODE GRIPPER MOVEMENTS
     public void drive(double axial, double lateral, double yaw, double maxPower,
                       double denominator) {
 
