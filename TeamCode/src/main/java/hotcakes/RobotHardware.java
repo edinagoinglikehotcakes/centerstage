@@ -1,12 +1,11 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
-    private OpMode myOpMode = null;
+    private OpMode myOpMode;
     public DcMotorEx Frontleft = null;
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
@@ -27,14 +26,14 @@ public class RobotHardware {
         TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
         ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
 
-        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         TurnMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //TODO Default to built-in PIDF. Tune this if needed.
-        TurnMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, TurnMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-        ArmMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+        ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
 
         //Motors direction
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);

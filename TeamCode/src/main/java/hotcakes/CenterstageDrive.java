@@ -34,7 +34,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -78,7 +77,8 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.TurnMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        robotHardware.ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             gamePadEx.readButtons();
@@ -111,24 +111,21 @@ public class CenterstageDrive extends LinearOpMode {
             }
 //           Controls for arm up/down
             if (triggerReader.isDown()) {
-                robotHardware.ArmMotor.setPower(0.8);
-//                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
             } else if (triggerReader.wasJustReleased()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
             }
-//            if (triggerReader1.isDown()) {
-//                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
-//            } else if (triggerReader1.wasJustReleased()) {
-//                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
-//            }
+            if (triggerReader1.isDown()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
+            } else if (triggerReader1.wasJustReleased()) {
+                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower, denominator);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("ArmTurnPosition", robotHardware.TurnMotor.getCurrentPosition());
-            telemetry.addData("triggerdown",triggerReader.isDown());
-            telemetry.addData("power",robotHardware.ArmMotor.getPower());
+            telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
             telemetry.update();
 
         }
