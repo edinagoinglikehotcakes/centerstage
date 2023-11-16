@@ -49,6 +49,7 @@ public class CenterstageDrive extends LinearOpMode {
     private RobotHardware robotHardware;
     private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
+    private double maxPower = .9;
     GamepadEx gamePadEx;
     GamepadEx gamePadEx2;
 
@@ -86,9 +87,6 @@ public class CenterstageDrive extends LinearOpMode {
 //            trigger reader is the right trigger and trigger1 is the left one
             triggerReader.readValue();
             triggerReader1.readValue();
-            //define variables
-            double maxPower = 0.9;
-            double denominator = 0;
 
             //Joystick movement
             double axial = -gamepad1.left_stick_y;
@@ -128,7 +126,7 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN);
             }
 //              This line is the whole drive code from the Motor Control class
-            motorControl.drive(axial, lateral, yaw, maxPower, denominator);
+            motorControl.drive(axial, lateral, yaw, maxPower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());

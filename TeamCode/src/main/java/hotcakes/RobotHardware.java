@@ -1,5 +1,6 @@
 package hotcakes;
 
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -14,14 +15,17 @@ public class RobotHardware {
     public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
-    public Servo GripperLeft = null;
-    public Servo GripperRight = null;
+    public SimpleServo GripperLeft = null;
+    public SimpleServo GripperRight = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
     }
 
     public void init() {
+        GripperLeft = myOpMode.hardwareMap.get(SimpleServo.class, "gripperleft");
+        GripperRight = myOpMode.hardwareMap.get(SimpleServo.class, "gripperright");
+
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");

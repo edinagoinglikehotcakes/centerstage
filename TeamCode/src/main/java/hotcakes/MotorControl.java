@@ -26,6 +26,7 @@ public class MotorControl {
         DOWN,
         NONE,
     }
+
     public enum gripperCurrentState {
         OPEN,
         CLOSE,
@@ -83,8 +84,9 @@ public class MotorControl {
             robotHardware.ArmMotor.setPower(0);
         }
     }
-// TODO CODE GRIPPER MOVEMENTS
-    public void moveGripper (gripperCurrentState gripperState) {
+
+    // TODO CODE GRIPPER MOVEMENTS
+    public void moveGripper(gripperCurrentState gripperState) {
         if (gripperState == gripperCurrentState.OPEN) {
             robotHardware.GripperLeft.setPosition(-GRIPPER_LIMIT);
             robotHardware.GripperRight.setPosition(GRIPPER_LIMIT);
@@ -94,16 +96,10 @@ public class MotorControl {
             robotHardware.GripperRight.setPosition(0);
         }
     }
-    public void drive(double axial, double lateral, double yaw, double maxPower,
-                      double denominator) {
 
+    public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
-        double leftFrontPower = axial + lateral + yaw;
-        double rightFrontPower = axial - lateral - yaw;
-        double leftBackPower = axial - lateral + yaw;
-        double rightBackPower = axial + lateral - yaw;
-//            If the code below does not work, comment it out. Uncomment out the code below this code below.
-        denominator = JavaUtil.maxOfList(JavaUtil.createListWith(JavaUtil.sumOfList(JavaUtil.createListWith(Math.abs(axial), Math.abs(lateral), Math.abs(yaw))), 1));
+        double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
         robotHardware.Frontleft.setPower(((axial + lateral + yaw) / denominator) * maxPower);
         robotHardware.Backleft.setPower((((axial - lateral) + yaw) / denominator) * maxPower);
         robotHardware.Frontright.setPower((((axial - lateral) - yaw) / denominator) * maxPower);
