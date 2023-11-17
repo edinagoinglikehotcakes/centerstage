@@ -2,8 +2,6 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
-
 public class MotorControl {
     //    set limits
     private final int ARM_TURN_LIMIT = 200;
@@ -11,7 +9,13 @@ public class MotorControl {
     private final double TURN_SPEED = 0.3;
     private final double ARM_SPEED = 0.6;
     private final double GRIPPER_LIMIT = 0.6;
-
+    private final double GRIPPER_CLOSE_VALUE = 0.0;
+    //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
+    private final double ARM_SERVO_PICKUP_POSITION = 0.7;
+    private final double ARM_SERVO_DROP_POSITION = 0.3;
+    private final double ARM_SERVO_LIMIT = 0.8;
+    private final double SERVO_FLIPPER_DROP_POSITION = 0.5;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.2;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -30,6 +34,17 @@ public class MotorControl {
     public enum gripperCurrentState {
         OPEN,
         CLOSE,
+    }
+
+    public enum armServoState {
+        UP,
+        DOWN,
+        DROP,
+        PICKUP,
+    }
+    public enum servoFlippingState {
+        PICKUP,
+        DROP,
     }
 
     public MotorControl(RobotHardware robotHardware) {
@@ -92,11 +107,36 @@ public class MotorControl {
             robotHardware.GripperRight.setPosition(GRIPPER_LIMIT);
         }
         if (gripperState == gripperCurrentState.CLOSE) {
-            robotHardware.GripperLeft.setPosition(0);
-            robotHardware.GripperRight.setPosition(0);
+            robotHardware.GripperLeft.setPosition(GRIPPER_CLOSE_VALUE);
+            robotHardware.GripperRight.setPosition(GRIPPER_CLOSE_VALUE);
         }
     }
 
+    public void extendArmServo(armServoState armServoState) {
+        if (armServoState == MotorControl.armServoState.UP) {
+            robotHardware.ArmServo.setPosition(robotHardware.ArmServo.getPosition() - 0.05);
+        }
+        if (armServoState == MotorControl.armServoState.DOWN) {
+            if (robotHardware.ArmServo.getPosition() > ARM_SERVO_LIMIT) {
+                robotHardware.ArmServo.setPosition(robotHardware.ArmServo.getPosition() + 0.05);
+            }
+        }
+
+        if (armServoState == MotorControl.armServoState.PICKUP) {
+            robotHardware.ArmServo.setPosition(ARM_SERVO_PICKUP_POSITION);
+        }
+        if (armServoState == MotorControl.armServoState.DROP) {
+            robotHardware.ArmServo.setPosition(ARM_SERVO_DROP_POSITION);
+        }
+    }
+        public void flipGripper(servoFlippingState flippingState) {
+        if (flippingState == servoFlippingState.PICKUP) {
+            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+        if (flippingState == servoFlippingState.DROP) {
+            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_DROP_POSITION);
+        }
+    }
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
