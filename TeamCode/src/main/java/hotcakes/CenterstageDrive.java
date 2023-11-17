@@ -58,10 +58,10 @@ public class CenterstageDrive extends LinearOpMode {
 //      This is the code for all of the Hardware
         gamePadEx = new GamepadEx(gamepad1);
         gamePadEx2 = new GamepadEx(gamepad2);
-        TriggerReader triggerReader = new TriggerReader(
+        TriggerReader triggerRight = new TriggerReader(
                 gamePadEx2, GamepadKeys.Trigger.RIGHT_TRIGGER
         );
-        TriggerReader triggerReader1 = new TriggerReader(
+        TriggerReader triggerLeft = new TriggerReader(
                 gamePadEx2, GamepadKeys.Trigger.LEFT_TRIGGER
         );
         robotHardware = new RobotHardware(this);
@@ -85,8 +85,8 @@ public class CenterstageDrive extends LinearOpMode {
             gamePadEx.readButtons();
             gamePadEx2.readButtons();
 //            trigger reader is the right trigger and trigger1 is the left one
-            triggerReader.readValue();
-            triggerReader1.readValue();
+            triggerRight.readValue();
+            triggerLeft.readValue();
 
             //Joystick movement
             double axial = -gamepad1.left_stick_y;
@@ -108,14 +108,14 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.rotateArm(MotorControl.armDirection.STOP);
             }
 //           Controls for arm up/down
-            if (triggerReader.isDown()) {
+            if (triggerRight.isDown()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
-            } else if (triggerReader.wasJustReleased()) {
+            } else if (triggerRight.wasJustReleased()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
             }
-            if (triggerReader1.isDown()) {
+            if (triggerLeft.isDown()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
-            } else if (triggerReader1.wasJustReleased()) {
+            } else if (triggerLeft.wasJustReleased()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
             }
 //            Controls Gripper
@@ -125,6 +125,19 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN);
             }
+//            CODE FOR ARM SERVO
+            if (gamepad2.a) {
+                motorControl.extendArmServo(MotorControl.armServoState.PICKUP);
+            }
+            if (gamepad2.y) {
+                motorControl.extendArmServo(MotorControl.armServoState.DROP);
+            }
+            if (gamepad2.left_stick_y < 0) {
+                motorControl.extendArmServo(MotorControl.armServoState.UP);
+            } else if (gamepad2.left_stick_y > 0) {
+                motorControl.extendArmServo(MotorControl.armServoState.DOWN);
+            }
+
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
 

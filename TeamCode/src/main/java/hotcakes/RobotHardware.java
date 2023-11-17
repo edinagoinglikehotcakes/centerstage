@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
     private OpMode myOpMode;
@@ -17,14 +16,16 @@ public class RobotHardware {
     public DcMotorEx ArmMotor = null;
     public SimpleServo GripperLeft = null;
     public SimpleServo GripperRight = null;
+    public SimpleServo ArmServo = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
     }
 
     public void init() {
-        GripperLeft = myOpMode.hardwareMap.get(SimpleServo.class, "gripperleft");
-        GripperRight = myOpMode.hardwareMap.get(SimpleServo.class, "gripperright");
+        GripperLeft = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperleft");
+        GripperRight = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperright");
+        ArmServo = myOpMode.hardwareMap.get(SimpleServo.class, "Armservo");
 
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
