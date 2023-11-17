@@ -137,7 +137,13 @@ public class CenterstageDrive extends LinearOpMode {
             } else if (gamepad2.left_stick_y > 0) {
                 motorControl.extendArmServo(MotorControl.armServoState.DOWN);
             }
-
+//              CODE FOR GRIPPER FLIPPER
+            if (gamepad2.right_stick_x < 0) {
+                motorControl.flipGripper(MotorControl.servoFlippingState.PICKUP);
+            }
+            if (gamepad2.right_stick_x > 0) {
+                motorControl.flipGripper(MotorControl.servoFlippingState.DROP);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
 

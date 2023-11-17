@@ -14,6 +14,8 @@ public class MotorControl {
     private final double ARM_SERVO_PICKUP_POSITION = 0.7;
     private final double ARM_SERVO_DROP_POSITION = 0.3;
     private final double ARM_SERVO_LIMIT = 0.8;
+    private final double SERVO_FLIPPER_DROP_POSITION = 0.5;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.2;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -39,6 +41,10 @@ public class MotorControl {
         DOWN,
         DROP,
         PICKUP,
+    }
+    public enum servoFlippingState {
+        PICKUP,
+        DROP,
     }
 
     public MotorControl(RobotHardware robotHardware) {
@@ -123,7 +129,14 @@ public class MotorControl {
             robotHardware.ArmServo.setPosition(ARM_SERVO_DROP_POSITION);
         }
     }
-
+        public void flipGripper(servoFlippingState flippingState) {
+        if (flippingState == servoFlippingState.PICKUP) {
+            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+        if (flippingState == servoFlippingState.DROP) {
+            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_DROP_POSITION);
+        }
+    }
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);

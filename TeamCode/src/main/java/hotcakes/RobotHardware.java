@@ -17,16 +17,21 @@ public class RobotHardware {
     public SimpleServo GripperLeft = null;
     public SimpleServo GripperRight = null;
     public SimpleServo ArmServo = null;
+    public SimpleServo GripperFlipper = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
     }
 
     public void init() {
+//        SERVOS
         GripperLeft = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperleft");
         GripperRight = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperright");
         ArmServo = myOpMode.hardwareMap.get(SimpleServo.class, "Armservo");
+        GripperFlipper = myOpMode.hardwareMap.get(SimpleServo.class,"Gripperflipper");
 
+
+//        MOTORS
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
