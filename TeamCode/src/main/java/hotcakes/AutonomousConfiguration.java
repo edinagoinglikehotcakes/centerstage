@@ -34,7 +34,6 @@ public class AutonomousConfiguration {
     private AutonomousOptions autonomousOptions;
     private Context context;
     private boolean readyToStart;
-    private boolean savedToFile;
     private Telemetry telemetry;
     private Telemetry.Item teleAlliance;
     private Telemetry.Item teleStartPosition;
@@ -109,7 +108,6 @@ public class AutonomousConfiguration {
         telePlacePixelsOnBackdrop = telemetry.addData("Y to cycle place pixels on backdrop", autonomousOptions.getPlacePixelsOnBackdrop());
         teleDelayStartSeconds = telemetry.addData("Left & Right bumpers, Delay Start", autonomousOptions.getDelayStartSeconds());
         teleReadyToStart = telemetry.addData("Ready to start: ", getReadyToStart());
-        teleSavedToFile = telemetry.addData("Saved to file:", savedToFile);
         telemetry.addLine("Back button resets all options.");
     }
 
@@ -223,8 +221,6 @@ public class AutonomousConfiguration {
         //Save the options to a file if ready to start and start button is pressed.
         if (gamePad.wasJustReleased(GamepadKeys.Button.START) && getReadyToStart()) {
             SaveOptions();
-            savedToFile = true;
-            teleSavedToFile.setValue(true);
         }
     }
 
@@ -238,7 +234,6 @@ public class AutonomousConfiguration {
         autonomousOptions.setPlacePixelsOnBackdrop(AutonomousOptions.PlacePixelsOnBackdrop.No);
         autonomousOptions.setDelayStartSeconds(0);
         readyToStart = false;
-        savedToFile = false;
     }
 
     private void SaveOptions() {
@@ -249,8 +244,6 @@ public class AutonomousConfiguration {
     public AutonomousOptions getSaveAutoOptions() {
         ReadWriteAutoOptions readWriteAutoOptions = new ReadWriteAutoOptions(context);
         AutonomousOptions temp = readWriteAutoOptions.getObject();
-        telemetry.addData("Start: ", temp.getStartPosition());
-        telemetry.update();
         return temp;
     }
 }
