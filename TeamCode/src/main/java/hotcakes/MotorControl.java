@@ -12,10 +12,10 @@ public class MotorControl {
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final double ARM_SERVO_PICKUP_POSITION = 0.7;
-    private final double ARM_SERVO_DROP_POSITION = 0.3;
+    private final double ARM_SERVO_DROP_POSITION = 0.1;
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.2;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -105,12 +105,12 @@ public class MotorControl {
     public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
         if (gripperSelection == GRIPPER_SELECTION.BOTH) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_LIMIT);
-                robotHardware.GripperRight.setPosition(GRIPPER_LIMIT);
+                robotHardware.GripperLeft.setPosition(0.6);
+                robotHardware.GripperRight.setPosition(0);
             }
             if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(1);
-                robotHardware.GripperRight.setPosition(1);
+                robotHardware.GripperLeft.setPosition(0);
+                robotHardware.GripperRight.setPosition(0.6);
             }
             return;
         }

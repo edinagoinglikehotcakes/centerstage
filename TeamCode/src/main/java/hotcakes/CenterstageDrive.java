@@ -152,6 +152,8 @@ public class CenterstageDrive extends LinearOpMode {
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
             telemetry.addData("right stick value",gamepad2.right_stick_y);
             telemetry.addData("left stick value", gamepad2.left_stick_y);
+            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
+            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
             telemetry.update();
 
         }

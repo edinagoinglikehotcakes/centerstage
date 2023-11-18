@@ -46,13 +46,13 @@ public class RobotHardware {
         TurnMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //TODO Default to built-in PIDF. Tune this if needed.
-        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER,  TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
 
         //Motors direction
-        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Frontleft.setDirection(DcMotorEx.Direction.FORWARD);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
-        Frontright.setDirection(DcMotorEx.Direction.FORWARD);
+        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
         Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
         Frontleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
