@@ -11,7 +11,7 @@ public class RobotHardware {
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
-    public DcMotorEx TurnMotor = null;
+//    public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public Servo GripperLeft = null;
@@ -37,22 +37,28 @@ public class RobotHardware {
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
-        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
+//        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
         ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
 
         ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        TurnMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        TurnMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //TODO Default to built-in PIDF. Tune this if needed.
-        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER,  TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+//        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER,  TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
 
         //Motors direction
-        Frontleft.setDirection(DcMotorEx.Direction.FORWARD);
+//        TODO test direction of motors
+//        Frontleft.setDirection(DcMotorEx.Direction.FORWARD);
+//        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
+//        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
+//        Backright.setDirection(DcMotorEx.Direction.FORWARD);
+
+        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
-        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
+        Frontright.setDirection(DcMotorEx.Direction.FORWARD);
         Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
         Frontleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

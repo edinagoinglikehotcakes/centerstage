@@ -50,6 +50,7 @@ public class CenterstageDrive extends LinearOpMode {
     private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
     private double maxPower = .9;
+    private double denominator = 0;
     GamepadEx gamePadEx;
     GamepadEx gamePadEx2;
 
@@ -77,7 +78,7 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        robotHardware.TurnMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        robotHardware.TurnMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         // run until the end of the match (driver presses STOP)
@@ -97,16 +98,16 @@ public class CenterstageDrive extends LinearOpMode {
                 maxPower = 0.3;
             }
 //            Controls for the arm
-            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
-                motorControl.rotateArm(MotorControl.armDirection.LEFT);
-            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)) {
-                motorControl.rotateArm(MotorControl.armDirection.STOP);
-            }
-            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
-                motorControl.rotateArm(MotorControl.armDirection.RIGHT);
-            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)) {
-                motorControl.rotateArm(MotorControl.armDirection.STOP);
-            }
+//            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
+//                motorControl.rotateArm(MotorControl.armDirection.LEFT);
+//            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)) {
+//                motorControl.rotateArm(MotorControl.armDirection.STOP);
+//            }
+//            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
+//                motorControl.rotateArm(MotorControl.armDirection.RIGHT);
+//            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)) {
+//                motorControl.rotateArm(MotorControl.armDirection.STOP);
+//            }
 //           Controls for arm up/down
             if (triggerRight.isDown()) {
                 motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
@@ -145,8 +146,7 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.flipGripper(MotorControl.servoFlippingState.DROP);
             }
 //              This line is the whole drive code from the Motor Control class
-            motorControl.drive(axial, lateral, yaw, maxPower);
-
+            motorControl.drive(axial, lateral, yaw, denominator, maxPower);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
