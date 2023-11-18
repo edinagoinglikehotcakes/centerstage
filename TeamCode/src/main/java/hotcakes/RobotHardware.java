@@ -1,9 +1,9 @@
 package hotcakes;
 
-import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
     private OpMode myOpMode;
@@ -14,21 +14,22 @@ public class RobotHardware {
     public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
-    public SimpleServo GripperLeft = null;
-    public SimpleServo GripperRight = null;
-    public SimpleServo ArmServo = null;
-    public SimpleServo GripperFlipper = null;
+    public Servo GripperLeft = null;
+    public Servo GripperRight = null;
+    public Servo ArmServo = null;
+    public Servo GripperFlipper = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
     }
 
     public void init() {
+
 //        SERVOS
-        GripperLeft = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperleft");
-        GripperRight = myOpMode.hardwareMap.get(SimpleServo.class, "Gripperright");
-        ArmServo = myOpMode.hardwareMap.get(SimpleServo.class, "Armservo");
-        GripperFlipper = myOpMode.hardwareMap.get(SimpleServo.class,"Gripperflipper");
+        ArmServo = myOpMode.hardwareMap.get(Servo.class, "Armservo");
+        GripperFlipper = myOpMode.hardwareMap.get(Servo.class,"Gripperflipper");
+        GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
+        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
 
 
 //        MOTORS

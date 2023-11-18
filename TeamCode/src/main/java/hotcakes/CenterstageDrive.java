@@ -120,10 +120,10 @@ public class CenterstageDrive extends LinearOpMode {
             }
 //            Controls Gripper
             if (gamepad2.left_bumper) {
-                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE);
+                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE, MotorControl.GRIPPER_SELECTION.BOTH);
             }
             if (gamepad2.right_bumper) {
-                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN);
+                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.BOTH);
             }
 //            CODE FOR ARM SERVO
             if (gamepad2.a) {
@@ -138,10 +138,10 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.extendArmServo(MotorControl.armServoState.DOWN);
             }
 //              CODE FOR GRIPPER FLIPPER
-            if (gamepad2.right_stick_x < 0) {
+            if (gamepad2.right_stick_y < 0) {
                 motorControl.flipGripper(MotorControl.servoFlippingState.PICKUP);
             }
-            if (gamepad2.right_stick_x > 0) {
+            if (gamepad2.right_stick_y > 0) {
                 motorControl.flipGripper(MotorControl.servoFlippingState.DROP);
             }
 //              This line is the whole drive code from the Motor Control class
@@ -150,6 +150,8 @@ public class CenterstageDrive extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
+            telemetry.addData("right stick value",gamepad2.right_stick_y);
+            telemetry.addData("left stick value", gamepad2.left_stick_y);
             telemetry.update();
 
         }
