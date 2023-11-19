@@ -4,18 +4,18 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class MotorControl {
     //    set limits
-    private final int ARM_TURN_LIMIT = 200;
+//    private final int ARM_TURN_LIMIT = 200;
     private final int ARM_LIMIT = -2200;
-    private final double TURN_SPEED = 0.3;
+//    private final double TURN_SPEED = 0.3;
     private final double ARM_SPEED = 1;
     private final double GRIPPER_LIMIT = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final double ARM_SERVO_PICKUP_POSITION = 0.7;
-    private final double ARM_SERVO_DROP_POSITION = 0.3;
+    private final double ARM_SERVO_DROP_POSITION = 0.1;
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.2;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -58,30 +58,30 @@ public class MotorControl {
         this.robotHardware = robotHardware;
     }
 
-    public void rotateArm(armDirection direction) {
-//        Set direction of arm and call Enum and sets limits to the arm rotation
-        if (direction == armDirection.LEFT) {
-            if (robotHardware.TurnMotor.getCurrentPosition() >= -ARM_TURN_LIMIT) {
-                robotHardware.TurnMotor.setPower(-TURN_SPEED);
-            } else {
-                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-                robotHardware.TurnMotor.setPower(0);
-            }
-        }
-
-        if (direction == armDirection.RIGHT) {
-            if (robotHardware.TurnMotor.getCurrentPosition() <= ARM_TURN_LIMIT) {
-                robotHardware.TurnMotor.setPower(TURN_SPEED);
-            } else {
-                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-                robotHardware.TurnMotor.setPower(0);
-            }
-        }
-        if (direction == armDirection.STOP) {
-            robotHardware.TurnMotor.setPower(0);
-            robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        }
-    }
+//    public void rotateArm(armDirection direction) {
+////        Set direction of arm and call Enum and sets limits to the arm rotation
+//        if (direction == armDirection.LEFT) {
+//            if (robotHardware.TurnMotor.getCurrentPosition() >= -ARM_TURN_LIMIT) {
+//                robotHardware.TurnMotor.setPower(-TURN_SPEED);
+//            } else {
+//                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//                robotHardware.TurnMotor.setPower(0);
+//            }
+//        }
+//
+//        if (direction == armDirection.RIGHT) {
+//            if (robotHardware.TurnMotor.getCurrentPosition() <= ARM_TURN_LIMIT) {
+//                robotHardware.TurnMotor.setPower(TURN_SPEED);
+//            } else {
+//                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//                robotHardware.TurnMotor.setPower(0);
+//            }
+//        }
+//        if (direction == armDirection.STOP) {
+//            robotHardware.TurnMotor.setPower(0);
+//            robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        }
+//    }
 
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(armMovingDirection movingDirection) {
@@ -105,12 +105,12 @@ public class MotorControl {
     public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
         if (gripperSelection == GRIPPER_SELECTION.BOTH) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_LIMIT);
-                robotHardware.GripperRight.setPosition(GRIPPER_LIMIT);
+                robotHardware.GripperLeft.setPosition(0.6);
+                robotHardware.GripperRight.setPosition(0);
             }
             if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(1);
-                robotHardware.GripperRight.setPosition(1);
+                robotHardware.GripperLeft.setPosition(0);
+                robotHardware.GripperRight.setPosition(0.6);
             }
             return;
         }
@@ -160,9 +160,9 @@ public class MotorControl {
         }
     }
 
-    public void drive(double axial, double lateral, double yaw, double maxPower) {
+    public void drive(double axial, double lateral, double yaw,  double denominator, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
-        double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
+        denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
         robotHardware.Frontleft.setPower(((axial + lateral + yaw) / denominator) * maxPower);
         robotHardware.Backleft.setPower((((axial - lateral) + yaw) / denominator) * maxPower);
         robotHardware.Frontright.setPower((((axial - lateral) - yaw) / denominator) * maxPower);
