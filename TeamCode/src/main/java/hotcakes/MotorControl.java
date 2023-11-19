@@ -1,21 +1,22 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class MotorControl {
     //    set limits
 //    private final int ARM_TURN_LIMIT = 200;
-    private final int ARM_LIMIT = -2200;
+    private final int ARM_LIMIT = -2180;
 //    private final double TURN_SPEED = 0.3;
     private final double ARM_SPEED = 1;
     private final double GRIPPER_LIMIT = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final double ARM_SERVO_PICKUP_POSITION = 0.7;
+    private final double ARM_SERVO_PICKUP_POSITION = 0.9;
     private final double ARM_SERVO_DROP_POSITION = 0.1;
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.38;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -103,31 +104,32 @@ public class MotorControl {
 
     // TODO CODE GRIPPER MOVEMENTS
     public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
+        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
         if (gripperSelection == GRIPPER_SELECTION.BOTH) {
             if (gripperState == gripperCurrentState.OPEN) {
                 robotHardware.GripperLeft.setPosition(0.6);
-                robotHardware.GripperRight.setPosition(0);
+                robotHardware.GripperRight.setPosition(0.05);
             }
             if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(0);
-                robotHardware.GripperRight.setPosition(0.6);
+                robotHardware.GripperLeft.setPosition(0.2);
+                robotHardware.GripperRight.setPosition(0.3);
             }
             return;
         }
         if (gripperSelection == GRIPPER_SELECTION.LEFT) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_LIMIT);
+                robotHardware.GripperLeft.setPosition(0.5);
             } else {
-                robotHardware.GripperLeft.setPosition(1);
+                robotHardware.GripperLeft.setPosition(0.25);
             }
             return;
         }
 
         if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
-            if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_LIMIT);
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperRight.setPosition(0.15);
             } else {
-                robotHardware.GripperRight.setPosition(1);
+                robotHardware.GripperRight.setPosition(0.35);
             }
             return;
         }
