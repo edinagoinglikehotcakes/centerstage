@@ -8,7 +8,7 @@ public class MotorControl {
 //    private final int ARM_TURN_LIMIT = 200;
     private final int ARM_LIMIT = -2180;
 //    private final double TURN_SPEED = 0.3;
-    private final double ARM_SPEED = 1;
+    private final double ARM_SPEED = 0.5;
     private final double GRIPPER_LIMIT = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
@@ -16,7 +16,7 @@ public class MotorControl {
     private final double ARM_SERVO_DROP_POSITION = 0.1;
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.38;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going

@@ -51,15 +51,15 @@ public class RobotHardware {
 
         //Motors direction
 //        TODO test direction of motors
-//        Frontleft.setDirection(DcMotorEx.Direction.FORWARD);
+//        Frontleft.setDirection(DcMotorEx.Direction.FORWARD)
 //        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
 //        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
 //        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
-        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
-        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
+       Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Backleft.setDirection(DcMotorEx.Direction.FORWARD);
         Frontright.setDirection(DcMotorEx.Direction.FORWARD);
-        Backright.setDirection(DcMotorEx.Direction.FORWARD);
+        Backright.setDirection(DcMotorEx.Direction.REVERSE);
 
         Frontleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         Backleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

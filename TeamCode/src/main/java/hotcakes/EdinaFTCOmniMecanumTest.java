@@ -32,7 +32,6 @@ package hotcakes;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -70,7 +69,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name = "Omni/Mecacum Test", group = "Test")
-@Disabled
 public class EdinaFTCOmniMecanumTest extends LinearOpMode {
     private final ElapsedTime runtime = new ElapsedTime();
     boolean testMode = false;
@@ -92,13 +90,17 @@ public class EdinaFTCOmniMecanumTest extends LinearOpMode {
         DcMotorEx rightBackDrive = hardwareMap.get(DcMotorEx.class, "Backright");
 
         // Most robots need the motors on one side to be reversed to drive forward.
-        // When you first test your robot, push the left joystick forward
+        // When you first test youlr robot, push the left joystick forward
         // and flip the direction ( FORWARD <-> REVERSE ) of any wheel that runs
         // backwards
+//       Y = Frontleft
+//        X = backleft
+//        A = backright
+//        B = frontright
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
 
         leftFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftBackDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
