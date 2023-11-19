@@ -24,6 +24,8 @@ import hotcakes.processors.ImageProcessor;
 public class BasicAuto extends OpMode {
     MecanumDrive drive;
     private ImageProcessor imageProcessor;
+    private RobotHardware robotHardware;
+    private MotorControl motorControl;
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
     private ImageProcessor.Selected selectedSpike;
@@ -56,6 +58,8 @@ public class BasicAuto extends OpMode {
                 setCamera(hardwareMap.get(WebcamName.class, "webcam1")).
                 setCameraResolution(new Size(640, 480)).
                 build();
+        robotHardware = new RobotHardware(this);
+        motorControl = new MotorControl(robotHardware);
 
         runTime = new ElapsedTime();
         teleSelected = telemetry.addData("Selected", teleSelected);
@@ -114,6 +118,7 @@ public class BasicAuto extends OpMode {
             case SPIKE:
                 if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
                     placePropOnSpike();
+                    motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.RIGHT);
                 }
                 currentAutoState = AutoState.DONE;
                 break;
