@@ -117,9 +117,12 @@ public class BasicAuto extends OpMode {
                 break;
             case SPIKE:
                 if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
+
+                    motorControl.extendArmServo(MotorControl.armServoState.PICKUP);
                     placePropOnSpike();
                     motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.RIGHT);
                 }
+
                 currentAutoState = AutoState.DONE;
                 break;
             case DELAY:
