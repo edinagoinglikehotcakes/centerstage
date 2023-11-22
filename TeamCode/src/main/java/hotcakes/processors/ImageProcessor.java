@@ -14,9 +14,9 @@ import org.opencv.imgproc.Imgproc;
 
 public class ImageProcessor implements org.firstinspires.ftc.vision.VisionProcessor {
     private int rectY = 320;
-    public Rect rectLeft = new Rect(80, rectY, 40, 40);
-    public Rect rectMiddle = new Rect(520, rectY, 40, 40);
-    public Rect rectRight = new Rect(520, rectY - 100, 40, 40);
+    public Rect rectLeft = new Rect(160, rectY, 40, 40);
+    public Rect rectMiddle = new Rect(440, rectY, 40, 40);
+    public Rect rectRight = new Rect(440, rectY - 100, 40, 40);
     Selected selection = Selected.NONE;
     private final double SAT_THRESHOLD = 50;
     public double satRectLeft;
