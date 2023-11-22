@@ -1,6 +1,7 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -11,7 +12,7 @@ public class RobotHardware {
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
-//    public DcMotorEx TurnMotor = null;
+    //    public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public Servo GripperLeft = null;
@@ -27,7 +28,7 @@ public class RobotHardware {
 
 //        SERVOS
         ArmServo = myOpMode.hardwareMap.get(Servo.class, "Armservo");
-        GripperFlipper = myOpMode.hardwareMap.get(Servo.class,"Gripperflipper");
+        GripperFlipper = myOpMode.hardwareMap.get(Servo.class, "Gripperflipper");
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
 
@@ -37,6 +38,17 @@ public class RobotHardware {
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
+
+        //TODO Set new PID control for drive motors. See if this helps driving
+        Frontleft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                Frontleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        Frontright.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                Frontright.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        Backleft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                Backleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        Backright.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
+                Backleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+
 //        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
         ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
 
@@ -56,7 +68,7 @@ public class RobotHardware {
 //        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
 //        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
-       Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
         Frontright.setDirection(DcMotorEx.Direction.FORWARD);
         Backright.setDirection(DcMotorEx.Direction.FORWARD);
