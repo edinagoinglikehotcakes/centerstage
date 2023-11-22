@@ -57,9 +57,9 @@ public class RobotHardware {
 //        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
-        Backleft.setDirection(DcMotorEx.Direction.FORWARD);
+        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
         Frontright.setDirection(DcMotorEx.Direction.FORWARD);
-        Backright.setDirection(DcMotorEx.Direction.REVERSE);
+        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
         Frontleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         Backleft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

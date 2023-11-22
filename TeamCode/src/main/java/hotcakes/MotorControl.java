@@ -92,7 +92,7 @@ public class MotorControl {
             }
         }
         if (movingDirection == armMovingDirection.DOWN) {
-            if (robotHardware.ArmMotor.getCurrentPosition() < 0) {
+            if (robotHardware.ArmMotor.getCurrentPosition() < -70) {
                 robotHardware.ArmMotor.setPower(ARM_SPEED);
             }
         }
