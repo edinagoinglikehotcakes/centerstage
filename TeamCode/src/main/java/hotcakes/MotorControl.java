@@ -19,6 +19,8 @@ public class MotorControl {
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
+    private final double LAUNCHING_SERVO_POSITION = 0.0;
+    private final double WAITING_SERVO_POSITION = 0.6;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -117,7 +119,10 @@ public class MotorControl {
     }
     public void launchPlane(LAUNCHSTATE launchstate) {
         if (launchstate == LAUNCHSTATE.LAUNCH) {
-            robotHardware.L
+            robotHardware.launchServo.setPosition(LAUNCHING_SERVO_POSITION);
+        }
+        if (launchstate == LAUNCHSTATE.WAITING) {
+            robotHardware.launchServo.setPosition(WAITING_SERVO_POSITION);
         }
     }
 
