@@ -110,14 +110,15 @@ public class CenterstageDrive extends LinearOpMode {
 //            }
 //           Controls for arm up/down
             if (triggerRight.isDown()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.UP);
+                motorControl.mobilizeArm(MotorControl.ARMSTATE.UP);
             } else if (triggerRight.wasJustReleased()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
-            }
-            if (triggerLeft.isDown()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.DOWN);
-            } else if (triggerLeft.wasJustReleased()) {
-                motorControl.mobilizeArm(MotorControl.armMovingDirection.NONE);
+                motorControl.mobilizeArm(MotorControl.ARMSTATE.NONE);
+                if (triggerLeft.isDown()) {
+                    motorControl.mobilizeArm(MotorControl.ARMSTATE.DOWN);
+                } else if (triggerLeft.wasJustReleased()) {
+                    motorControl.mobilizeArm(MotorControl.ARMSTATE.NONE);
+                }
+
             }
 //            Controls Gripper
             if (gamepad2.left_bumper) {
@@ -150,7 +151,7 @@ public class CenterstageDrive extends LinearOpMode {
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
-            telemetry.addData("right stick value",gamepad2.right_stick_y);
+            telemetry.addData("right stick value", gamepad2.right_stick_y);
             telemetry.addData("left stick value", gamepad2.left_stick_y);
             telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
             telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());

@@ -1,5 +1,6 @@
 package hotcakes;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -7,12 +8,14 @@ public class MotorControl {
     //    set limits
 //    private final int ARM_TURN_LIMIT = 200;
     private final int ARM_LIMIT = -2180;
-//    private final double TURN_SPEED = 0.3;
-    private final double ARM_SPEED = 0.5;
+    //    private final double TURN_SPEED = 0.3;
+    private final double ARM_POWER = 0.5;
     private final double GRIPPER_LIMIT = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final double ARM_SERVO_PICKUP_POSITION = 0.9;
+    private final int ARM_UP_TARGET_POSITION = 1000;
+    private final int ARM_DOWN_TARGET_POSITION = 20;
     private final double ARM_SERVO_DROP_POSITION = 0.1;
     private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
@@ -26,10 +29,11 @@ public class MotorControl {
         STOP,
     }
 
-    public enum armMovingDirection {
+    public enum ARMSTATE {
         UP,
         DOWN,
         NONE,
+
     }
 
     public enum gripperCurrentState {
@@ -59,46 +63,24 @@ public class MotorControl {
         this.robotHardware = robotHardware;
     }
 
-//    public void rotateArm(armDirection direction) {
-////        Set direction of arm and call Enum and sets limits to the arm rotation
-//        if (direction == armDirection.LEFT) {
-//            if (robotHardware.TurnMotor.getCurrentPosition() >= -ARM_TURN_LIMIT) {
-//                robotHardware.TurnMotor.setPower(-TURN_SPEED);
-//            } else {
-//                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//                robotHardware.TurnMotor.setPower(0);
-//            }
-//        }
-//
-//        if (direction == armDirection.RIGHT) {
-//            if (robotHardware.TurnMotor.getCurrentPosition() <= ARM_TURN_LIMIT) {
-//                robotHardware.TurnMotor.setPower(TURN_SPEED);
-//            } else {
-//                robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//                robotHardware.TurnMotor.setPower(0);
-//            }
-//        }
-//        if (direction == armDirection.STOP) {
-//            robotHardware.TurnMotor.setPower(0);
-//            robotHardware.TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//        }
-//    }
+
 
     //    ARM MOVEMENT FOR UP AND DOWN
-    public void mobilizeArm(armMovingDirection movingDirection) {
-        if (movingDirection == armMovingDirection.UP) {
-            if (robotHardware.ArmMotor.getCurrentPosition() > ARM_LIMIT) {
-                robotHardware.ArmMotor.setPower(-ARM_SPEED);
-            }
+    public void mobilizeArm(ARMSTATE armState) {
+        if (armState == ARMSTATE.UP) {
+            robotHardware.ArmMotor.setTargetPosition(ARM_UP_TARGET_POSITION);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(ARM_POWER);
+
         }
-        if (movingDirection == armMovingDirection.DOWN) {
-            if (robotHardware.ArmMotor.getCurrentPosition() < -70) {
-                robotHardware.ArmMotor.setPower(ARM_SPEED);
-            }
+        if (armState == ARMSTATE.DOWN) {
+            robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(-ARM_POWER);
         }
-        if (movingDirection == armMovingDirection.NONE) {
-            robotHardware.ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        if (armState == ARMSTATE.NONE) {
             robotHardware.ArmMotor.setPower(0);
+            robotHardware.ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
@@ -162,7 +144,7 @@ public class MotorControl {
         }
     }
 
-    public void drive(double axial, double lateral, double yaw,  double denominator, double maxPower) {
+    public void drive(double axial, double lateral, double yaw, double denominator, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
         robotHardware.Frontleft.setPower(((axial + lateral + yaw) / denominator) * maxPower);
