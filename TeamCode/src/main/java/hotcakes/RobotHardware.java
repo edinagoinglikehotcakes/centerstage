@@ -18,6 +18,7 @@ public class RobotHardware {
     public Servo GripperRight = null;
     public Servo ArmServo = null;
     public Servo GripperFlipper = null;
+    public Servo launchServo = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
@@ -30,6 +31,7 @@ public class RobotHardware {
         GripperFlipper = myOpMode.hardwareMap.get(Servo.class,"Gripperflipper");
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
+        launchServo = myOpMode.hardwareMap.get(Servo.class, "launchServo");
 
 
 //        MOTORS

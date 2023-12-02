@@ -134,6 +134,9 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad2.y) {
                 motorControl.extendArmServo(MotorControl.armServoState.DROP);
             }
+            if (gamepad2.a) {
+
+            }
             if (gamepad2.left_stick_y < 0) {
                 motorControl.extendArmServo(MotorControl.armServoState.UP);
             } else if (gamepad2.left_stick_y > 0) {

@@ -1,7 +1,6 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class MotorControl {
@@ -23,10 +22,10 @@ public class MotorControl {
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
-    public enum armDirection {
-        LEFT,
-        RIGHT,
-        STOP,
+    public enum LAUNCHSTATE {
+        WAITING,
+        LAUNCH,
+        NONE,
     }
 
     public enum ARMSTATE {
@@ -114,6 +113,11 @@ public class MotorControl {
                 robotHardware.GripperRight.setPosition(0.35);
             }
             return;
+        }
+    }
+    public void launchPlane(LAUNCHSTATE launchstate) {
+        if (launchstate == LAUNCHSTATE.LAUNCH) {
+            robotHardware.L
         }
     }
 
