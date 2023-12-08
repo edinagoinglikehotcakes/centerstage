@@ -12,11 +12,11 @@ public class RobotHardware {
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
-//    public DcMotorEx TurnMotor = null;
+    //    public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public DcMotorEx Hangmotor = null;
-//    public Servo GripperLeft = null;
+    //    public Servo GripperLeft = null;
 //    public Servo GripperRight = null;
     public Servo armServo = null;
     public Servo launchServo = null;
@@ -53,7 +53,7 @@ public class RobotHardware {
         Hangmotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, Hangmotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
 //        TODO test direction of motors
 
-       Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
+        Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
         Frontright.setDirection(DcMotorEx.Direction.FORWARD);
         Backright.setDirection(DcMotorEx.Direction.FORWARD);

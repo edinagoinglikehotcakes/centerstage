@@ -15,14 +15,14 @@ public class MotorControl {
     private final int ARM_DOWN_TARGET_POSITION = 20;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
-//    LAUNCH SERVO
+    //    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.0;
     private final double WAITING_SERVO_POSITION = 0.5;
-//    ARM POSITIONS
+    //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.46;
     private final double ARM_SERVO_HANG_POSITION = 0.4;
     private final double ARM_SERVO_NORMAL_POSITION = 0.6;
-//    WINCH POSITIONS
+    //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 18000;
     private final double WINCH_MOTOR_POWER = 0.9;
     private final int WINCH_DOWN_POSITION = 20;
