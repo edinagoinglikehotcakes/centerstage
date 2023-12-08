@@ -84,7 +84,6 @@ public class BasicAuto extends OpMode {
         teleSelected.setValue(selectedSpike);
         // Get the menu options
         autonomousConfiguration.init_loop();
-        motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE, MotorControl.GRIPPER_SELECTION.LEFT);
     }
 
     @Override
@@ -119,10 +118,7 @@ public class BasicAuto extends OpMode {
             case SPIKE:
                 if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
 
-                    motorControl.extendArmServo(MotorControl.armServoState.PICKUP);
-                    motorControl.flipGripper(MotorControl.servoFlippingState.PICKUP);
                     placePropOnSpike();
-                    motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.LEFT);
                 }
 
                 currentAutoState = AutoState.DONE;

@@ -1,11 +1,9 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class MotorControl {
     //    set limits
-//    private final int ARM_TURN_LIMIT = 200;
     private final int ARM_LIMIT = -2180;
     //    private final double TURN_SPEED = 0.3;
     private final double ARM_POWER = 0.5;
@@ -13,143 +11,146 @@ public class MotorControl {
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final double ARM_SERVO_PICKUP_POSITION = 0.9;
-    private final int ARM_UP_TARGET_POSITION = 1000;
+    private final int ARM_UP_TARGET_POSITION = 700;
     private final int ARM_DOWN_TARGET_POSITION = 20;
-    private final double ARM_SERVO_DROP_POSITION = 0.1;
-    private final double ARM_SERVO_LIMIT = 0.8;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
+//    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.0;
-    private final double WAITING_SERVO_POSITION = 0.6;
+    private final double WAITING_SERVO_POSITION = 0.5;
+//    ARM POSITIONS
+    private final double ARM_SERVO_LAUNCH_POSITION = 0.46;
+    private final double ARM_SERVO_HANG_POSITION = 0.4;
+    private final double ARM_SERVO_NORMAL_POSITION = 0.6;
+//    WINCH POSITIONS
+    private final int WINCH_HANG_POSITION = 18000;
+    private final double WINCH_MOTOR_POWER = 0.9;
+    private final int WINCH_DOWN_POSITION = 20;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
     public enum LAUNCHSTATE {
         WAITING,
         LAUNCH,
-        NONE,
     }
 
-    public enum ARMSTATE {
+    public enum HANGSTATE {
+        HANGING,
+        DOWN,
+    }
+
+    public enum ARMMOTORSTATE {
         UP,
         DOWN,
         NONE,
 
     }
 
-    public enum gripperCurrentState {
-        OPEN,
-        CLOSE,
+    public enum ARMSERVOSTATE {
+        HANG,
+        LAUNCH,
+        NORMAL,
     }
 
-    public enum GRIPPER_SELECTION {
-        LEFT,
-        RIGHT,
-        BOTH,
-    }
+//    public enum gripperCurrentState {
+//        OPEN,
+//        CLOSE,
+//    }
+//
+//    public enum GRIPPER_SELECTION {
+//        LEFT,
+//        RIGHT,
+//        BOTH,
+//    }
 
-    public enum armServoState {
-        UP,
-        DOWN,
-        DROP,
-        PICKUP,
-    }
-
-    public enum servoFlippingState {
-        PICKUP,
-        DROP,
-    }
 
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
     }
 
 
-
     //    ARM MOVEMENT FOR UP AND DOWN
-    public void mobilizeArm(ARMSTATE armState) {
-        if (armState == ARMSTATE.UP) {
+    public void mobilizeArm(ARMMOTORSTATE armState) {
+        if (armState == ARMMOTORSTATE.UP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_UP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
 
         }
-        if (armState == ARMSTATE.DOWN) {
+        if (armState == ARMMOTORSTATE.DOWN) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
         }
-        if (armState == ARMSTATE.NONE) {
+        if (armState == ARMMOTORSTATE.NONE) {
             robotHardware.ArmMotor.setPower(0);
             robotHardware.ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
-    // TODO CODE GRIPPER MOVEMENTS
-    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
-        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
-        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
-            if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(0.6);
-                robotHardware.GripperRight.setPosition(0.05);
-            }
-            if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(0.2);
-                robotHardware.GripperRight.setPosition(0.3);
-            }
-            return;
+    public void moveArmServo(ARMSERVOSTATE armservostate) {
+        if (armservostate == ARMSERVOSTATE.HANG) {
+            robotHardware.armServo.setPosition(ARM_SERVO_HANG_POSITION);
         }
-        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
-            if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(0.5);
-            } else {
-                robotHardware.GripperLeft.setPosition(0.25);
-            }
-            return;
+        if (armservostate == ARMSERVOSTATE.LAUNCH) {
+            robotHardware.armServo.setPosition(ARM_SERVO_LAUNCH_POSITION);
         }
-
-        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
-            if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperRight.setPosition(0.15);
-            } else {
-                robotHardware.GripperRight.setPosition(0.35);
-            }
-            return;
+        if (armservostate == ARMSERVOSTATE.NORMAL) {
+            robotHardware.armServo.setPosition(ARM_SERVO_NORMAL_POSITION);
         }
     }
+
+    public void hangRobot(HANGSTATE hangstate) {
+        if (hangstate == HANGSTATE.HANGING) {
+            robotHardware.Hangmotor.setTargetPosition(WINCH_HANG_POSITION);
+            robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
+        }
+        if (hangstate == HANGSTATE.DOWN) {
+            robotHardware.Hangmotor.setTargetPosition(WINCH_DOWN_POSITION);
+            robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.Hangmotor.setPower(-WINCH_MOTOR_POWER);
+        }
+    }
+
+    // TODO CODE GRIPPER MOVEMENTS
+//    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
+//        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
+//        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
+//            if (gripperState == gripperCurrentState.OPEN) {
+//                robotHardware.GripperLeft.setPosition(0.6);
+//                robotHardware.GripperRight.setPosition(0.05);
+//            }
+//            if (gripperState == gripperCurrentState.CLOSE) {
+//                robotHardware.GripperLeft.setPosition(0.2);
+//                robotHardware.GripperRight.setPosition(0.3);
+//            }
+//            return;
+//        }
+//        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
+//            if (gripperState == gripperCurrentState.OPEN) {
+//                robotHardware.GripperLeft.setPosition(0.5);
+//            } else {
+//                robotHardware.GripperLeft.setPosition(0.25);
+//            }
+//            return;
+//        }
+//
+//        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
+//            if (gripperState == gripperCurrentState.OPEN) {
+//                robotHardware.GripperRight.setPosition(0.15);
+//            } else {
+//                robotHardware.GripperRight.setPosition(0.35);
+//            }
+//            return;
+//        }
+//    }
     public void launchPlane(LAUNCHSTATE launchstate) {
         if (launchstate == LAUNCHSTATE.LAUNCH) {
             robotHardware.launchServo.setPosition(LAUNCHING_SERVO_POSITION);
         }
         if (launchstate == LAUNCHSTATE.WAITING) {
             robotHardware.launchServo.setPosition(WAITING_SERVO_POSITION);
-        }
-    }
-
-    public void extendArmServo(armServoState armServoState) {
-        if (armServoState == MotorControl.armServoState.UP) {
-            robotHardware.ArmServo.setPosition(robotHardware.ArmServo.getPosition() - 0.05);
-        }
-        if (armServoState == MotorControl.armServoState.DOWN) {
-            if (robotHardware.ArmServo.getPosition() > ARM_SERVO_LIMIT) {
-                robotHardware.ArmServo.setPosition(robotHardware.ArmServo.getPosition() + 0.05);
-            }
-        }
-
-        if (armServoState == MotorControl.armServoState.PICKUP) {
-            robotHardware.ArmServo.setPosition(ARM_SERVO_PICKUP_POSITION);
-        }
-        if (armServoState == MotorControl.armServoState.DROP) {
-            robotHardware.ArmServo.setPosition(ARM_SERVO_DROP_POSITION);
-        }
-    }
-
-    public void flipGripper(servoFlippingState flippingState) {
-        if (flippingState == servoFlippingState.PICKUP) {
-            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
-        }
-        if (flippingState == servoFlippingState.DROP) {
-            robotHardware.GripperFlipper.setPosition(SERVO_FLIPPER_DROP_POSITION);
         }
     }
 

@@ -60,10 +60,10 @@ public class CenterstageDrive extends LinearOpMode {
         gamePadEx = new GamepadEx(gamepad1);
         gamePadEx2 = new GamepadEx(gamepad2);
         TriggerReader triggerRight = new TriggerReader(
-                gamePadEx2, GamepadKeys.Trigger.RIGHT_TRIGGER
+                gamePadEx, GamepadKeys.Trigger.RIGHT_TRIGGER
         );
         TriggerReader triggerLeft = new TriggerReader(
-                gamePadEx2, GamepadKeys.Trigger.LEFT_TRIGGER
+                gamePadEx, GamepadKeys.Trigger.LEFT_TRIGGER
         );
         robotHardware = new RobotHardware(this);
         robotHardware.init();
@@ -97,61 +97,46 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
             }
-//            Controls for the arm
-//            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_LEFT)) {
-//                motorControl.rotateArm(MotorControl.armDirection.LEFT);
-//            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_LEFT)) {
-//                motorControl.rotateArm(MotorControl.armDirection.STOP);
-//            }
-//            if (gamePadEx2.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
-//                motorControl.rotateArm(MotorControl.armDirection.RIGHT);
-//            } else if (gamePadEx2.wasJustReleased(GamepadKeys.Button.DPAD_RIGHT)) {
-//                motorControl.rotateArm(MotorControl.armDirection.STOP);
-//            }
 //           Controls for arm up/down
-            if (triggerRight.isDown()) {
-                motorControl.mobilizeArm(MotorControl.ARMSTATE.UP);
-            } else if (triggerRight.wasJustReleased()) {
-                motorControl.mobilizeArm(MotorControl.ARMSTATE.NONE);
-                if (triggerLeft.isDown()) {
-                    motorControl.mobilizeArm(MotorControl.ARMSTATE.DOWN);
-                } else if (triggerLeft.wasJustReleased()) {
-                    motorControl.mobilizeArm(MotorControl.ARMSTATE.NONE);
-                }
 
+
+            if (gamepad1.b) {
+                motorControl.mobilizeArm(MotorControl.ARMMOTORSTATE.DOWN);
+            }
+            if (gamepad1.y) {
+                motorControl.mobilizeArm(MotorControl.ARMMOTORSTATE.UP);
+            }
+
+
+            if (gamepad1.dpad_down) {
+                motorControl.moveArmServo(MotorControl.ARMSERVOSTATE.NORMAL);
+            }
+            if (gamepad1.dpad_up) {
+                motorControl.moveArmServo(MotorControl.ARMSERVOSTATE.HANG);
+            }
+            if (gamepad1.dpad_right) {
+                motorControl.moveArmServo(MotorControl.ARMSERVOSTATE.LAUNCH);
             }
 //            Controls Gripper
-            if (gamepad2.left_bumper) {
-                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE, MotorControl.GRIPPER_SELECTION.BOTH);
-            }
-            if (gamepad2.right_bumper) {
-                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.BOTH);
-            }
-//            CODE FOR ARM SERVO
-            if (gamepad2.a) {
-                motorControl.extendArmServo(MotorControl.armServoState.PICKUP);
-            }
-            if (gamepad2.y) {
-                motorControl.extendArmServo(MotorControl.armServoState.DROP);
-            }
+//            if (gamepad2.left_bumper) {
+//                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE, MotorControl.GRIPPER_SELECTION.BOTH);
+//            }
+//            if (gamepad2.right_bumper) {
+//                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.BOTH);
+//            }
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LAUNCHSTATE.WAITING);
             }
             if (gamepad1.x) {
                 motorControl.launchPlane(MotorControl.LAUNCHSTATE.LAUNCH);
             }
-            if (gamepad2.left_stick_y < 0) {
-                motorControl.extendArmServo(MotorControl.armServoState.UP);
-            } else if (gamepad2.left_stick_y > 0) {
-                motorControl.extendArmServo(MotorControl.armServoState.DOWN);
+            if (triggerRight.wasJustPressed()) {
+                motorControl.hangRobot(MotorControl.HANGSTATE.HANGING);
             }
-//              CODE FOR GRIPPER FLIPPER
-            if (gamepad2.right_stick_y < 0) {
-                motorControl.flipGripper(MotorControl.servoFlippingState.PICKUP);
+            if (triggerLeft.wasJustPressed()) {
+                motorControl.hangRobot(MotorControl.HANGSTATE.DOWN);
             }
-            if (gamepad2.right_stick_y > 0) {
-                motorControl.flipGripper(MotorControl.servoFlippingState.DROP);
-            }
+
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, denominator, maxPower);
             // Show the elapsed game time and wheel power.
@@ -159,8 +144,10 @@ public class CenterstageDrive extends LinearOpMode {
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
             telemetry.addData("right stick value", gamepad2.right_stick_y);
             telemetry.addData("left stick value", gamepad2.left_stick_y);
-            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
-            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
+            telemetry.addData("Arm servo position", robotHardware.armServo.getPosition());
+            telemetry.addData("Winch motor position", robotHardware.Hangmotor.getCurrentPosition());
+//            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
+//            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
             telemetry.update();
 
         }
