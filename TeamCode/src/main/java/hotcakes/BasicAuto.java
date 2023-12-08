@@ -159,47 +159,13 @@ public class BasicAuto extends OpMode {
     }
 
     private void placePropOnSpike() {
-        Actions.runBlocking(buildActions());
+        Actions.runBlocking(buildSpikeActions());
     }
 
     private void placePixelInBackstage() {
-        switch (selectedSpike) {
-            case LEFT:
-                Actions.runBlocking(
-                        drive.actionBuilder(drive.pose)
-                                .turn(Math.toRadians(-90))
-                                .lineToY(90)
-                                .splineTo(new Vector2d(40, -34), Math.toRadians(45))
-                                .build());
-                break;
-            case MIDDLE:
-                Actions.runBlocking(
-                        drive.actionBuilder(drive.pose)
-                                .setTangent(0)
-                                .lineToX(30)
-                                .lineToX(-5)
-                                .turn(Math.toRadians(-90))
-                                .lineToX(80)
-                                .lineToX(-5)
-                                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
-                                .build());
-                break;
-            case RIGHT:
-                Actions.runBlocking(
-                        drive.actionBuilder(drive.pose)
-                                .splineTo(new Vector2d(-24, -30), Math.toRadians(90))
-                                .setTangent(0)
-                                .lineToX(-5)
-                                .turn(Math.toRadians(-90))
-                                .lineToX(70)
-                                .lineToX(-5)
-                                .splineTo(new Vector2d(60, -60), Math.toRadians(90))
-                                .build());
-                break;
-            case NONE:
-            default:
-        }
+        Actions.runBlocking(buildBackstageActions());
     }
+
 
     // Set the start pose based on the starting position.
     private Pose2d getDriveStartPose() {
@@ -229,7 +195,7 @@ public class BasicAuto extends OpMode {
         return new Pose2d(startPositionX, startPositionY, startHeading);
     }
 
-    private Action buildActions() {
+    private Action buildSpikeActions() {
         AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
         AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
         double heading = allianceColor == AutonomousOptions.AllianceColor.Red ? -90 : 90;
@@ -287,6 +253,58 @@ public class BasicAuto extends OpMode {
         return trajectoryActionBuilder
                 .build();
     }
+
+    private Action buildBackstageActions() {
+        AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
+        AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
+        double heading = allianceColor == AutonomousOptions.AllianceColor.Red ? -90 : 90;
+        double positionXBackstage;
+        double positionYBackstage;
+        double positionYLeft = 0;
+        double positionYRight = 0;
+        TrajectoryActionBuilder trajectoryActionBuilder = drive.actionBuilder(drive.pose);
+        positionXBackstage = allianceColor == AutonomousOptions.AllianceColor.Blue ? 60 : 59;
+        positionYBackstage = allianceColor == AutonomousOptions.AllianceColor.Blue ? 60 : 59;
+        if (startPosition == AutonomousOptions.StartPosition.Left) {
+            positionYLeft = allianceColor == AutonomousOptions.AllianceColor.Blue ? 60 : -60;
+        } else {
+            // Start Right
+            positionYRight = allianceColor == AutonomousOptions.AllianceColor.Blue ? 60 : -60;
+
+        }
+        switch (startPosition) {
+            case Left:
+                if (startPosition == AutonomousOptions.StartPosition.Left) {
+                    trajectoryActionBuilder
+                            .lineToY(positionYLeft)
+                            .splineTo(new Vector2d(positionXBackstage, positionYBackstage), Math.toRadians(heading));
+
+                } else {
+                    trajectoryActionBuilder
+                            .lineToY(positionYRight)
+                            .splineTo(new Vector2d(positionXBackstage, positionYBackstage), Math.toRadians(heading));
+                }
+                break;
+            case Right:
+                if (startPosition == AutonomousOptions.StartPosition.Right) {
+                    trajectoryActionBuilder
+                            .lineToY(positionYRight)
+                            .splineTo(new Vector2d(positionXBackstage, positionYBackstage), Math.toRadians(heading));
+
+                } else {
+                    trajectoryActionBuilder
+                            .lineToY(positionYRight)
+                            .splineTo(new Vector2d(positionXBackstage, positionYBackstage), Math.toRadians(heading));
+                }
+                break;
+
+        }
+        return trajectoryActionBuilder
+                .build();
+
+
+    }
+
 
     private void placePixelOnBackDrop() {
 

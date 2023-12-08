@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class AutonomousOptions implements Serializable {
     private static final long serialVersionUID = 7829136421241571165L;
     private int delayStartSeconds;
-    private AllianceColor allianceColor;
+    private  AllianceColor allianceColor;
     private StartPosition startPosition;
     private ParkInBackstage parkInBackstage;
     private PlaceTeamArtOnSpike placeTeamArtOnSpike;
