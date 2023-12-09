@@ -78,7 +78,6 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Frontright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backleft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        robotHardware.TurnMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         // run until the end of the match (driver presses STOP)

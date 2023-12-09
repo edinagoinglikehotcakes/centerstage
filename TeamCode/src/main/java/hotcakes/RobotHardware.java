@@ -1,5 +1,6 @@
 package hotcakes;
 
+import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -18,7 +19,7 @@ public class RobotHardware {
     public DcMotorEx Hangmotor = null;
     //    public Servo GripperLeft = null;
 //    public Servo GripperRight = null;
-    public Servo armServo = null;
+    public ServoEx armServo = null;
     public Servo launchServo = null;
 
     public RobotHardware(OpMode opMode) {
@@ -31,7 +32,7 @@ public class RobotHardware {
 //        GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
 //        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
         launchServo = myOpMode.hardwareMap.get(Servo.class, "launchServo");
-        armServo = myOpMode.hardwareMap.get(Servo.class, "Armservo");
+        armServo = myOpMode.hardwareMap.get(ServoEx.class, "Armservo");
 
 
 //        MOTORS
