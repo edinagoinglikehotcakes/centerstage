@@ -1,6 +1,7 @@
 package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PwmControl;
 
 public class MotorControl {
     //    set limits
@@ -17,11 +18,11 @@ public class MotorControl {
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     //    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.0;
-    private final double WAITING_SERVO_POSITION = 0.5;
+    private final double WAITING_SERVO_POSITION = 0.54;
     //    ARM POSITIONS
-    private final double ARM_SERVO_LAUNCH_POSITION = 0.46;
-    private final double ARM_SERVO_HANG_POSITION = 0.4;
-    private final double ARM_SERVO_NORMAL_POSITION = 0.6;
+    private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
+    private final double ARM_SERVO_HANG_POSITION = 0.1;
+    private final double ARM_SERVO_NORMAL_POSITION = 0.3;
     //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 18000;
     private final double WINCH_MOTOR_POWER = 0.9;
@@ -105,7 +106,8 @@ public class MotorControl {
             robotHardware.Hangmotor.setTargetPosition(WINCH_HANG_POSITION);
             robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
-            robotHardware.armServo.disable();
+            ((PwmControl)robotHardware.armServo).setPwmDisable();
+            robotHardware.ArmMotor.setPower(0);
 
         }
         if (hangstate == HANGSTATE.DOWN) {
