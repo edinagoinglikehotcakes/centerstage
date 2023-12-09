@@ -37,7 +37,6 @@ public class BasicAuto extends OpMode {
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
     private enum AutoState {
-        START,
         SPIKE,
         DELAY,
         BACKSTAGE,
@@ -46,7 +45,7 @@ public class BasicAuto extends OpMode {
 
     }
 
-    AutoState currentAutoState = AutoState.START;
+    AutoState currentAutoState = AutoState.SPIKE;
 
     @Override
     public void init() {
@@ -70,7 +69,7 @@ public class BasicAuto extends OpMode {
     public void init_loop() {
         // Wait for the camera to be open
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Waiting");
+//            telemetry.addData("Camera", "Waiting");
             return;
         }
 
@@ -110,18 +109,14 @@ public class BasicAuto extends OpMode {
     @Override
     public void loop() {
         switch (currentAutoState) {
-            case START:
-                if (delaySeconds <= 0 || !(runTime.seconds() <= delaySeconds)) {
-                    currentAutoState = AutoState.SPIKE;
-                }
-                break;
+
             case SPIKE:
                 if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
 
                     placePropOnSpike();
                 }
 
-                currentAutoState = AutoState.DONE;
+                currentAutoState = AutoState.SPIKE;
                 break;
             case DELAY:
                 if (autonomousConfiguration.getDelayStartSeconds() > 0) {
@@ -145,8 +140,8 @@ public class BasicAuto extends OpMode {
 
         }
         drive.updatePoseEstimate();
-        telemetry.addData("runTime", runTime.seconds());
-        telemetry.update();
+//        telemetry.addData("runTime", runTime.seconds());
+//        telemetry.update();
     }
 
     @Override
@@ -155,7 +150,7 @@ public class BasicAuto extends OpMode {
     }
 
     private void placePropOnSpike() {
-        Actions.runBlocking(buildActions());
+        Actions.runBlocking(buildSpikeActions());
     }
 
     private void placePixelInBackstage() {
@@ -225,7 +220,7 @@ public class BasicAuto extends OpMode {
         return new Pose2d(startPositionX, startPositionY, startHeading);
     }
 
-    private Action buildActions() {
+    private Action buildSpikeActions() {
         AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
         AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
         double heading = allianceColor == AutonomousOptions.AllianceColor.Red ? -90 : 90;
