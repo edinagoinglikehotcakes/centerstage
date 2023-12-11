@@ -161,13 +161,14 @@ public class BasicAuto extends OpMode {
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
                                             .splineToConstantHeading(new Vector2d(-56, -41), Math.toRadians(120))
+                                            .lineToY(-45)
                                             .build());
                             break;
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-33)
-                                            .lineToY(-46)
+                                            .lineToY(-35)
+                                            .lineToY(-48)
                                             .build());
                             break;
                         case RIGHT:
@@ -176,6 +177,7 @@ public class BasicAuto extends OpMode {
                                             .lineToY(-37)
                                             .turn(Math.toRadians(-45))
                                             .splineToConstantHeading(new Vector2d(-32, -35), Math.toRadians(45))
+                                            .lineToX(-40)
                                             .build());
 
                             break;
@@ -190,19 +192,21 @@ public class BasicAuto extends OpMode {
                                             .lineToY(-37)
                                             .turn(Math.toRadians(45))
                                             .splineToConstantHeading(new Vector2d(8, -35), Math.toRadians(45))
+                                            .lineToX(15)
                                             .build());
                             break;
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-34)
-                                            .lineToY(-46)
+                                            .lineToY(-35)
+                                            .lineToY(-50)
                                             .build());
                             break;
                         case RIGHT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
                                             .splineToConstantHeading(new Vector2d(29, -41), Math.toRadians(-120))
+                                            .lineToY(-45)
                                             .build());
 
                             break;
@@ -220,7 +224,8 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .splineTo(new Vector2d(23, 37), Math.toRadians(-90))
+                                                .splineToConstantHeading(new Vector2d(29, 41), Math.toRadians(-120))
+                                                .lineToY(45)
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -233,8 +238,10 @@ public class BasicAuto extends OpMode {
                             case RIGHT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(50)
-                                                .splineTo(new Vector2d(3, 44), Math.toRadians(-60))
+                                                .lineToY(40)
+                                                .turn(Math.toRadians(-45))
+                                                .splineToConstantHeading(new Vector2d(9, 33), Math.toRadians(45))
+                                                .splineToConstantHeading(new Vector2d(14,38), Math.toRadians(45))
                                                 .build());
 
                                 break;
@@ -248,8 +255,10 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(50)
-                                                .splineTo(new Vector2d(-27, 44), Math.toRadians(-60))
+                                                .lineToY(37)
+                                                .turn(Math.toRadians(45))
+                                                .splineToConstantHeading(new Vector2d(-32, 35), Math.toRadians(45))
+                                                .splineToConstantHeading(new Vector2d(-37,37), Math.toRadians(45))
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -262,8 +271,8 @@ public class BasicAuto extends OpMode {
                             case RIGHT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .splineTo(new Vector2d(-48
-                                                        ,44),Math.toRadians(-90))
+                                                .splineToConstantHeading(new Vector2d(-56, 41), Math.toRadians(-120))
+                                                .lineToY(45)
 //                                                .splineToConstantHeading(new Vector2d(-48, 37), Math.toRadians(-90))
                                                 .build());
 
