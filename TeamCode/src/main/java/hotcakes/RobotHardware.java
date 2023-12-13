@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class RobotHardware {
     private OpMode myOpMode;
@@ -15,10 +16,11 @@ public class RobotHardware {
     //    public DcMotorEx TurnMotor = null;
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
-    public Servo GripperLeft = null;
-    public Servo GripperRight = null;
-    public Servo ArmServo = null;
-    public Servo GripperFlipper = null;
+    public DcMotorEx Hangmotor = null;
+    //    public Servo GripperLeft = null;
+//    public Servo GripperRight = null;
+    public ServoImplEx armServo = null;
+    public Servo launchServo = null;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
@@ -27,11 +29,10 @@ public class RobotHardware {
     public void init() {
 
 //        SERVOS
-        ArmServo = myOpMode.hardwareMap.get(Servo.class, "Armservo");
-        GripperFlipper = myOpMode.hardwareMap.get(Servo.class, "Gripperflipper");
-        GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
-        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
-
+//        GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
+//        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
+        launchServo = myOpMode.hardwareMap.get(Servo.class, "launchServo");
+        armServo = myOpMode.hardwareMap.get(ServoImplEx.class, "Armservo");
 
 //        MOTORS
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
@@ -51,22 +52,18 @@ public class RobotHardware {
 
 //        TurnMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Turnmotor");
         ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
+        Hangmotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Hangmotor");
 
         ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Hangmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-//        TurnMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        TurnMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
         //TODO Default to built-in PIDF. Tune this if needed.
-//        TurnMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER,  TurnMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
-
-        //Motors direction
+        Hangmotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, Hangmotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
 //        TODO test direction of motors
-//        Frontleft.setDirection(DcMotorEx.Direction.FORWARD)
-//        Backleft.setDirection(DcMotorEx.Direction.REVERSE);
-//        Frontright.setDirection(DcMotorEx.Direction.REVERSE);
-//        Backright.setDirection(DcMotorEx.Direction.FORWARD);
 
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
