@@ -90,8 +90,8 @@ public class CenterstageDrive extends LinearOpMode {
 
             //Joystick movement
             double axial = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x;
-            double yaw = gamepad1.right_stick_x * 1.1;
+            double lateral = gamepad1.left_stick_x * 1.1;
+            double yaw = gamepad1.right_stick_x;
 // Reduce speed
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
@@ -137,7 +137,7 @@ public class CenterstageDrive extends LinearOpMode {
             }
 
 //              This line is the whole drive code from the Motor Control class
-            motorControl.drive(axial, lateral, yaw, denominator, maxPower);
+            motorControl.drive(axial, lateral, yaw, maxPower);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());

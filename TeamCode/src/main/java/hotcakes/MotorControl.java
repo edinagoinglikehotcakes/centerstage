@@ -106,7 +106,7 @@ public class MotorControl {
             robotHardware.Hangmotor.setTargetPosition(WINCH_HANG_POSITION);
             robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
-            ((PwmControl)robotHardware.armServo).setPwmDisable();
+            ((PwmControl) robotHardware.armServo).setPwmDisable();
             robotHardware.ArmMotor.setPower(0);
 
         }
@@ -158,9 +158,9 @@ public class MotorControl {
         }
     }
 
-    public void drive(double axial, double lateral, double yaw, double denominator, double maxPower) {
+    public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
-        denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
+        double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
         robotHardware.Frontleft.setPower(((axial + lateral + yaw) / denominator) * maxPower);
         robotHardware.Backleft.setPower((((axial - lateral) + yaw) / denominator) * maxPower);
         robotHardware.Frontright.setPower((((axial - lateral) - yaw) / denominator) * maxPower);
