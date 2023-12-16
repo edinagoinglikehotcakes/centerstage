@@ -6,12 +6,10 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
-    //    private final double TURN_SPEED = 0.3;
     private final double ARM_POWER = 0.5;
     private final double GRIPPER_LIMIT = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final double ARM_SERVO_PICKUP_POSITION = 0.9;
     private final int ARM_UP_TARGET_POSITION = 700;
     private final int ARM_DOWN_TARGET_POSITION = 20;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
