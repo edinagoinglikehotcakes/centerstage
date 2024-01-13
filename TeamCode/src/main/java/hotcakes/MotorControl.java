@@ -15,8 +15,8 @@ public class MotorControl {
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     //    LAUNCH SERVO
-    private final double LAUNCHING_SERVO_POSITION = 0.0;
-    private final double WAITING_SERVO_POSITION = 0.54;
+    private final double LAUNCHING_SERVO_POSITION = 0.4;
+    private final double WAITING_SERVO_POSITION = 0.64;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
