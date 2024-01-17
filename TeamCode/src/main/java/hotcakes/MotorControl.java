@@ -121,29 +121,29 @@ public class MotorControl {
         robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
         if (gripperSelection == GRIPPER_SELECTION.BOTH) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_OPEN_VALUE);
-                robotHardware.GripperRight.setPosition(GRIPPER_OPEN_VALUE);
+                robotHardware.GripperLeft.setPosition(0.52);
+                robotHardware.GripperRight.setPosition(0.95);
             }
             if (gripperState == gripperCurrentState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_CLOSE_VALUE);
-                robotHardware.GripperRight.setPosition(GRIPPER_CLOSE_VALUE);
+                robotHardware.GripperLeft.setPosition(0.42);
+                robotHardware.GripperRight.setPosition(0.85);
             }
             return;
         }
         if (gripperSelection == GRIPPER_SELECTION.LEFT) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperLeft.setPosition(GRIPPER_OPEN_VALUE);
+                robotHardware.GripperLeft.setPosition(0.52);
             } else {
-                robotHardware.GripperLeft.setPosition(GRIPPER_CLOSE_VALUE);
+                robotHardware.GripperLeft.setPosition(0.42);
             }
             return;
         }
 
         if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
             if (gripperState == gripperCurrentState.OPEN) {
-                robotHardware.GripperRight.setPosition(GRIPPER_OPEN_VALUE);
+                robotHardware.GripperRight.setPosition(0.95);
             } else {
-                robotHardware.GripperRight.setPosition(GRIPPER_CLOSE_VALUE);
+                robotHardware.GripperRight.setPosition(0.85);
             }
             return;
         }
