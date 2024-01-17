@@ -2,12 +2,13 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
     private final double ARM_POWER = 0.5;
-    private final double GRIPPER_LIMIT = 0.6;
+    private final double GRIPPER_OPEN_VALUE = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final int ARM_UP_TARGET_POSITION = 700;
@@ -51,16 +52,16 @@ public class MotorControl {
         NORMAL,
     }
 
-//    public enum gripperCurrentState {
-//        OPEN,
-//        CLOSE,
-//    }
-//
-//    public enum GRIPPER_SELECTION {
-//        LEFT,
-//        RIGHT,
-//        BOTH,
-//    }
+    public enum gripperCurrentState {
+        OPEN,
+        CLOSE,
+    }
+
+    public enum GRIPPER_SELECTION {
+        LEFT,
+        RIGHT,
+        BOTH,
+    }
 
 
     public MotorControl(RobotHardware robotHardware) {
@@ -116,37 +117,37 @@ public class MotorControl {
     }
 
     // TODO CODE GRIPPER MOVEMENTS
-//    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
-//        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
-//        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperLeft.setPosition(0.6);
-//                robotHardware.GripperRight.setPosition(0.05);
-//            }
-//            if (gripperState == gripperCurrentState.CLOSE) {
-//                robotHardware.GripperLeft.setPosition(0.2);
-//                robotHardware.GripperRight.setPosition(0.3);
-//            }
-//            return;
-//        }
-//        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperLeft.setPosition(0.5);
-//            } else {
-//                robotHardware.GripperLeft.setPosition(0.25);
-//            }
-//            return;
-//        }
-//
-//        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperRight.setPosition(0.15);
-//            } else {
-//                robotHardware.GripperRight.setPosition(0.35);
-//            }
-//            return;
-//        }
-//    }
+    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
+        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
+        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperLeft.setPosition(GRIPPER_OPEN_VALUE);
+                robotHardware.GripperRight.setPosition(GRIPPER_OPEN_VALUE);
+            }
+            if (gripperState == gripperCurrentState.CLOSE) {
+                robotHardware.GripperLeft.setPosition(GRIPPER_CLOSE_VALUE);
+                robotHardware.GripperRight.setPosition(GRIPPER_CLOSE_VALUE);
+            }
+            return;
+        }
+        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperLeft.setPosition(GRIPPER_OPEN_VALUE);
+            } else {
+                robotHardware.GripperLeft.setPosition(GRIPPER_CLOSE_VALUE);
+            }
+            return;
+        }
+
+        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperRight.setPosition(GRIPPER_OPEN_VALUE);
+            } else {
+                robotHardware.GripperRight.setPosition(GRIPPER_CLOSE_VALUE);
+            }
+            return;
+        }
+    }
     public void launchPlane(LAUNCHSTATE launchstate) {
         if (launchstate == LAUNCHSTATE.LAUNCH) {
             robotHardware.launchServo.setPosition(LAUNCHING_SERVO_POSITION);

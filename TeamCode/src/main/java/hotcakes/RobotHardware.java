@@ -17,8 +17,8 @@ public class RobotHardware {
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public DcMotorEx Hangmotor = null;
-    //    public Servo GripperLeft = null;
-//    public Servo GripperRight = null;
+        public Servo GripperLeft = null;
+    public Servo GripperRight = null;
     public ServoImplEx armServo = null;
     public Servo launchServo = null;
 
