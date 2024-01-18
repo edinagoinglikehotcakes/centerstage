@@ -91,10 +91,12 @@ public class CenterstageDrive extends LinearOpMode {
             //Joystick movement
             double axial = -gamepad1.left_stick_y;
             double lateral = gamepad1.left_stick_x * 1.1;
-            double yaw = gamepad1.right_stick_x;
+            double yaw = gamepad1.right_stick_x * 1;//.1;
 // Reduce speed
             if (gamepad1.left_bumper) {
                 maxPower = 0.3;
+            } else {
+                maxPower = 0.9;
             }
 //           Controls for arm up/down
 
