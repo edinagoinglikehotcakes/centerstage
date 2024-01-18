@@ -2,7 +2,6 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PwmControl;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class MotorControl {
     //    set limits
@@ -118,7 +117,6 @@ public class MotorControl {
 
     // TODO CODE GRIPPER MOVEMENTS
     public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
-        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
         if (gripperSelection == GRIPPER_SELECTION.BOTH) {
             if (gripperState == gripperCurrentState.OPEN) {
                 robotHardware.GripperLeft.setPosition(0.95);
