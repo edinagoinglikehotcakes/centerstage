@@ -22,9 +22,9 @@ public class MotorControl {
     private final double ARM_SERVO_HANG_POSITION = 0.1;
     private final double ARM_SERVO_NORMAL_POSITION = 0.3;
     //    WINCH POSITIONS
-    private final int WINCH_HANG_POSITION = 18000;
+    private final int WINCH_HANG_POSITION = 9000;
     private final double WINCH_MOTOR_POWER = 0.9;
-    private final int WINCH_DOWN_POSITION = 20;
+    private final int WINCH_DOWN_POSITION = 3500;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -111,7 +111,7 @@ public class MotorControl {
         if (hangstate == HANGSTATE.DOWN) {
             robotHardware.Hangmotor.setTargetPosition(WINCH_DOWN_POSITION);
             robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.Hangmotor.setPower(-WINCH_MOTOR_POWER);
+            robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
         }
     }
 
