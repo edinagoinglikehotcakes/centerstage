@@ -32,6 +32,7 @@ package hotcakes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -73,6 +74,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
     private DcMotor HangMotor = null;
+    private Servo GripperRight = null;
+    private Servo GripperLeft = null;
 
     @Override
     public void runOpMode() {
@@ -84,6 +87,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "Frontright");
         rightBackDrive = hardwareMap.get(DcMotor.class, "Backright");
         HangMotor = hardwareMap.get(DcMotor.class, "Hangmotor");
+        GripperLeft = hardwareMap.get(Servo.class, "Gripperleft");
+        GripperRight = hardwareMap.get(Servo.class, "Gripperright");
+
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -151,7 +157,16 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
                 HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 HangMotor.setPower(0.8);
             }
-
+//            Close Gripper
+            if (gamepad1.x) {
+                GripperRight.setPosition(0.21);
+                GripperLeft.setPosition(0);
+            }
+//            Open Gripper
+            if (gamepad1.a) {
+                GripperRight.setPosition(0.1);
+                GripperLeft.setPosition(0.1);
+            }
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
