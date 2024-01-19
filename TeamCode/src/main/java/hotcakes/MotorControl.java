@@ -7,7 +7,7 @@ public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
     private final double ARM_POWER = 0.5;
-    private final double GRIPPER_LIMIT = 0.6;
+    private final double GRIPPER_OPEN_VALUE = 0.6;
     private final double GRIPPER_CLOSE_VALUE = 0.2;
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final int ARM_UP_TARGET_POSITION = 700;
@@ -15,16 +15,16 @@ public class MotorControl {
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
     //    LAUNCH SERVO
-    private final double LAUNCHING_SERVO_POSITION = 0.0;
-    private final double WAITING_SERVO_POSITION = 0.54;
+    private final double LAUNCHING_SERVO_POSITION = 0.4;
+    private final double WAITING_SERVO_POSITION = 0.64;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
     private final double ARM_SERVO_NORMAL_POSITION = 0.3;
     //    WINCH POSITIONS
-    private final int WINCH_HANG_POSITION = 18000;
+    private final int WINCH_HANG_POSITION = 9000;
     private final double WINCH_MOTOR_POWER = 0.9;
-    private final int WINCH_DOWN_POSITION = 20;
+    private final int WINCH_DOWN_POSITION = 3500;
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
@@ -51,16 +51,16 @@ public class MotorControl {
         NORMAL,
     }
 
-//    public enum gripperCurrentState {
-//        OPEN,
-//        CLOSE,
-//    }
-//
-//    public enum GRIPPER_SELECTION {
-//        LEFT,
-//        RIGHT,
-//        BOTH,
-//    }
+    public enum gripperCurrentState {
+        OPEN,
+        CLOSE,
+    }
+
+    public enum GRIPPER_SELECTION {
+        LEFT,
+        RIGHT,
+        BOTH,
+    }
 
 
     public MotorControl(RobotHardware robotHardware) {
@@ -111,42 +111,41 @@ public class MotorControl {
         if (hangstate == HANGSTATE.DOWN) {
             robotHardware.Hangmotor.setTargetPosition(WINCH_DOWN_POSITION);
             robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.Hangmotor.setPower(-WINCH_MOTOR_POWER);
+            robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
         }
     }
 
     // TODO CODE GRIPPER MOVEMENTS
-//    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
-//        robotHardware.GripperLeft.setDirection(Servo.Direction.REVERSE);
-//        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperLeft.setPosition(0.6);
-//                robotHardware.GripperRight.setPosition(0.05);
-//            }
-//            if (gripperState == gripperCurrentState.CLOSE) {
-//                robotHardware.GripperLeft.setPosition(0.2);
-//                robotHardware.GripperRight.setPosition(0.3);
-//            }
-//            return;
-//        }
-//        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperLeft.setPosition(0.5);
-//            } else {
-//                robotHardware.GripperLeft.setPosition(0.25);
-//            }
-//            return;
-//        }
-//
-//        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
-//            if (gripperState == gripperCurrentState.OPEN) {
-//                robotHardware.GripperRight.setPosition(0.15);
-//            } else {
-//                robotHardware.GripperRight.setPosition(0.35);
-//            }
-//            return;
-//        }
-//    }
+    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
+        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperLeft.setPosition(0.95);
+                robotHardware.GripperRight.setPosition(0.52);
+            }
+            if (gripperState == gripperCurrentState.CLOSE) {
+                robotHardware.GripperLeft.setPosition(0.85);
+                robotHardware.GripperRight.setPosition(0.42);
+            }
+            return;
+        }
+        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperLeft.setPosition(0.95);
+            } else {
+                robotHardware.GripperLeft.setPosition(0.85);
+            }
+            return;
+        }
+
+        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
+            if (gripperState == gripperCurrentState.OPEN) {
+                robotHardware.GripperRight.setPosition(0.52);
+            } else {
+                robotHardware.GripperRight.setPosition(0.42);
+            }
+            return;
+        }
+    }
     public void launchPlane(LAUNCHSTATE launchstate) {
         if (launchstate == LAUNCHSTATE.LAUNCH) {
             robotHardware.launchServo.setPosition(LAUNCHING_SERVO_POSITION);
