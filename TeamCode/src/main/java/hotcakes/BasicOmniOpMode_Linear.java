@@ -29,11 +29,9 @@
 
 package hotcakes;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -65,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name = "JWBasic: Omni Linear OpMode", group = "Linear OpMode")
-@Disabled
+
 public class BasicOmniOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -74,7 +72,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DcMotor ArmMotor = null;
+    private DcMotor HangMotor = null;
 
     @Override
     public void runOpMode() {
@@ -85,7 +83,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive = hardwareMap.get(DcMotor.class, "Backleft");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "Frontright");
         rightBackDrive = hardwareMap.get(DcMotor.class, "Backright");
-        ArmMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+        HangMotor = hardwareMap.get(DcMotor.class, "Hangmotor");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -144,22 +142,14 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
                 rightBackPower /= max - 0.2;
             }
             if (gamepad1.dpad_up) {
-////                ArmMotor.setTargetPosition(ArmMotor.getCurrentPosition() + 100);
-////                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ArmMotor.setPower(1);
-                ArmMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-            } else {
-                ArmMotor.setPower(0.0);
-//                ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                HangMotor.setTargetPosition(9000);
+                HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                HangMotor.setPower(0.8);
             }
             if (gamepad1.dpad_down) {
-//                ArmMotor.setTargetPosition(ArmMotor.getCurrentPosition() - 100);
-//                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ArmMotor.setPower(1);
-                ArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-            } else {
-                ArmMotor.setPower(0.0);
-//                ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                HangMotor.setTargetPosition(3500);
+                HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                HangMotor.setPower(0.8);
             }
 
             // This is test code:
@@ -189,7 +179,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("arm position", ArmMotor.getCurrentPosition());
+            telemetry.addData("arm position", HangMotor.getCurrentPosition());
             telemetry.update();
         }
     }
