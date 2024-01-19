@@ -62,14 +62,15 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         // drive model parameters
-        public double inPerTick = 0.02277760202;
-        public double lateralInPerTick = 0.02302526383;
-        public double trackWidthTicks = 1254.58038741832;
+        public double inPerTick = 1;
+        public double lateralInPerTick = inPerTick;
+        public double trackWidthTicks = 0;
 
         // feedforward parameters (in tick units)
-        public double kS =  0.9407782605304043;
-        public double kV = 0.004210288796355308;
-        public double kA = 0.00008;
+        public double kS = 0;
+        public double kV = 0;
+        public double kA = 0;
+
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
         public double minProfileAccel = -30;
@@ -133,7 +134,7 @@ public final class MecanumDrive {
             rightFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightFront));
 
             // TODO: reverse encoders if needed
-            // leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
             lastLeftFrontPos = leftFront.getPositionAndVelocity().position;
             lastLeftBackPos = leftBack.getPositionAndVelocity().position;
@@ -200,13 +201,10 @@ public final class MecanumDrive {
 
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        leftFront = hardwareMap.get(DcMotorEx.class, "Frontleft");
-        leftBack = hardwareMap.get(DcMotorEx.class, "Backleft");
-        rightBack = hardwareMap.get(DcMotorEx.class, "Backright");
-        rightFront = hardwareMap.get(DcMotorEx.class, "Frontright");
-
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
