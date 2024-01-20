@@ -28,35 +28,38 @@ public class MotorControl {
     private RobotHardware robotHardware;
 
     //    Which direction the arm is currently going
-    public enum LAUNCHSTATE {
+    public enum LaunchState {
         WAITING,
         LAUNCH,
     }
 
-    public enum HANGSTATE {
+    public enum HangState {
         HANGING,
         DOWN,
     }
 
-    public enum ARMMOTORSTATE {
+    //TODO Change Code
+    public enum ArmExtension {
         UP,
+        MIDDLE,
         DOWN,
         NONE,
 
     }
 
-    public enum ARMSERVOSTATE {
-        HANG,
-        LAUNCH,
-        NORMAL,
+    //TODO Change Code
+    public enum ArmAngle {
+        PICKUP,
+        DRIVE,
+        BACKDROP,
     }
 
-    public enum gripperCurrentState {
+    public enum GripperState {
         OPEN,
         CLOSE,
     }
 
-    public enum GRIPPER_SELECTION {
+    public enum GripperSelection {
         LEFT,
         RIGHT,
         BOTH,
@@ -69,67 +72,67 @@ public class MotorControl {
 
 
     //    ARM MOVEMENT FOR UP AND DOWN
-    public void mobilizeArm(ARMMOTORSTATE armState) {
-        if (armState == ARMMOTORSTATE.UP) {
+    public void mobilizeArm(ArmExtension armState) {
+        if (armState == ArmExtension.UP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_UP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
 
         }
-        if (armState == ARMMOTORSTATE.DOWN) {
+        if (armState == ArmExtension.DOWN) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
         }
-        if (armState == ARMMOTORSTATE.NONE) {
+        if (armState == ArmExtension.NONE) {
             robotHardware.ArmMotor.setPower(0);
             robotHardware.ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
 
-    public void moveArmServo(ARMSERVOSTATE armservostate) {
-        if (armservostate == ARMSERVOSTATE.HANG) {
-            robotHardware.armServo.setPosition(ARM_SERVO_HANG_POSITION);
+    public void changeArmAngle (ArmAngle armservostate) {
+        if (armservostate == ArmAngle.PICKUP) {
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_HANG_POSITION);
         }
-        if (armservostate == ARMSERVOSTATE.LAUNCH) {
-            robotHardware.armServo.setPosition(ARM_SERVO_LAUNCH_POSITION);
+        if (armservostate == ArmAngle.DRIVE) {
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_LAUNCH_POSITION);
         }
-        if (armservostate == ARMSERVOSTATE.NORMAL) {
-            robotHardware.armServo.setPosition(ARM_SERVO_NORMAL_POSITION);
+        if (armservostate == ArmAngle.BACKDROP) {
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_NORMAL_POSITION);
         }
     }
 
-    public void hangRobot(HANGSTATE hangstate) {
-        if (hangstate == HANGSTATE.HANGING) {
-            robotHardware.Hangmotor.setTargetPosition(WINCH_HANG_POSITION);
-            robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
-            ((PwmControl) robotHardware.armServo).setPwmDisable();
+    public void hangRobot(HangState hangstate) {
+        if (hangstate == HangState.HANGING) {
+            robotHardware.HangMotor.setTargetPosition(WINCH_HANG_POSITION);
+            robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
+            ((PwmControl) robotHardware.ArmAngle).setPwmDisable();
             robotHardware.ArmMotor.setPower(0);
 
         }
-        if (hangstate == HANGSTATE.DOWN) {
-            robotHardware.Hangmotor.setTargetPosition(WINCH_DOWN_POSITION);
-            robotHardware.Hangmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.Hangmotor.setPower(WINCH_MOTOR_POWER);
+        if (hangstate == HangState.DOWN) {
+            robotHardware.HangMotor.setTargetPosition(WINCH_DOWN_POSITION);
+            robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
         }
     }
 
     // TODO CODE GRIPPER MOVEMENTS
-    public void moveGripper(gripperCurrentState gripperState, GRIPPER_SELECTION gripperSelection) {
-        if (gripperSelection == GRIPPER_SELECTION.BOTH) {
-            if (gripperState == gripperCurrentState.OPEN) {
+    public void moveGripper(GripperState gripperState, GripperSelection gripperSelection) {
+        if (gripperSelection == GripperSelection.BOTH) {
+            if (gripperState == GripperState.OPEN) {
                 robotHardware.GripperLeft.setPosition(0.95);
                 robotHardware.GripperRight.setPosition(0.52);
             }
-            if (gripperState == gripperCurrentState.CLOSE) {
+            if (gripperState == GripperState.CLOSE) {
                 robotHardware.GripperLeft.setPosition(0.85);
                 robotHardware.GripperRight.setPosition(0.42);
             }
             return;
         }
-        if (gripperSelection == GRIPPER_SELECTION.LEFT) {
-            if (gripperState == gripperCurrentState.OPEN) {
+        if (gripperSelection == GripperSelection.LEFT) {
+            if (gripperState == GripperState.OPEN) {
                 robotHardware.GripperLeft.setPosition(0.95);
             } else {
                 robotHardware.GripperLeft.setPosition(0.85);
@@ -137,8 +140,8 @@ public class MotorControl {
             return;
         }
 
-        if (gripperSelection == GRIPPER_SELECTION.RIGHT) {
-            if (gripperState == gripperCurrentState.OPEN) {
+        if (gripperSelection == GripperSelection.RIGHT) {
+            if (gripperState == GripperState.OPEN) {
                 robotHardware.GripperRight.setPosition(0.52);
             } else {
                 robotHardware.GripperRight.setPosition(0.42);
@@ -146,12 +149,13 @@ public class MotorControl {
             return;
         }
     }
-    public void launchPlane(LAUNCHSTATE launchstate) {
-        if (launchstate == LAUNCHSTATE.LAUNCH) {
-            robotHardware.launchServo.setPosition(LAUNCHING_SERVO_POSITION);
+
+    public void launchPlane(LaunchState launchstate) {
+        if (launchstate == LaunchState.LAUNCH) {
+            robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
         }
-        if (launchstate == LAUNCHSTATE.WAITING) {
-            robotHardware.launchServo.setPosition(WAITING_SERVO_POSITION);
+        if (launchstate == LaunchState.WAITING) {
+            robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
 

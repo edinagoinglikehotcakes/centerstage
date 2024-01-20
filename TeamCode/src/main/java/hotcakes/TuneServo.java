@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "Tune Servo", group = "Servo")
 //@Disabled
@@ -13,14 +14,15 @@ public class TuneServo extends OpMode {
     static final double INCREMENT = 0.1;     // amount to slew servo each button press.
     private double minScale = 0;
     private double maxScale = 1;
-    private ServoEx servo;
+    private Servo servo;
     private double position = .5;
     private GamepadEx gamepad;
 
     @Override
     public void init() {
         // Make the name match your config file and robot.
-        servo = new SimpleServo(hardwareMap, "launchServo",0,90);
+//        servo = new SimpleServo(hardwareMap, "Angleservo", 0, 90);
+        servo = hardwareMap.get(Servo.class, "Angleservo");
         gamepad = new GamepadEx(gamepad1);
         showTelemetry();
         telemetry.update();
@@ -47,7 +49,7 @@ public class TuneServo extends OpMode {
         if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
             minScale = 0;
             maxScale = 1;
-            servo.setRange(minScale, maxScale);
+//            servo.setRange(minScale, maxScale);
         }
 
         if (gamepad.wasJustReleased(GamepadKeys.Button.DPAD_UP) && position < 1) {
@@ -60,12 +62,12 @@ public class TuneServo extends OpMode {
 
         if (gamepad.wasJustReleased(GamepadKeys.Button.X)) {
             minScale = position;
-            servo.setRange(minScale, maxScale);
+//            servo.setRange(minScale, maxScale);
         }
 
         if (gamepad.wasJustReleased(GamepadKeys.Button.B)) {
             maxScale = position;
-            servo.setRange(minScale, maxScale);
+//            servo.setRange(minScale, maxScale);
         }
 
         servo.setPosition(position);
