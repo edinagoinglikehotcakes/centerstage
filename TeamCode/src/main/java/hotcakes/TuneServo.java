@@ -20,7 +20,7 @@ public class TuneServo extends OpMode {
     @Override
     public void init() {
         // Make the name match your config file and robot.
-        servo = new SimpleServo(hardwareMap, "launchServo",0,90);
+        servo = new SimpleServo(hardwareMap, "Angleservo",0,90);
         gamepad = new GamepadEx(gamepad1);
         showTelemetry();
         telemetry.update();
@@ -47,7 +47,7 @@ public class TuneServo extends OpMode {
         if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
             minScale = 0;
             maxScale = 1;
-            servo.setRange(minScale, maxScale);
+          1  servo.setRange(minScale, maxScale);
         }
 
         if (gamepad.wasJustReleased(GamepadKeys.Button.DPAD_UP) && position < 1) {

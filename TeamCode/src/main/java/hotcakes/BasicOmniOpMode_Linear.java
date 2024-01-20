@@ -76,6 +76,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor HangMotor = null;
     private Servo GripperRight = null;
     private Servo GripperLeft = null;
+    private Servo Angleservo = null;
+    private Servo Launchservo = null;
 
     @Override
     public void runOpMode() {
@@ -89,6 +91,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         HangMotor = hardwareMap.get(DcMotor.class, "Hangmotor");
         GripperLeft = hardwareMap.get(Servo.class, "Gripperleft");
         GripperRight = hardwareMap.get(Servo.class, "Gripperright");
+        Angleservo = hardwareMap.get(Servo.class, "Angleservo");
+        Launchservo = hardwareMap.get(Servo.class,"Launchservo");
 
 
         // ########################################################################################
@@ -167,6 +171,24 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
                 GripperRight.setPosition(0.1);
                 GripperLeft.setPosition(0.1);
             }
+//            Angle Servo Down position
+            if (gamepad1.y) {
+                Angleservo.setPosition(0.1);
+            }
+//           Angle servo Launch Position
+            if (gamepad1.b) {
+                Angleservo.setPosition(-0.1);
+            }
+//            Launch Servo Down Position
+            if (gamepad1.left_bumper) {
+                Launchservo.setPosition(0);
+            }
+//            Launch Servo Launch Position
+            if (gamepad1.right_bumper) {
+                Launchservo.setPosition(0.6);
+            }
+
+
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
