@@ -19,9 +19,11 @@ public class RobotHardware {
     public DcMotorEx HangMotor = null;
     public Servo GripperLeft = null;
     public Servo GripperRight = null;
-    public ServoImplEx ArmAngle = null;
+    public Servo ArmAngle = null;
     public Servo DroneLaunch = null;
     public Servo LaunchAngle = null;
+    public Servo GripperAngle = null;
+
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
@@ -30,11 +32,12 @@ public class RobotHardware {
     public void init() {
 
 //        SERVOS
-        GripperRight = myOpMode.hardwareMap.get(Servo.class, "Gripperright");
-        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "Gripperleft");
-        DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchServo");
-        ArmAngle = myOpMode.hardwareMap.get(ServoImplEx.class, "Armservo");
-        LaunchAngle = myOpMode.hardwareMap.get(ServoImplEx.class, "LaunchAngle");
+        GripperRight = myOpMode.hardwareMap.get(Servo.class, "gripperright");
+        GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
+        GripperAngle = myOpMode.hardwareMap.get(Servo.class, "gripperangle");
+        DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchservo");
+        ArmAngle = myOpMode.hardwareMap.get(Servo.class, "armservo");
+        LaunchAngle = myOpMode.hardwareMap.get(Servo.class, "launchangle");
 
 
 //        MOTORS
