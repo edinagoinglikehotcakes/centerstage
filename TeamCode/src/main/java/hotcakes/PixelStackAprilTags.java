@@ -49,6 +49,13 @@ public class PixelStackAprilTags {
         return targetFound ? desiredTag.ftcPose : null;
     }
 
+    /**
+     * Disable april tag processing to conserve resources.
+     */
+    public void disableTagProcessing(){
+        visionPortal.setProcessorEnabled(aprilTag, false);
+    }
+
     private AprilTagDetection findWallTag() {
         // Step through the list of detected tags and look for a matching tag
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -79,7 +86,9 @@ public class PixelStackAprilTags {
      */
     private void initAprilTag() {
         // Create the AprilTag processor by using a builder.
-        aprilTag = new AprilTagProcessor.Builder().build();
+        aprilTag = new AprilTagProcessor.Builder()
+                .setDrawAxes(true)
+                .build();
 
         // Adjust Image Decimation to trade-off detection-range for detection-rate.
         // eg: Some typical detection data using a Logitech C920 WebCam

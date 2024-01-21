@@ -158,6 +158,7 @@ public class MotorControl {
     private void launch() {
         pixelStacklAprilTags = new PixelStackAprilTags();
         double launchRange = pixelStacklAprilTags.getRangeToWall();
+        pixelStacklAprilTags.disableTagProcessing();
         double launchPosition;
         // 0 means use the default angle, we did not see the tag.
         if (launchRange == 0) {
@@ -178,13 +179,13 @@ public class MotorControl {
 
     /**
      * Launch the plane or move the launcher to waiting state.
-     * @param launchstate
+     * @param launchState - Launch or Waiting.
      */
-    public void launchPlane(LaunchState launchstate) {
-        if (launchstate == LaunchState.LAUNCH) {
+    public void launchPlane(LaunchState launchState) {
+        if (launchState == LaunchState.LAUNCH) {
             launch();
         }
-        if (launchstate == LaunchState.WAITING) {
+        if (launchState == LaunchState.WAITING) {
             robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
