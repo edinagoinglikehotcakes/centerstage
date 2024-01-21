@@ -17,6 +17,7 @@ public class MotorControl {
     //    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.4;
     private final double WAITING_SERVO_POSITION = 0.64;
+    private final double TAG_RANGE = 72;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
@@ -26,6 +27,7 @@ public class MotorControl {
     private final double WINCH_MOTOR_POWER = 0.9;
     private final int WINCH_DOWN_POSITION = 3500;
     private RobotHardware robotHardware;
+    private PixelStackAprilTags pixelStacklAprilTags = null;
 
     //    Which direction the arm is currently going
     public enum LaunchState {
@@ -90,7 +92,7 @@ public class MotorControl {
         }
     }
 
-    public void changeArmAngle (ArmAngle armservostate) {
+    public void changeArmAngle(ArmAngle armservostate) {
         if (armservostate == ArmAngle.PICKUP) {
             robotHardware.ArmAngle.setPosition(ARM_SERVO_HANG_POSITION);
         }
@@ -150,9 +152,37 @@ public class MotorControl {
         }
     }
 
+    /*
+        Look for the april tag and launch the drone.
+     */
+    private void launch() {
+        pixelStacklAprilTags = new PixelStackAprilTags();
+        double launchRange = pixelStacklAprilTags.getRangeToWall();
+        double launchPosition;
+        // 0 means use the default angle, we did not see the tag.
+        if (launchRange == 0) {
+            launchPosition = LAUNCHING_SERVO_POSITION;
+        } else {
+            launchPosition = getLaunchPosition(launchRange);
+            robotHardware.LaunchAngle.setPosition(launchPosition);
+        }
+
+        robotHardware.DroneLaunch.setPosition(launchPosition);
+    }
+
+    // Map the range to the tag to the angle range of the launcher.
+    private double getLaunchPosition(double range) {
+        return ((1 - ((range - 72) / (TAG_RANGE)) *
+                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
+    }
+
+    /**
+     * Launch the plane or move the launcher to waiting state.
+     * @param launchstate
+     */
     public void launchPlane(LaunchState launchstate) {
         if (launchstate == LaunchState.LAUNCH) {
-            robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
+            launch();
         }
         if (launchstate == LaunchState.WAITING) {
             robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);

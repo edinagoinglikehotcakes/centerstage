@@ -84,38 +84,36 @@ public class CenterstageDrive extends LinearOpMode {
         while (opModeIsActive()) {
             gamePadEx.readButtons();
             gamePadEx2.readButtons();
-//            trigger reader is the right trigger and trigger1 is the left one
             triggerRight.readValue();
             triggerLeft.readValue();
 
             //Joystick movement
-            double axial = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x * 1.1;
-            double yaw = gamepad1.right_stick_x;
+            double axial = -gamePadEx.getLeftY();
+            double lateral = gamePadEx.getLeftX() * 1.1;
+            double yaw = gamePadEx.getRightX();
 // Reduce speed
-            if (gamepad1.left_bumper) {
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
                 maxPower = 0.3;
             } else {
                 maxPower = 0.9;
             }
 //           Controls for arm up/down
-
-
-            if (gamepad1.b) {
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.B)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.DOWN);
             }
-            if (gamepad1.y) {
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.Y)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.UP);
             }
 
-
-            if (gamepad1.dpad_down) {
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
-            if (gamepad1.dpad_up) {
+
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.PICKUP);
             }
-            if (gamepad1.dpad_right) {
+
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
 //            Controls Gripper
@@ -125,15 +123,18 @@ public class CenterstageDrive extends LinearOpMode {
 //            if (gamepad2.right_bumper) {
 //                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.BOTH);
 //            }
-            if (gamepad1.a) {
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.A)) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
-            if (gamepad1.x) {
+
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.X)) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
+
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
+
             if (triggerLeft.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
             }
@@ -150,8 +151,10 @@ public class CenterstageDrive extends LinearOpMode {
 //            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
 //            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
             telemetry.update();
-
         }
+    }
+
+    private void launchDrone() {
     }
 }
  
