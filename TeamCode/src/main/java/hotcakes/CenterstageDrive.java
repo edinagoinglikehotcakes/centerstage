@@ -127,7 +127,8 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
 
-            if (gamePadEx.wasJustPressed(GamepadKeys.Button.X)) {
+            // Only during end game.
+            if (gamePadEx.wasJustPressed(GamepadKeys.Button.X) && runtime.seconds() >= 90) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
 
@@ -152,9 +153,6 @@ public class CenterstageDrive extends LinearOpMode {
 //            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
             telemetry.update();
         }
-    }
-
-    private void launchDrone() {
     }
 }
  

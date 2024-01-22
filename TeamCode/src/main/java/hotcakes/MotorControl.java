@@ -2,6 +2,9 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 public class MotorControl {
     //    set limits
@@ -157,7 +160,9 @@ public class MotorControl {
      */
     private void launch() {
         pixelStacklAprilTags = new PixelStackAprilTags();
-        double launchRange = pixelStacklAprilTags.getRangeToWall();
+        pixelStacklAprilTags.init();
+        AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
+        double launchRange = detectedTag == null ? 0 : detectedTag.ftcPose.range;
         pixelStacklAprilTags.disableTagProcessing();
         double launchPosition;
         // 0 means use the default angle, we did not see the tag.
@@ -165,7 +170,12 @@ public class MotorControl {
             launchPosition = LAUNCHING_SERVO_POSITION;
         } else {
             launchPosition = getLaunchPosition(launchRange);
-            robotHardware.LaunchAngle.setPosition(launchPosition);
+        }
+
+        robotHardware.LaunchAngle.setPosition(launchPosition);
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        // Wait for the servo to move.
+        while (timer.milliseconds() <= 500) {
         }
 
         robotHardware.DroneLaunch.setPosition(launchPosition);
@@ -179,6 +189,7 @@ public class MotorControl {
 
     /**
      * Launch the plane or move the launcher to waiting state.
+     *
      * @param launchState - Launch or Waiting.
      */
     public void launchPlane(LaunchState launchState) {
