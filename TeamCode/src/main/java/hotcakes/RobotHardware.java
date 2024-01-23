@@ -1,11 +1,15 @@
 package hotcakes;
 
+import android.graphics.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoImplEx;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class RobotHardware {
     private OpMode myOpMode;
@@ -23,14 +27,14 @@ public class RobotHardware {
     public Servo DroneLaunch = null;
     public Servo LaunchAngle = null;
     public Servo GripperAngle = null;
-
+    public HardwareMap hardwareMap;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
+        hardwareMap = opMode.hardwareMap;
     }
 
     public void init() {
-
 //        SERVOS
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
@@ -38,7 +42,6 @@ public class RobotHardware {
         DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchservo");
         ArmAngle = myOpMode.hardwareMap.get(Servo.class, "armservo");
         LaunchAngle = myOpMode.hardwareMap.get(Servo.class, "launchangle");
-
 
 //        MOTORS
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
@@ -85,6 +88,5 @@ public class RobotHardware {
         Backleft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Frontright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Backright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
     }
 }

@@ -17,10 +17,12 @@ public class MotorControl {
     private final int ARM_DOWN_TARGET_POSITION = 20;
     private final double SERVO_FLIPPER_DROP_POSITION = 0;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
-    //    LAUNCH SERVO
-    private final double LAUNCHING_SERVO_POSITION = 0.4;
-    private final double WAITING_SERVO_POSITION = 0.64;
+    //    Drone launch servos
+    private final double LAUNCH_ANGLE = 0.4;
+    private final double LAUNCH_WAITING_ANGLE = 0.64;
     private final double TAG_RANGE = 72;
+    private final double DRONE_LAUNCH_POSITION = .5;
+    private final double DRONE_PARKED_POSITION = 0;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
@@ -159,32 +161,25 @@ public class MotorControl {
         Look for the april tag and launch the drone.
      */
     private void launch() {
-        pixelStacklAprilTags = new PixelStackAprilTags();
+        pixelStacklAprilTags = new PixelStackAprilTags(robotHardware.hardwareMap);
         pixelStacklAprilTags.init();
         AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
-        double launchRange = detectedTag == null ? 0 : detectedTag.ftcPose.range;
+        double launchRange = detectedTag == null ? LAUNCH_ANGLE : detectedTag.ftcPose.range;
         pixelStacklAprilTags.disableTagProcessing();
-        double launchPosition;
-        // 0 means use the default angle, we did not see the tag.
-        if (launchRange == 0) {
-            launchPosition = LAUNCHING_SERVO_POSITION;
-        } else {
-            launchPosition = getLaunchPosition(launchRange);
-        }
-
-        robotHardware.LaunchAngle.setPosition(launchPosition);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        // Set the launch angle
+        robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
         // Wait for the servo to move.
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         while (timer.milliseconds() <= 500) {
         }
 
-        robotHardware.DroneLaunch.setPosition(launchPosition);
+        robotHardware.DroneLaunch.setPosition(DRONE_LAUNCH_POSITION);
     }
 
     // Map the range to the tag to the angle range of the launcher.
     private double getLaunchPosition(double range) {
         return ((1 - ((range - 72) / (TAG_RANGE)) *
-                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
+                (LAUNCH_ANGLE - LAUNCH_WAITING_ANGLE)) + LAUNCH_WAITING_ANGLE);
     }
 
     /**
@@ -196,8 +191,10 @@ public class MotorControl {
         if (launchState == LaunchState.LAUNCH) {
             launch();
         }
+
         if (launchState == LaunchState.WAITING) {
-            robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
+            robotHardware.LaunchAngle.setPosition(LAUNCH_WAITING_ANGLE);
+            robotHardware.DroneLaunch.setPosition(DRONE_PARKED_POSITION);
         }
     }
 

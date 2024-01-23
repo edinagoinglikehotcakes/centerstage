@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -27,19 +28,13 @@ public class PixelStackAprilTags {
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
-    private OpMode opmode;
+    private HardwareMap thisHardwareMap;
 
     /**
-     * Use this constructor if your code has access to the hardware map.
+     * Pass in robothardware if used from an opMode.
      */
-    public PixelStackAprilTags() {
-    }
-
-    /**
-     * Pass in opMode if used from an opMode.
-     */
-    public PixelStackAprilTags(OpMode opMode) {
-        opmode = opMode;
+    public PixelStackAprilTags(HardwareMap hardwareMap) {
+        thisHardwareMap = hardwareMap;
     }
 
     public void init() {
@@ -132,15 +127,8 @@ public class PixelStackAprilTags {
         aprilTag.setDecimation(2);
 
         // Create the vision portal by using a builder.
-        WebcamName webcam1;
-        if (opmode == null) {
-            webcam1 = hardwareMap.get(WebcamName.class, "webcam1");
-        } else {
-            webcam1 = opmode.hardwareMap.get(WebcamName.class, "webcam1");
-        }
-
         visionPortal = new VisionPortal.Builder()
-                .setCamera(webcam1)
+                .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
                 .addProcessor(aprilTag)
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .build();
