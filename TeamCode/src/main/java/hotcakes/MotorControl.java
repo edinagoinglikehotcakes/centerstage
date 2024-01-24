@@ -10,19 +10,16 @@ public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
     private final double ARM_POWER = 0.5;
-    private final double GRIPPER_OPEN_VALUE = 0.6;
-    private final double GRIPPER_CLOSE_VALUE = 0.2;
+
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final int ARM_UP_TARGET_POSITION = 700;
-    private final int ARM_DOWN_TARGET_POSITION = 20;
-    private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
-    //    Drone launch servos
-    private final double LAUNCH_ANGLE = 0.4;
-    private final double LAUNCH_WAITING_ANGLE = 0.64;
-    private final double TAG_RANGE = 72;
-    private final double DRONE_LAUNCH_POSITION = .5;
-    private final double DRONE_PARKED_POSITION = 0;
+    private final int ARM_PICKUP_TARGET_POSITION = -460;
+    private final int ARM_DOWN_TARGET_POSITION = -40;
+    private final double SERVO_FLIPPER_DROP_POSITION = 0.45;
+    private final double SERVO_FLIPPER_DRIVE_POSITION = 0.4;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.575;
+    //    LAUNCH SERVO
+    private final double LAUNCHING_SERVO_POSITION = 0.4;
+    private final double WAITING_SERVO_POSITION = 0.64;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
@@ -71,7 +68,10 @@ public class MotorControl {
         RIGHT,
         BOTH,
     }
-
+ public enum GripperAngle {
+     PICKUP,
+        BACKSTAGE,
+ }
 
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
@@ -81,15 +81,17 @@ public class MotorControl {
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(ArmExtension armState) {
         if (armState == ArmExtension.UP) {
-            robotHardware.ArmMotor.setTargetPosition(ARM_UP_TARGET_POSITION);
+            robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
+            robotHardware.GripperAngle.setPosition(0.575);
 
         }
         if (armState == ArmExtension.DOWN) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
+            robotHardware.GripperAngle.setPosition(0.4);
         }
         if (armState == ArmExtension.NONE) {
             robotHardware.ArmMotor.setPower(0);
@@ -129,12 +131,12 @@ public class MotorControl {
     public void moveGripper(GripperState gripperState, GripperSelection gripperSelection) {
         if (gripperSelection == GripperSelection.BOTH) {
             if (gripperState == GripperState.OPEN) {
-                robotHardware.GripperLeft.setPosition(0.95);
-                robotHardware.GripperRight.setPosition(0.52);
+                robotHardware.GripperLeft.setPosition(0.75);
+                robotHardware.GripperRight.setPosition(0.1);
             }
             if (gripperState == GripperState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(0.85);
-                robotHardware.GripperRight.setPosition(0.42);
+                robotHardware.GripperLeft.setPosition(0.65);
+                robotHardware.GripperRight.setPosition(0.21);
             }
             return;
         }
@@ -197,7 +199,14 @@ public class MotorControl {
             robotHardware.DroneLaunch.setPosition(DRONE_PARKED_POSITION);
         }
     }
-
+public void flipGripper(GripperAngle gripperAngle) {
+        if (gripperAngle == GripperAngle.BACKSTAGE) {
+            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_DROP_POSITION);
+        }
+        if (gripperAngle == GripperAngle.PICKUP) {
+            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+}
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);

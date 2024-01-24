@@ -9,8 +9,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-
 public class RobotHardware {
     private OpMode myOpMode;
     public DcMotorEx Frontleft = null;
