@@ -127,12 +127,12 @@ public class MotorControl {
     public void moveGripper(GripperState gripperState, GripperSelection gripperSelection) {
         if (gripperSelection == GripperSelection.BOTH) {
             if (gripperState == GripperState.OPEN) {
-                robotHardware.GripperLeft.setPosition(0.95);
-                robotHardware.GripperRight.setPosition(0.52);
+                robotHardware.GripperLeft.setPosition(0.75);
+                robotHardware.GripperRight.setPosition(0.1);
             }
             if (gripperState == GripperState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(0.85);
-                robotHardware.GripperRight.setPosition(0.42);
+                robotHardware.GripperLeft.setPosition(0.65);
+                robotHardware.GripperRight.setPosition(0.21);
             }
             return;
         }
