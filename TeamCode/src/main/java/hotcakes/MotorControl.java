@@ -9,10 +9,11 @@ public class MotorControl {
     private final double ARM_POWER = 0.5;
 
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final int ARM_UP_TARGET_POSITION = 700;
-    private final int ARM_DOWN_TARGET_POSITION = 20;
-    private final double SERVO_FLIPPER_DROP_POSITION = 0;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.36;
+    private final int ARM_PICKUP_TARGET_POSITION = -460;
+    private final int ARM_DOWN_TARGET_POSITION = -40;
+    private final double SERVO_FLIPPER_DROP_POSITION = 0.45;
+    private final double SERVO_FLIPPER_DRIVE_POSITION = 0.4;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.575;
     //    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.4;
     private final double WAITING_SERVO_POSITION = 0.64;
@@ -76,15 +77,17 @@ public class MotorControl {
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(ArmExtension armState) {
         if (armState == ArmExtension.UP) {
-            robotHardware.ArmMotor.setTargetPosition(ARM_UP_TARGET_POSITION);
+            robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
+            robotHardware.GripperAngle.setPosition(0.575);
 
         }
         if (armState == ArmExtension.DOWN) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
+            robotHardware.GripperAngle.setPosition(0.4);
         }
         if (armState == ArmExtension.NONE) {
             robotHardware.ArmMotor.setPower(0);
