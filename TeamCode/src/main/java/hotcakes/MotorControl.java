@@ -63,7 +63,10 @@ public class MotorControl {
         RIGHT,
         BOTH,
     }
-
+ public enum GripperAngle {
+     PICKUP,
+        BACKSTAGE,
+ }
 
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
@@ -157,7 +160,14 @@ public class MotorControl {
             robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
-
+public void flipGripper(GripperAngle gripperAngle) {
+        if (gripperAngle == GripperAngle.BACKSTAGE) {
+            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_DROP_POSITION);
+        }
+        if (gripperAngle == GripperAngle.PICKUP) {
+            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+}
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);

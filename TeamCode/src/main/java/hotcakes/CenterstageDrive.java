@@ -119,12 +119,12 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
 //            Controls Gripper
-//            if (gamepad2.left_bumper) {
-//                motorControl.moveGripper(MotorControl.gripperCurrentState.CLOSE, MotorControl.GRIPPER_SELECTION.BOTH);
-//            }
-//            if (gamepad2.right_bumper) {
-//                motorControl.moveGripper(MotorControl.gripperCurrentState.OPEN, MotorControl.GRIPPER_SELECTION.BOTH);
-//            }
+            if (gamepad2.left_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
+            }
+            if (gamepad2.right_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
+            }
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
@@ -136,6 +136,12 @@ public class CenterstageDrive extends LinearOpMode {
             }
             if (triggerLeft.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
+            }
+            if (gamepad2.left_stick_y<0) {
+                motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
+            }
+            if (gamepad2.left_stick_y>0) {
+                motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
             }
 
 //              This line is the whole drive code from the Motor Control class
