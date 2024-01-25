@@ -20,6 +20,10 @@ public class MotorControl {
     //    LAUNCH SERVO
     private final double LAUNCHING_SERVO_POSITION = 0.4;
     private final double WAITING_SERVO_POSITION = 0.64;
+    private final double DEFAULT_LAUNCH_ANGLE = .4;
+    private final double DEFAULT_LAUNCH_RANGE = 72;
+    private final double TAG_RANGE = 72;
+    private double launchedAngle = 0;
     //    ARM POSITIONS
     private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
     private final double ARM_SERVO_HANG_POSITION = 0.1;
@@ -68,10 +72,11 @@ public class MotorControl {
         RIGHT,
         BOTH,
     }
- public enum GripperAngle {
-     PICKUP,
+
+    public enum GripperAngle {
+        PICKUP,
         BACKSTAGE,
- }
+    }
 
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
@@ -166,7 +171,7 @@ public class MotorControl {
         pixelStacklAprilTags = new PixelStackAprilTags(robotHardware.hardwareMap);
         pixelStacklAprilTags.init();
         AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
-        double launchRange = detectedTag == null ? LAUNCH_ANGLE : detectedTag.ftcPose.range;
+        double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
         pixelStacklAprilTags.disableTagProcessing();
         // Set the launch angle
         robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
@@ -175,13 +180,14 @@ public class MotorControl {
         while (timer.milliseconds() <= 500) {
         }
 
-        robotHardware.DroneLaunch.setPosition(DRONE_LAUNCH_POSITION);
+        // Launch!
+        robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
     }
 
     // Map the range to the tag to the angle range of the launcher.
     private double getLaunchPosition(double range) {
-        return ((1 - ((range - 72) / (TAG_RANGE)) *
-                (LAUNCH_ANGLE - LAUNCH_WAITING_ANGLE)) + LAUNCH_WAITING_ANGLE);
+        return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
+                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
     }
 
     /**
@@ -195,18 +201,20 @@ public class MotorControl {
         }
 
         if (launchState == LaunchState.WAITING) {
-            robotHardware.LaunchAngle.setPosition(LAUNCH_WAITING_ANGLE);
-            robotHardware.DroneLaunch.setPosition(DRONE_PARKED_POSITION);
+            robotHardware.LaunchAngle.setPosition(DEFAULT_LAUNCH_ANGLE);
+            robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
-public void flipGripper(GripperAngle gripperAngle) {
+
+    public void flipGripper(GripperAngle gripperAngle) {
         if (gripperAngle == GripperAngle.BACKSTAGE) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_DROP_POSITION);
         }
         if (gripperAngle == GripperAngle.PICKUP) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
         }
-}
+    }
+
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
