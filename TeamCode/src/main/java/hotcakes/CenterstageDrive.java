@@ -105,11 +105,11 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.UP);
             }
 
-            if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
+
+            if (gamepad1.dpad_up) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
-
-            if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
+            if (gamepad1.dpad_down) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.PICKUP);
             }
 
@@ -131,7 +131,9 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx.wasJustPressed(GamepadKeys.Button.X) && runtime.seconds() >= 90) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
-
+            if (gamepad2.y) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
+            }
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
