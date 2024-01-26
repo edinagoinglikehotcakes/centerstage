@@ -9,7 +9,7 @@ public class MotorControl {
     private final double ARM_POWER = 0.5;
 
     //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final int ARM_PICKUP_TARGET_POSITION = -460;
+    private final int ARM_PICKUP_TARGET_POSITION = -470;
     private final int ARM_DOWN_TARGET_POSITION = -40;
     private final double SERVO_FLIPPER_DROP_POSITION = 0.45;
     private final double SERVO_FLIPPER_DRIVE_POSITION = 0.4;
@@ -20,7 +20,7 @@ public class MotorControl {
     //    ARM POSITIONS
 
     private final double ARM_SERVO_Drive_POSITION = 0.2;
-    private final double ARM_SERVO_Pickup_POSITION = 0;
+    private final double ARM_SERVO_Pickup_POSITION = 0.05;
     private final double ARM_SERVO_Backdrop_POSITION = 0.35;
     //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 9000;
@@ -132,8 +132,8 @@ public class MotorControl {
                 robotHardware.GripperRight.setPosition(0.1);
             }
             if (gripperState == GripperState.CLOSE) {
-                robotHardware.GripperLeft.setPosition(0.65);
-                robotHardware.GripperRight.setPosition(0.21);
+                robotHardware.GripperLeft.setPosition(0.66);
+                robotHardware.GripperRight.setPosition(0.20);
             }
             return;
         }
