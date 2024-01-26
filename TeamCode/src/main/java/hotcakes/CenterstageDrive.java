@@ -109,10 +109,10 @@ public class CenterstageDrive extends LinearOpMode {
             }
 
 
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_up) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_down) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.PICKUP);
             }
             if (gamepad1.dpad_right) {

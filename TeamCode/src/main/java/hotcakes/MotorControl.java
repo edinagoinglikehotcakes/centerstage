@@ -18,9 +18,10 @@ public class MotorControl {
     private final double LAUNCHING_SERVO_POSITION = 0.4;
     private final double WAITING_SERVO_POSITION = 0.64;
     //    ARM POSITIONS
-    private final double ARM_SERVO_LAUNCH_POSITION = 0.18;
-    private final double ARM_SERVO_HANG_POSITION = 0.1;
-    private final double ARM_SERVO_NORMAL_POSITION = 0.3;
+
+    private final double ARM_SERVO_Drive_POSITION = 0.2;
+    private final double ARM_SERVO_Pickup_POSITION = 0;
+    private final double ARM_SERVO_Backdrop_POSITION = 0.35;
     //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 9000;
     private final double WINCH_MOTOR_POWER = 0.9;
@@ -97,13 +98,13 @@ public class MotorControl {
 
     public void changeArmAngle (ArmAngle armservostate) {
         if (armservostate == ArmAngle.PICKUP) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_HANG_POSITION);
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_Pickup_POSITION);
         }
         if (armservostate == ArmAngle.DRIVE) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_LAUNCH_POSITION);
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_Drive_POSITION);
         }
         if (armservostate == ArmAngle.BACKDROP) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_NORMAL_POSITION);
+            robotHardware.ArmAngle.setPosition(ARM_SERVO_Backdrop_POSITION);
         }
     }
 
