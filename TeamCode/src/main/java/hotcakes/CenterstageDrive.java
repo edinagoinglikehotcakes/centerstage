@@ -101,14 +101,7 @@ public class CenterstageDrive extends LinearOpMode {
 //           Controls for arm up/down
 
 
-            if (gamepad1.b) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.DOWN);
-            }
-            if (gamepad1.y) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.UP);
-            }
-
-
+//              Gamepad 1 changing the arm angles
             if (gamepad1.dpad_up) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
@@ -118,33 +111,45 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.dpad_right) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
-//            Controls Gripper
-            if (gamepad2.left_bumper) {
-                motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
-            }
-            if (gamepad2.right_bumper) {
-                motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
-            }
+//              Launching plane gamepad 1
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
             if (gamepad1.x) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
-            if (gamepad2.y) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
-            }
+//           Hanging gamepad 1
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
             if (triggerLeft.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
             }
-            if (gamepad2.left_stick_y<0) {
+//            Controls gripper flipping gamepad 2
+            if (gamepad2.dpad_up) {
                 motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
             }
-            if (gamepad2.left_stick_y>0) {
+            if (gamepad2.dpad_down) {
                 motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
+            }
+            //            Controls Gripper gamepad 2
+            if (gamepad2.left_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
+            }
+            if (gamepad2.right_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
+            }
+//            Controls backdrop arm extension gamepad 2
+            if (gamepad2.y) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
+            }
+//            Gamepad 2 arm extension for retracting
+            if (gamepad1.b) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
+            }
+//            arm extension for picking up
+            if (gamepad1.b) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
             }
 
 //              This line is the whole drive code from the Motor Control class

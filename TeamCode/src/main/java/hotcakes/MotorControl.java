@@ -42,10 +42,9 @@ public class MotorControl {
 
     //TODO Change Code
     public enum ArmExtension {
-        UP,
-        MIDDLE,
+        PICKUP,
         BACKDROP,
-        DOWN,
+        RETRACT,
         NONE,
 
     }
@@ -67,10 +66,11 @@ public class MotorControl {
         RIGHT,
         BOTH,
     }
- public enum GripperAngle {
-     PICKUP,
+
+    public enum GripperAngle {
+        PICKUP,
         BACKSTAGE,
- }
+    }
 
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
@@ -79,7 +79,7 @@ public class MotorControl {
 
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(ArmExtension armState) {
-        if (armState == ArmExtension.UP) {
+        if (armState == ArmExtension.PICKUP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
@@ -88,7 +88,7 @@ public class MotorControl {
             }
 
         }
-        if (armState == ArmExtension.DOWN) {
+        if (armState == ArmExtension.RETRACT) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
@@ -105,8 +105,9 @@ public class MotorControl {
         }
     }
 
-    public void changeArmAngle (ArmAngle armservostate) {
+    public void changeArmAngle(ArmAngle armservostate) {
         if (armservostate == ArmAngle.PICKUP) {
+            robotHardware.GripperAngle.setPosition(0.7);
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
             robotHardware.ArmAngle.setPosition(ARM_SERVO_Pickup_POSITION);
         }
@@ -151,18 +152,18 @@ public class MotorControl {
         }
         if (gripperSelection == GripperSelection.LEFT) {
             if (gripperState == GripperState.OPEN) {
-                robotHardware.GripperLeft.setPosition(0.95);
+                robotHardware.GripperLeft.setPosition(0.75);
             } else {
-                robotHardware.GripperLeft.setPosition(0.85);
+                robotHardware.GripperLeft.setPosition(0.66);
             }
             return;
         }
 
         if (gripperSelection == GripperSelection.RIGHT) {
             if (gripperState == GripperState.OPEN) {
-                robotHardware.GripperRight.setPosition(0.52);
+                robotHardware.GripperRight.setPosition(0.1);
             } else {
-                robotHardware.GripperRight.setPosition(0.42);
+                robotHardware.GripperRight.setPosition(0.2);
             }
             return;
         }
@@ -176,14 +177,16 @@ public class MotorControl {
             robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
-public void flipGripper(GripperAngle gripperAngle) {
+
+    public void flipGripper(GripperAngle gripperAngle) {
         if (gripperAngle == GripperAngle.BACKSTAGE) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_DROP_POSITION);
         }
         if (gripperAngle == GripperAngle.PICKUP) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
         }
-}
+    }
+
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
         double denominator = Math.max(Math.abs(lateral) + Math.abs(axial) + Math.abs(yaw), 1);
