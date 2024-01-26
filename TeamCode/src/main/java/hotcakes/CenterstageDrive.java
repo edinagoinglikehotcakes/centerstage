@@ -131,6 +131,9 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.x) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
+            if (gamepad2.y) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
+            }
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
