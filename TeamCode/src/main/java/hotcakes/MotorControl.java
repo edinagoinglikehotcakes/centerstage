@@ -191,7 +191,7 @@ public enum LaunchAngle {
     }
     public void changeLaunchAngle(LaunchAngle launchAngle) {
         if (launchAngle == LaunchAngle.LAUNCH) {
-            robotHardware.LaunchAngle.setPosition(0.3);
+            robotHardware.LaunchAngle.setPosition(0.4);
         }
         if (launchAngle == LaunchAngle.WAITING) {
             robotHardware.LaunchAngle.setPosition(0);
