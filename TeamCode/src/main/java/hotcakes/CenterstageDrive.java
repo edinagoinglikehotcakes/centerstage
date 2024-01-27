@@ -144,14 +144,17 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
             }
 //            Gamepad 2 arm extension for retracting
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
             }
 //            arm extension for picking up
-            if (gamepad1.b) {
+            if (gamepad2.x) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
             }
-
+//            CHANGE LAUNCH ANGLE
+            if (gamepad1.start) {
+                motorControl.changeLaunchAngle(MotorControl.LaunchAngle.LAUNCH);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
             // Show the elapsed game time and wheel power.

@@ -71,7 +71,10 @@ public class MotorControl {
         PICKUP,
         BACKSTAGE,
     }
-
+public enum LaunchAngle {
+        LAUNCH,
+        WAITING,
+}
     public MotorControl(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
     }
@@ -184,6 +187,14 @@ public class MotorControl {
         }
         if (gripperAngle == GripperAngle.PICKUP) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+    }
+    public void changeLaunchAngle(LaunchAngle launchAngle) {
+        if (launchAngle == LaunchAngle.LAUNCH) {
+            robotHardware.LaunchAngle.setPosition(0.3);
+        }
+        if (launchAngle == LaunchAngle.WAITING) {
+            robotHardware.LaunchAngle.setPosition(0);
         }
     }
 
