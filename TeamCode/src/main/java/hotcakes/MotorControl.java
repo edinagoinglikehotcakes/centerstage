@@ -56,6 +56,10 @@ public class MotorControl {
         DRIVE,
         BACKDROP,
     }
+    public enum LaunchAngle {
+        LAUNCH,
+        WAIT,
+    }
 
     public enum GripperState {
         OPEN,
@@ -182,6 +186,14 @@ public void flipGripper(GripperAngle gripperAngle) {
         }
         if (gripperAngle == GripperAngle.PICKUP) {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
+        }
+}
+public void setLaunchPosition (LaunchAngle launchAngle) {
+        if (launchAngle == LaunchAngle.WAIT) {
+            robotHardware.LaunchAngle.setPosition(1);
+        }
+        if (launchAngle == LaunchAngle.LAUNCH) {
+            robotHardware.LaunchAngle.setPosition(0);
         }
 }
     public void drive(double axial, double lateral, double yaw, double maxPower) {
