@@ -98,14 +98,9 @@ public class CenterstageDrive extends LinearOpMode {
                 maxPower = 0.9;
             }
 //           Controls for arm up/down
-            if (gamePadEx.wasJustPressed(GamepadKeys.Button.B)) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.DOWN);
-            }
-            if (gamePadEx.wasJustPressed(GamepadKeys.Button.Y)) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.UP);
-            }
 
 
+//              Gamepad 1 changing the arm angles
             if (gamepad1.dpad_up) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
@@ -116,13 +111,7 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
-//            Controls Gripper
-            if (gamepad2.left_bumper) {
-                motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
-            }
-            if (gamepad2.right_bumper) {
-                motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
-            }
+//              Launching plane gamepad 1
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
@@ -131,9 +120,7 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx.wasJustPressed(GamepadKeys.Button.X) && runtime.seconds() >= 90) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
-            if (gamepad2.y) {
-                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
-            }
+//           Hanging gamepad 1
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
@@ -141,13 +128,39 @@ public class CenterstageDrive extends LinearOpMode {
             if (triggerLeft.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
             }
-            if (gamepad2.left_stick_y<0) {
+//            Controls gripper flipping gamepad 2
+            if (gamepad2.dpad_up) {
                 motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
             }
-            if (gamepad2.left_stick_y>0) {
+            if (gamepad2.dpad_down) {
                 motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
             }
-
+            //            Controls Gripper gamepad 2
+            if (gamepad2.left_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
+            }
+            if (gamepad2.right_bumper) {
+                motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
+            }
+//            Controls backdrop arm extension gamepad 2
+            if (gamepad2.y) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
+            }
+//            Gamepad 2 arm extension for retracting
+            if (gamepad2.b) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
+            }
+//            arm extension for picking up
+            if (gamepad2.x) {
+                motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
+            }
+//            CHANGE LAUNCH ANGLE
+            if (gamepad1.start) {
+                motorControl.changeLaunchAngle(MotorControl.LaunchAngle.LAUNCH);
+            }
+            if (gamepad1.back) {
+                motorControl.changeLaunchAngle(MotorControl.LaunchAngle.WAITING);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
             // Show the elapsed game time and wheel power.
