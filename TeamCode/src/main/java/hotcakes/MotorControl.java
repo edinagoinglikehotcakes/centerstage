@@ -10,8 +10,7 @@ public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
     private final double ARM_POWER = 0.5;
-
-    //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
+    //TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
     private final int ARM_PICKUP_TARGET_POSITION = -470;
     private final int ARM_DOWN_TARGET_POSITION = -40;
     private final int ARM_BACKDROP_TARGET_POSITION = -1050;
@@ -26,7 +25,6 @@ public class MotorControl {
     private final double TAG_RANGE = 72;
     private double launchedAngle = 0;
     //    ARM POSITIONS
-
     private final double ARM_SERVO_Drive_POSITION = 0.2;
     private final double ARM_SERVO_Pickup_POSITION = 0.03;
     private final double ARM_SERVO_Backdrop_POSITION = 0.35;
@@ -54,7 +52,6 @@ public class MotorControl {
         BACKDROP,
         RETRACT,
         NONE,
-
     }
 
     //TODO Change Code
@@ -87,17 +84,16 @@ public enum LaunchAngle {
         this.robotHardware = robotHardware;
     }
 
-
     //    ARM MOVEMENT FOR UP AND DOWN
     public void mobilizeArm(ArmExtension armState) {
         if (armState == ArmExtension.PICKUP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
+            //TODO: Servo positions are not accurate. != a specific value can be a problem.
             if (robotHardware.GripperAngle.getPosition() != 0.56) {
                 robotHardware.GripperAngle.setPosition(0.575);
             }
-
         }
         if (armState == ArmExtension.RETRACT) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
@@ -116,32 +112,31 @@ public enum LaunchAngle {
         }
     }
 
-    public void changeArmAngle(ArmAngle armservostate) {
-        if (armservostate == ArmAngle.PICKUP) {
+    public void changeArmAngle(ArmAngle armServoState) {
+        if (armServoState == ArmAngle.PICKUP) {
             robotHardware.GripperAngle.setPosition(0.7);
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
             robotHardware.ArmAngle.setPosition(ARM_SERVO_Pickup_POSITION);
         }
-        if (armservostate == ArmAngle.DRIVE) {
+        if (armServoState == ArmAngle.DRIVE) {
             robotHardware.ArmAngle.setPosition(ARM_SERVO_Drive_POSITION);
             robotHardware.GripperAngle.setPosition(0.9);
         }
-        if (armservostate == ArmAngle.BACKDROP) {
+        if (armServoState == ArmAngle.BACKDROP) {
             robotHardware.ArmAngle.setPosition(ARM_SERVO_Backdrop_POSITION);
             robotHardware.GripperAngle.setPosition(0.56);
         }
     }
 
-    public void hangRobot(HangState hangstate) {
-        if (hangstate == HangState.HANGING) {
+    public void hangRobot(HangState hangState) {
+        if (hangState == HangState.HANGING) {
             robotHardware.HangMotor.setTargetPosition(WINCH_HANG_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
             ((PwmControl) robotHardware.ArmAngle).setPwmDisable();
             robotHardware.ArmMotor.setPower(0);
-
         }
-        if (hangstate == HangState.DOWN) {
+        if (hangState == HangState.DOWN) {
             robotHardware.HangMotor.setTargetPosition(WINCH_DOWN_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
@@ -161,6 +156,7 @@ public enum LaunchAngle {
             }
             return;
         }
+
         if (gripperSelection == GripperSelection.LEFT) {
             if (gripperState == GripperState.OPEN) {
                 robotHardware.GripperLeft.setPosition(0.75);
@@ -176,7 +172,6 @@ public enum LaunchAngle {
             } else {
                 robotHardware.GripperRight.setPosition(0.2);
             }
-            return;
         }
     }
 
@@ -230,6 +225,12 @@ public enum LaunchAngle {
             robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
         }
     }
+
+    /**
+     * This is only needed for testing angles.
+     * The launchPlane() method is used in end game.
+     * @param launchAngle
+     */
     public void changeLaunchAngle(LaunchAngle launchAngle) {
         if (launchAngle == LaunchAngle.LAUNCH) {
             robotHardware.LaunchAngle.setPosition(0.3);
