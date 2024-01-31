@@ -158,6 +158,9 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.back) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.WAITING);
             }
+            if (gamepad2.start) {
+                motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
+            }
 //              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
             // Show the elapsed game time and wheel power.

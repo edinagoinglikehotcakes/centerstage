@@ -2,6 +2,8 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PwmControl;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MotorControl {
     //    set limits
@@ -12,6 +14,7 @@ public class MotorControl {
     private final int ARM_PICKUP_TARGET_POSITION = -470;
     private final int ARM_DOWN_TARGET_POSITION = -40;
     private final int ARM_BACKDROP_TARGET_POSITION = -1050;
+    private final double DEFAULT_LAUNCH_RANGE = 72;
     private final double SERVO_FLIPPER_DROP_POSITION = 0.45;
     private final double SERVO_FLIPPER_DRIVE_POSITION = 0.4;
     private final double SERVO_FLIPPER_PICKUP_POSITION = 0.575;
@@ -28,6 +31,10 @@ public class MotorControl {
     private final double WINCH_MOTOR_POWER = 0.9;
     private final int WINCH_DOWN_POSITION = 3500;
     private RobotHardware robotHardware;
+    private PixelStackAprilTags pixelStacklAprilTags = null;
+    private final double DEFAULT_LAUNCH_ANGLE = .4;
+
+    private final double TAG_RANGE = 72;
 
     //    Which direction the arm is currently going
     public enum LaunchState {
@@ -172,11 +179,13 @@ public enum LaunchAngle {
         }
     }
 
-    public void launchPlane(LaunchState launchstate) {
-        if (launchstate == LaunchState.LAUNCH) {
-            robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
+    public void launchPlane(LaunchState launchState) {
+        if (launchState == LaunchState.LAUNCH) {
+            launch();
         }
-        if (launchstate == LaunchState.WAITING) {
+
+        if (launchState == LaunchState.WAITING) {
+            robotHardware.LaunchAngle.setPosition(DEFAULT_LAUNCH_ANGLE);
             robotHardware.DroneLaunch.setPosition(WAITING_SERVO_POSITION);
         }
     }
@@ -197,6 +206,28 @@ public enum LaunchAngle {
             robotHardware.LaunchAngle.setPosition(0);
         }
     }
+    private void launch() {
+        pixelStacklAprilTags = new PixelStackAprilTags(robotHardware.myOpMode.hardwareMap);
+        pixelStacklAprilTags.init();
+        AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
+        double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
+        pixelStacklAprilTags.disableTagProcessing();
+        // Set the launch angle
+        robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
+        // Wait for the servo to move.
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        while (timer.milliseconds() <= 500) {
+        }
+
+        // Launch!
+        robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
+    }
+    private double getLaunchPosition(double range) {
+        return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
+                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
+    }
+
+
 
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.

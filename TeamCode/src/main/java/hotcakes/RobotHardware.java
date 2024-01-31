@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
-    private OpMode myOpMode;
+    public OpMode myOpMode;
     public DcMotorEx Frontleft = null;
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
