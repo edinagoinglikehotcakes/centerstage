@@ -16,9 +16,9 @@ public class RobotHardware {
     public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public DcMotorEx HangMotor = null;
+    public DcMotorEx ArmAngle = null;
     public Servo GripperLeft = null;
     public Servo GripperRight = null;
-    public Servo ArmAngle = null;
     public Servo DroneLaunch = null;
     public Servo LaunchAngle = null;
     public Servo GripperAngle = null;
@@ -35,7 +35,6 @@ public class RobotHardware {
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
         GripperAngle = myOpMode.hardwareMap.get(Servo.class, "gripperangle");
         DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchservo");
-        ArmAngle = myOpMode.hardwareMap.get(Servo.class, "armservo");
         LaunchAngle = myOpMode.hardwareMap.get(Servo.class, "launchangle");
 
 
@@ -46,16 +45,20 @@ public class RobotHardware {
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
         ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
         HangMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Hangmotor");
+        ArmAngle = myOpMode.hardwareMap.get(DcMotorEx.class, "Armangle");
 
         ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         HangMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        ArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         //TODO Default to built-in PIDF. Tune this if needed.
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+        ArmAngle.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmAngle.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+
 //        TODO test direction of motors
 
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);

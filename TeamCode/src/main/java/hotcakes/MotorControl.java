@@ -2,8 +2,9 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PwmControl;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 public class MotorControl {
     //    set limits
@@ -22,10 +23,8 @@ public class MotorControl {
     private final double LAUNCHING_SERVO_POSITION = 0.35;
     private final double WAITING_SERVO_POSITION = 0.62;
     //    ARM POSITIONS
+    private final double ARM_ANGLE_MOTOR_POWER = 0.9;
 
-    private final double ARM_SERVO_Drive_POSITION = 0.2;
-    private final double ARM_SERVO_Pickup_POSITION = 0.03;
-    private final double ARM_SERVO_Backdrop_POSITION = 0.35;
     //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 9000;
     private final double WINCH_MOTOR_POWER = 0.9;
@@ -35,6 +34,7 @@ public class MotorControl {
     private final double DEFAULT_LAUNCH_ANGLE = .4;
 
     private final double TAG_RANGE = 72;
+
 
     //    Which direction the arm is currently going
     public enum LaunchState {
@@ -93,8 +93,8 @@ public enum LaunchAngle {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
-            if (robotHardware.GripperAngle.getPosition() != 0.3) {
-                robotHardware.GripperAngle.setPosition(0.35);
+            if (robotHardware.GripperAngle.getPosition() != 0.18) {
+                robotHardware.GripperAngle.setPosition(0.23);
             }
 
         }
@@ -102,7 +102,7 @@ public enum LaunchAngle {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
-            robotHardware.GripperAngle.setPosition(0.2);
+            robotHardware.GripperAngle.setPosition(0.08);
         }
         if (armState == ArmExtension.BACKDROP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_BACKDROP_TARGET_POSITION);
@@ -115,18 +115,24 @@ public enum LaunchAngle {
         }
     }
 
-    public void changeArmAngle(ArmAngle armservostate) {
-        if (armservostate == ArmAngle.PICKUP) {
-            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Pickup_POSITION);
+    public void changeArmAngle(ArmAngle armanglestate) {
+        if (armanglestate == ArmAngle.PICKUP) {
+            robotHardware.GripperAngle.setPosition(0.23);
+            robotHardware.ArmAngle.setTargetPosition(35);
+            robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmAngle.setPower(0.5);
         }
-        if (armservostate == ArmAngle.DRIVE) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Drive_POSITION);
-            robotHardware.GripperAngle.setPosition(0.35);
+        if (armanglestate == ArmAngle.DRIVE) {
+            robotHardware.ArmAngle.setTargetPosition(500);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.GripperAngle.setPosition(0.23);
         }
-        if (armservostate == ArmAngle.BACKDROP) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Backdrop_POSITION);
-            robotHardware.GripperAngle.setPosition(0.3);
+        if (armanglestate == ArmAngle.BACKDROP) {
+            robotHardware.ArmAngle.setTargetPosition(800);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.GripperAngle.setPosition(0.19);
         }
     }
 
