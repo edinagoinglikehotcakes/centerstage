@@ -77,6 +77,8 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.Backright.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robotHardware.ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             gamePadEx1.readButtons();
@@ -165,15 +167,17 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx1.wasJustPressed(GamepadKeys.Button.BACK)) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.WAITING);
             }
-
-            // This line is the whole drive code from the Motor Control class
+            if (gamepad2.start) {
+                motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
+            }
+//              This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
             // Show robot status.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
             telemetry.addData("right stick value", gamepad2.right_stick_y);
             telemetry.addData("left stick value", gamepad2.left_stick_y);
-            telemetry.addData("Arm servo position", robotHardware.ArmAngle.getPosition());
+            telemetry.addData("Arm servo position", robotHardware.ArmAngle.getCurrentPosition());
             telemetry.addData("Winch motor position", robotHardware.HangMotor.getCurrentPosition());
 //            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
 //            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());

@@ -1,9 +1,5 @@
 package hotcakes;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -31,7 +27,8 @@ public class PixelStackAprilTags {
     private HardwareMap thisHardwareMap;
 
     /**
-     * Pass in robothardware if used from an opMode.
+     * Pass in the hardware map to find the camera for the VisionPortal.
+     * @param hardwareMap
      */
     public PixelStackAprilTags(HardwareMap hardwareMap) {
         thisHardwareMap = hardwareMap;
@@ -100,7 +97,6 @@ public class PixelStackAprilTags {
                     break;  // don't look any further.
                 }
             }
-
         }
 
         return desiredTag;
@@ -128,7 +124,7 @@ public class PixelStackAprilTags {
 
         // Create the vision portal by using a builder.
         visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
+                .setCamera(thisHardwareMap.get(WebcamName.class, "webcam1"))
                 .addProcessor(aprilTag)
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .build();

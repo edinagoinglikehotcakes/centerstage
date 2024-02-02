@@ -10,17 +10,16 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
-    private OpMode myOpMode;
-    public IMU imu = null;
+    public OpMode myOpMode;
     public DcMotorEx Frontleft = null;
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
     public DcMotorEx ArmMotor = null;
     public DcMotorEx HangMotor = null;
+    public DcMotorEx ArmAngle = null;
     public Servo GripperLeft = null;
     public Servo GripperRight = null;
-    public Servo ArmAngle = null;
     public Servo DroneLaunch = null;
     public Servo LaunchAngle = null;
     public Servo GripperAngle = null;
@@ -37,7 +36,6 @@ public class RobotHardware {
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
         GripperAngle = myOpMode.hardwareMap.get(Servo.class, "gripperangle");
         DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchservo");
-        ArmAngle = myOpMode.hardwareMap.get(Servo.class, "armservo");
         LaunchAngle = myOpMode.hardwareMap.get(Servo.class, "launchangle");
 
         // MOTORS
@@ -45,16 +43,23 @@ public class RobotHardware {
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
         Backright = myOpMode.hardwareMap.get(DcMotorEx.class, "Backright");
+        ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
+        HangMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Hangmotor");
+        ArmAngle = myOpMode.hardwareMap.get(DcMotorEx.class, "Armangle");
 
-        //TODO Set new PID control for drive motors. See if this helps driving
-        Frontleft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
-                Frontleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-        Frontright.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
-                Frontright.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-        Backleft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
-                Backleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
-        Backright.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,
-                Backleft.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER));
+        ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        HangMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        ArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        //TODO Default to built-in PIDF. Tune this if needed.
+        ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+        HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+        ArmAngle.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmAngle.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
+
+//        TODO test direction of motors
 
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);

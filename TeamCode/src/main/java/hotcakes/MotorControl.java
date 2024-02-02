@@ -10,30 +10,31 @@ public class MotorControl {
     //    set limits
     private final int ARM_LIMIT = -2180;
     private final double ARM_POWER = 0.5;
-    //TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final int ARM_PICKUP_TARGET_POSITION = -470;
+
+    //    TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
+    private final int ARM_PICKUP_TARGET_POSITION = -480;
     private final int ARM_DOWN_TARGET_POSITION = -40;
     private final int ARM_BACKDROP_TARGET_POSITION = -1050;
+    private final double DEFAULT_LAUNCH_RANGE = 72;
     private final double SERVO_FLIPPER_DROP_POSITION = 0.45;
     private final double SERVO_FLIPPER_DRIVE_POSITION = 0.4;
-    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.575;
+    private final double SERVO_FLIPPER_PICKUP_POSITION = 0.35;
     //    LAUNCH SERVO
-    private final double LAUNCHING_SERVO_POSITION = 0.4;
-    private final double WAITING_SERVO_POSITION = 0.64;
-    private final double DEFAULT_LAUNCH_ANGLE = .4;
-    private final double DEFAULT_LAUNCH_RANGE = 72;
-    private final double TAG_RANGE = 72;
-    private double launchedAngle = 0;
+    private final double LAUNCHING_SERVO_POSITION = 0.35;
+    private final double WAITING_SERVO_POSITION = 0.62;
     //    ARM POSITIONS
-    private final double ARM_SERVO_Drive_POSITION = 0.2;
-    private final double ARM_SERVO_Pickup_POSITION = 0.03;
-    private final double ARM_SERVO_Backdrop_POSITION = 0.35;
+    private final double ARM_ANGLE_MOTOR_POWER = 0.9;
+
     //    WINCH POSITIONS
     private final int WINCH_HANG_POSITION = 9000;
     private final double WINCH_MOTOR_POWER = 0.9;
     private final int WINCH_DOWN_POSITION = 3500;
     private RobotHardware robotHardware;
     private PixelStackAprilTags pixelStacklAprilTags = null;
+    private final double DEFAULT_LAUNCH_ANGLE = .4;
+
+    private final double TAG_RANGE = 72;
+
 
     //    Which direction the arm is currently going
     public enum LaunchState {
@@ -90,16 +91,15 @@ public enum LaunchAngle {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
-            //TODO: Servo positions are not accurate. != a specific value can be a problem.
-            if (robotHardware.GripperAngle.getPosition() != 0.56) {
-                robotHardware.GripperAngle.setPosition(0.575);
+            if (robotHardware.GripperAngle.getPosition() != 0.18) {
+                robotHardware.GripperAngle.setPosition(0.23);
             }
         }
         if (armState == ArmExtension.RETRACT) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
-            robotHardware.GripperAngle.setPosition(0.4);
+            robotHardware.GripperAngle.setPosition(0.08);
         }
         if (armState == ArmExtension.BACKDROP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_BACKDROP_TARGET_POSITION);
@@ -112,19 +112,24 @@ public enum LaunchAngle {
         }
     }
 
-    public void changeArmAngle(ArmAngle armServoState) {
-        if (armServoState == ArmAngle.PICKUP) {
-            robotHardware.GripperAngle.setPosition(0.7);
-            robotHardware.GripperAngle.setPosition(SERVO_FLIPPER_PICKUP_POSITION);
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Pickup_POSITION);
+    public void changeArmAngle(ArmAngle armanglestate) {
+        if (armanglestate == ArmAngle.PICKUP) {
+            robotHardware.GripperAngle.setPosition(0.23);
+            robotHardware.ArmAngle.setTargetPosition(35);
+            robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmAngle.setPower(0.5);
         }
-        if (armServoState == ArmAngle.DRIVE) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Drive_POSITION);
-            robotHardware.GripperAngle.setPosition(0.9);
+        if (armanglestate == ArmAngle.DRIVE) {
+            robotHardware.ArmAngle.setTargetPosition(500);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.GripperAngle.setPosition(0.23);
         }
-        if (armServoState == ArmAngle.BACKDROP) {
-            robotHardware.ArmAngle.setPosition(ARM_SERVO_Backdrop_POSITION);
-            robotHardware.GripperAngle.setPosition(0.56);
+        if (armanglestate == ArmAngle.BACKDROP) {
+            robotHardware.ArmAngle.setTargetPosition(800);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.GripperAngle.setPosition(0.19);
         }
     }
 
@@ -175,37 +180,6 @@ public enum LaunchAngle {
         }
     }
 
-    /*
-        Look for the april tag and launch the drone.
-     */
-    private void launch() {
-        pixelStacklAprilTags = new PixelStackAprilTags(robotHardware.hardwareMap);
-        pixelStacklAprilTags.init();
-        AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
-        double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
-        pixelStacklAprilTags.disableTagProcessing();
-        // Set the launch angle
-        robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
-        // Wait for the servo to move.
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while (timer.milliseconds() <= 500) {
-        }
-
-        // Launch!
-        robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
-    }
-
-    // Map the range to the tag to the angle range of the launcher.
-    private double getLaunchPosition(double range) {
-        return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
-                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
-    }
-
-    /**
-     * Launch the plane or move the launcher to waiting state.
-     *
-     * @param launchState - Launch or Waiting.
-     */
     public void launchPlane(LaunchState launchState) {
         if (launchState == LaunchState.LAUNCH) {
             launch();
@@ -233,12 +207,34 @@ public enum LaunchAngle {
      */
     public void changeLaunchAngle(LaunchAngle launchAngle) {
         if (launchAngle == LaunchAngle.LAUNCH) {
-            robotHardware.LaunchAngle.setPosition(0.3);
+            robotHardware.LaunchAngle.setPosition(0.5);
         }
         if (launchAngle == LaunchAngle.WAITING) {
             robotHardware.LaunchAngle.setPosition(0);
         }
     }
+    private void launch() {
+        pixelStacklAprilTags = new PixelStackAprilTags(robotHardware.myOpMode.hardwareMap);
+        pixelStacklAprilTags.init();
+        AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
+        double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
+        pixelStacklAprilTags.disableTagProcessing();
+        // Set the launch angle
+        robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
+        // Wait for the servo to move.
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        while (timer.milliseconds() <= 500) {
+        }
+
+        // Launch!
+        robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
+    }
+    private double getLaunchPosition(double range) {
+        return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
+                (LAUNCHING_SERVO_POSITION - WAITING_SERVO_POSITION)) + WAITING_SERVO_POSITION);
+    }
+
+
 
     public void drive(double axial, double lateral, double yaw, double maxPower) {
         // Combine the joystick requests for each axis-motion to determine each wheel's power.
