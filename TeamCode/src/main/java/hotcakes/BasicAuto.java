@@ -116,7 +116,7 @@ public class BasicAuto extends OpMode {
                     placePropOnSpike();
                 }
 
-                currentAutoState = AutoState.DELAY;
+                currentAutoState = AutoState.BACKSTAGE;
                 break;
             case DELAY:
                 if (autonomousConfiguration.getDelayStartSeconds() > 0) {
