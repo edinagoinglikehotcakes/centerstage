@@ -113,12 +113,15 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.dpad_right) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
+            if (gamepad1.dpad_left) {
+                motorControl.changeArmAngle(MotorControl.ArmAngle.MAXANGLE);
+            }
 //              Launching plane gamepad 1
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
             if (gamepad1.x) {
-                motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
+                robotHardware.DroneLaunch.setPosition(0.35);
             }
 //           Hanging gamepad 1
             if (triggerRight.wasJustPressed()) {
