@@ -93,15 +93,15 @@ public enum LaunchAngle {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
-            if (robotHardware.GripperAngle.getPosition() != 0.188) {
-                robotHardware.GripperAngle.setPosition(0.25);
+            if (robotHardware.GripperAngle.getPosition() != 0.193) {
+                robotHardware.GripperAngle.setPosition(0.30);
             }
         }
         if (armState == ArmExtension.RETRACT) {
             robotHardware.ArmMotor.setTargetPosition(ARM_DOWN_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(-ARM_POWER);
-            robotHardware.GripperAngle.setPosition(0.08);
+            robotHardware.GripperAngle.setPosition(0.13);
         }
         if (armState == ArmExtension.BACKDROP) {
             robotHardware.ArmMotor.setTargetPosition(ARM_BACKDROP_TARGET_POSITION);
@@ -116,7 +116,7 @@ public enum LaunchAngle {
 
     public void changeArmAngle(ArmAngle armanglestate) {
         if (armanglestate == ArmAngle.PICKUP) {
-            robotHardware.GripperAngle.setPosition(0.25);
+            robotHardware.GripperAngle.setPosition(0.3);
             robotHardware.ArmAngle.setTargetPosition(35);
             robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmAngle.setPower(0.5);
@@ -125,19 +125,19 @@ public enum LaunchAngle {
             robotHardware.ArmAngle.setTargetPosition(600);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
-            robotHardware.GripperAngle.setPosition(0.29);
+            robotHardware.GripperAngle.setPosition(0.34);
         }
         if (armanglestate == ArmAngle.BACKDROP) {
             robotHardware.ArmAngle.setTargetPosition(735);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
-            robotHardware.GripperAngle.setPosition(0.188);
+            robotHardware.GripperAngle.setPosition(0.193);
         }
         if (armanglestate == ArmAngle.MAXANGLE) {
             robotHardware.ArmAngle.setTargetPosition(770);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
-            robotHardware.GripperAngle.setPosition(0.188);
+            robotHardware.GripperAngle.setPosition(0.193);
         }
     }
 
