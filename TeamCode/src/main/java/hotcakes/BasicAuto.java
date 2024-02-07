@@ -160,8 +160,9 @@ public class BasicAuto extends OpMode {
                         case LEFT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .splineToConstantHeading(new Vector2d(-56, -41), Math.toRadians(120))
+                                            .splineToConstantHeading(new Vector2d(-46, -35), Math.toRadians(90))
                                             .lineToY(-55)
+                                            .turn(Math.toRadians(90))
                                             .build());
                             break;
                         case MIDDLE:
