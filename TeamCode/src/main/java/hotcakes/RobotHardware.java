@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
     public OpMode myOpMode;
+    public IMU imu;
     public DcMotorEx Frontleft = null;
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
@@ -31,6 +32,7 @@ public class RobotHardware {
     }
 
     public void init() {
+        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
         // SERVOS
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
@@ -58,8 +60,6 @@ public class RobotHardware {
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         ArmAngle.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmAngle.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
-
-//        TODO test direction of motors
 
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);

@@ -48,6 +48,10 @@ public class ArmLift {
         }
     }
 
+    public Action LiftBackDropAngle() {
+        return new LiftBackDropAngle();
+    }
+
     public class LiftDriveAngle implements Action {
 
         @Override
@@ -56,12 +60,20 @@ public class ArmLift {
         }
     }
 
+    public Action LiftDriveAngle() {
+        return new LiftDriveAngle();
+    }
+
     public class LiftMaxAngle implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             return false;
         }
+    }
+
+    public Action LiftMaxAngle() {
+        return new LiftMaxAngle();
     }
 }
 

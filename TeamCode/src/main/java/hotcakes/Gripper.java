@@ -5,8 +5,14 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
-public class ArmExtension {
-    public class ArmPickup implements Action {
+public class Gripper {
+    private RobotHardware robotHardware;
+
+    public Gripper(RobotHardware robotHardware) {
+        this.robotHardware = robotHardware;
+    }
+
+    public class GripperLeftOpen implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -14,11 +20,11 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmPickup() {
-        return new ArmPickup();
+    public Action GripperLeftOpen() {
+        return new GripperLeftOpen();
     }
 
-    public class ArmBackDrop implements Action {
+    public class GripperLeftClose implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -26,11 +32,11 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmBackDrop() {
-        return new ArmBackDrop();
+    public Action GripperLeftClose() {
+        return new GripperLeftClose();
     }
 
-    public class ArmRetract implements Action {
+    public class GripperRightOpen implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -38,11 +44,11 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmRetract() {
-        return new ArmRetract();
+    public Action GripperRightOpen() {
+        return new GripperRightOpen();
     }
 
-    public class ArmNone implements Action {
+    public class GripperRightClose implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -50,7 +56,7 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmNone() {
-        return new ArmNone();
+    public Action GripperRightClose() {
+        return new GripperRightClose();
     }
 }

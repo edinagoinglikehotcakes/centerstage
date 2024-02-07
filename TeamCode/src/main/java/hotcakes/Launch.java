@@ -5,8 +5,14 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
-public class ArmExtension {
-    public class ArmPickup implements Action {
+public class Launch {
+    private RobotHardware robotHardware;
+
+    public Launch(RobotHardware robotHardware) {
+        this.robotHardware = robotHardware;
+    }
+
+    public class LaunchDrone implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -14,11 +20,11 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmPickup() {
-        return new ArmPickup();
+    public Action LaunchDrone() {
+        return new LaunchDrone();
     }
 
-    public class ArmBackDrop implements Action {
+    public class LaunchRest implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -26,11 +32,11 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmBackDrop() {
-        return new ArmBackDrop();
+    public Action LaunchRest() {
+        return new LaunchRest();
     }
 
-    public class ArmRetract implements Action {
+    public class LaunchAngleWaiting implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -38,19 +44,18 @@ public class ArmExtension {
         }
     }
 
-    public Action ArmRetract() {
-        return new ArmRetract();
+    public Action LaunchAngleRest() {
+        return new LaunchAngleWaiting();
     }
 
-    public class ArmNone implements Action {
+    public class LaunchAngle implements Action{
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             return false;
         }
     }
-
-    public Action ArmNone() {
-        return new ArmNone();
+    public Action LaunchAngle(){
+        return new LaunchAngle();
     }
 }
