@@ -160,27 +160,24 @@ public class BasicAuto extends OpMode {
                         case LEFT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .splineToConstantHeading(new Vector2d(-46, -35), Math.toRadians(90))
-                                            .lineToY(-55)
-                                            .turn(Math.toRadians(90))
+                                            .splineToConstantHeading(new Vector2d(-46, -40), Math.toRadians(90))
+                                            .lineToY(-58)
                                             .build());
                             break;
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-35)
-                                            .lineToY(-55)
+                                            .lineToY(-40)
+                                            .lineToY(-58)
                                             .build());
                             break;
                         case RIGHT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
                                             .lineToY(-37)
-                                            .turn(Math.toRadians(-45))
-                                            .splineToConstantHeading(new Vector2d(-32, -35), Math.toRadians(45))
-                                            .splineToConstantHeading(new Vector2d(-36,-35), Math.toRadians(45))
-                                            .turn(Math.toRadians(45))
-                                            .lineToY(-58)
+                                            .splineTo(new Vector2d(-30, -37), Math.toRadians(90))
+                                            .lineToX(-35)
+                                            .strafeToConstantHeading(new Vector2d(-35, -58))
                                             .build());
 
                             break;
@@ -195,7 +192,7 @@ public class BasicAuto extends OpMode {
                                             .lineToY(-37)
                                             .turn(Math.toRadians(45))
                                             .splineToConstantHeading(new Vector2d(8, -35), Math.toRadians(-45))
-                                            .splineToConstantHeading(new Vector2d(15,-35), Math.toRadians(-45))
+                                            .splineToConstantHeading(new Vector2d(15, -35), Math.toRadians(-45))
                                             .turn(Math.toRadians(-22.5))
                                             .lineToY(-58)
                                             .build());
@@ -246,7 +243,7 @@ public class BasicAuto extends OpMode {
                                                 .lineToY(40)
                                                 .turn(Math.toRadians(-45))
                                                 .splineToConstantHeading(new Vector2d(9, 33), Math.toRadians(45))
-                                                .splineToConstantHeading(new Vector2d(14,38), Math.toRadians(45))
+                                                .splineToConstantHeading(new Vector2d(14, 38), Math.toRadians(45))
                                                 .build());
 
                                 break;
@@ -263,7 +260,7 @@ public class BasicAuto extends OpMode {
                                                 .lineToY(37)
                                                 .turn(Math.toRadians(45))
                                                 .splineToConstantHeading(new Vector2d(-32, 35), Math.toRadians(45))
-                                                .splineToConstantHeading(new Vector2d(-37,37), Math.toRadians(45))
+                                                .splineToConstantHeading(new Vector2d(-37, 37), Math.toRadians(45))
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -428,7 +425,7 @@ public class BasicAuto extends OpMode {
         double startHeading;
         if (autonomousConfiguration.getAlliance() == AutonomousOptions.AllianceColor.Red) {
             startHeading = Math.toRadians(90);
-            startPositionY = -60f;
+            startPositionY = -64f;
             if (startPosition == AutonomousOptions.StartPosition.Left) {
                 startPositionX = -36f;
             } else {
@@ -437,7 +434,7 @@ public class BasicAuto extends OpMode {
         } else {
             // Blue Alliance
             startHeading = Math.toRadians(-90);
-            startPositionY = 60f;
+            startPositionY = 64f;
             if (startPosition == AutonomousOptions.StartPosition.Left) {
                 startPositionX = 12f;
             } else {
