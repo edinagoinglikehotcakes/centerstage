@@ -29,16 +29,14 @@ public class RobotHardware {
     }
 
     public void init() {
-
-//        SERVOS
+        // SERVOS
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
         GripperAngle = myOpMode.hardwareMap.get(Servo.class, "gripperangle");
         DroneLaunch = myOpMode.hardwareMap.get(Servo.class, "launchservo");
         LaunchAngle = myOpMode.hardwareMap.get(Servo.class, "launchangle");
 
-
-//        MOTORS
+        // MOTORS
         Frontleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontleft");
         Backleft = myOpMode.hardwareMap.get(DcMotorEx.class, "Backleft");
         Frontright = myOpMode.hardwareMap.get(DcMotorEx.class, "Frontright");
@@ -53,13 +51,10 @@ public class RobotHardware {
         ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         //TODO Default to built-in PIDF. Tune this if needed.
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         ArmAngle.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmAngle.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
-
-//        TODO test direction of motors
 
         Frontleft.setDirection(DcMotorEx.Direction.REVERSE);
         Backleft.setDirection(DcMotorEx.Direction.REVERSE);
@@ -75,6 +70,5 @@ public class RobotHardware {
         Backleft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Frontright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Backright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
     }
 }
