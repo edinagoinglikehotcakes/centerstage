@@ -20,7 +20,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import hotcakes.processors.ImageProcessor;
 
-@Autonomous(name = "auto")
+@Autonomous(name = "auto", group = "Competition")
 public class BasicAuto extends OpMode {
     MecanumDrive drive;
     private ImageProcessor imageProcessor;
@@ -192,7 +192,7 @@ public class BasicAuto extends OpMode {
                                             .splineToConstantHeading(new Vector2d(9, -45), Math.toRadians(180))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                             .lineToX(23)
-                                            .strafeToLinearHeading(new Vector2d(23, -58),Math.toRadians(0))
+                                            .strafeToLinearHeading(new Vector2d(23, -58), Math.toRadians(0))
                                             .build());
                             break;
                         case MIDDLE:
