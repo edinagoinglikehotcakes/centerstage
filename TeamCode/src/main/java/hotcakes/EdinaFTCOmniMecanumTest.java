@@ -29,13 +29,19 @@
 
 package hotcakes;
 
+import com.acmerobotics.roadrunner.ftc.Encoder;
+import com.acmerobotics.roadrunner.ftc.OverflowEncoder;
+import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 /**
  * This particular OpMode illustrates driving a 4-motor Omni-Directional (or
@@ -89,6 +95,16 @@ public class EdinaFTCOmniMecanumTest extends LinearOpMode {
         DcMotorEx rightFrontDrive = hardwareMap.get(DcMotorEx.class, "Frontright");
         DcMotorEx rightBackDrive = hardwareMap.get(DcMotorEx.class, "Backright");
 
+        // Get encoders
+        Encoder leftFrontEncoder = new OverflowEncoder(new RawEncoder(leftFrontDrive));
+        Encoder leftBackEncoder = new OverflowEncoder(new RawEncoder(leftBackDrive));
+        Encoder rightBackEncoder = new OverflowEncoder(new RawEncoder(rightBackDrive));
+        Encoder rightFrontEncoder = new OverflowEncoder(new RawEncoder(rightFrontDrive));
+
+        // TODO: reverse encoders if needed (these are encoders)
+        leftFrontEncoder.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftBackEncoder.setDirection(DcMotorSimple.Direction.REVERSE);
+
         // Most robots need the motors on one side to be reversed to drive forward.
         // When you first test your robot, push the left joystick forward
         // and flip the direction ( FORWARD <-> REVERSE ) of any wheel that runs
@@ -98,7 +114,6 @@ public class EdinaFTCOmniMecanumTest extends LinearOpMode {
         leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
-
 
 
         leftFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -179,8 +194,10 @@ public class EdinaFTCOmniMecanumTest extends LinearOpMode {
             telemetry.addData("Forward", motorForward);
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("Front Ticks Left/right", "%d, %d", leftFrontDrive.getCurrentPosition(), rightFrontDrive.getCurrentPosition());
-            telemetry.addData("Back Ticks Left/right", "%d, %d", leftBackDrive.getCurrentPosition(), rightBackDrive.getCurrentPosition());
+            telemetry.addData("Front Ticks Left/right", "%d, %d",
+                    leftFrontEncoder.getPositionAndVelocity().position, rightFrontEncoder.getPositionAndVelocity().position);
+            telemetry.addData("Back Ticks Left/right", "%d, %d",
+                    leftBackEncoder.getPositionAndVelocity().position, rightBackEncoder.getPositionAndVelocity().position);
             telemetry.update();
         }
     }
