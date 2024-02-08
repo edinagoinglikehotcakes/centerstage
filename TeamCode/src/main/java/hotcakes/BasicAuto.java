@@ -58,11 +58,13 @@ public class BasicAuto extends OpMode {
                 setCameraResolution(new Size(640, 480)).
                 build();
         robotHardware = new RobotHardware(this);
+        robotHardware.init();
         motorControl = new MotorControl(robotHardware);
 
         runTime = new ElapsedTime();
         teleSelected = telemetry.addData("Selected", teleSelected);
         autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
+        motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
     }
 
     @Override
@@ -160,23 +162,27 @@ public class BasicAuto extends OpMode {
                         case LEFT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .splineToConstantHeading(new Vector2d(-46, -40), Math.toRadians(90))
+                                            .splineToConstantHeading(new Vector2d(-46, -50), Math.toRadians(90))
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                             .lineToY(-58)
                                             .build());
                             break;
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-40)
+                                            .lineToY(-45)
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                             .lineToY(-58)
                                             .build());
                             break;
                         case RIGHT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-37)
-                                            .splineTo(new Vector2d(-30, -37), Math.toRadians(90))
-                                            .lineToX(-35)
+                                            .lineToY(-45)
+                                            .turn(Math.toRadians(-90))
+                                            .splineToConstantHeading(new Vector2d(-33, -45), Math.toRadians(0))
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
+                                            .lineToX(-40)
                                             .strafeToConstantHeading(new Vector2d(-35, -58))
                                             .build());
 
@@ -189,25 +195,27 @@ public class BasicAuto extends OpMode {
                         case LEFT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-37)
-                                            .turn(Math.toRadians(45))
-                                            .splineToConstantHeading(new Vector2d(8, -35), Math.toRadians(-45))
-                                            .splineToConstantHeading(new Vector2d(15, -35), Math.toRadians(-45))
-                                            .turn(Math.toRadians(-22.5))
-                                            .lineToY(-58)
+                                            .lineToY(-45)
+                                            .turn(Math.toRadians(90))
+                                            .splineToConstantHeading(new Vector2d(9, -45), Math.toRadians(180))
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
+                                            .lineToX(23)
+                                            .strafeToLinearHeading(new Vector2d(23, -58),Math.toRadians(0))
                                             .build());
                             break;
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-35)
+                                            .lineToY(-45)
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                             .lineToY(-58)
                                             .build());
                             break;
                         case RIGHT:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .splineToConstantHeading(new Vector2d(29, -41), Math.toRadians(-120))
+                                            .splineToConstantHeading(new Vector2d(29, -50), Math.toRadians(-120))
+//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                             .lineToY(-58)
                                             .build());
 
