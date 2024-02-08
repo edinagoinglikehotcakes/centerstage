@@ -33,7 +33,6 @@ public class BasicAuto extends OpMode {
     private ElapsedTime runTime;
     private GamepadEx gamepad;
     private int delaySeconds;
-    private Pose2d startPose;
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
     private enum AutoState {
@@ -42,7 +41,6 @@ public class BasicAuto extends OpMode {
         BACKSTAGE,
         PARK,
         DONE,
-
     }
 
     AutoState currentAutoState = AutoState.SPIKE;
@@ -71,7 +69,6 @@ public class BasicAuto extends OpMode {
     public void init_loop() {
         // Wait for the camera to be open
         if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-//            telemetry.addData("Camera", "Waiting");
             return;
         }
 
@@ -111,7 +108,6 @@ public class BasicAuto extends OpMode {
     @Override
     public void loop() {
         switch (currentAutoState) {
-
             case SPIKE:
                 if (autonomousConfiguration.getPlaceTeamArtOnSpike() == AutonomousOptions.PlaceTeamArtOnSpike.Yes) {
 
@@ -142,17 +138,13 @@ public class BasicAuto extends OpMode {
 
         }
         drive.updatePoseEstimate();
-//        telemetry.addData("runTime", runTime.seconds());
-//        telemetry.update();
     }
 
     @Override
     public void stop() {
-
     }
 
     private void placePropOnSpike() {
-//        Actions.runBlocking(buildSpikeActions());
         {
             AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
             AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
@@ -223,10 +215,7 @@ public class BasicAuto extends OpMode {
                         case NONE:
                         default:
                     }
-
-
                 }
-
             } else {
                 if (allianceColor == AutonomousOptions.AllianceColor.Blue) {
                     if (startPosition == AutonomousOptions.StartPosition.Left) {
@@ -257,9 +246,7 @@ public class BasicAuto extends OpMode {
                                 break;
                             case NONE:
                             default:
-
                         }
-
                     } else {
                         switch (selectedSpike) {
                             case LEFT:
@@ -285,7 +272,6 @@ public class BasicAuto extends OpMode {
                                                 .lineToY(45)
 //                                                .splineToConstantHeading(new Vector2d(-48, 37), Math.toRadians(-90))
                                                 .build());
-
                                 break;
                             case NONE:
                             default:
@@ -355,10 +341,7 @@ public class BasicAuto extends OpMode {
                         case NONE:
                         default:
                     }
-
-
                 }
-
             } else {
                 if (allianceColor == AutonomousOptions.AllianceColor.Blue) {
                     if (startPosition == AutonomousOptions.StartPosition.Left) {
@@ -388,9 +371,7 @@ public class BasicAuto extends OpMode {
                                 break;
                             case NONE:
                             default:
-
                         }
-
                     } else {
                         switch (selectedSpike) {
                             case LEFT:
@@ -414,7 +395,6 @@ public class BasicAuto extends OpMode {
                                                 .splineToConstantHeading(new Vector2d(-36, 58), Math.toRadians(270))
                                                 .lineToX(58)
                                                 .build());
-
                                 break;
                             case NONE:
                             default:
@@ -513,11 +493,9 @@ public class BasicAuto extends OpMode {
     }
 
     private void placePixelOnBackDrop() {
-
     }
 
     private void parkInBackstage() {
-
     }
 }
 
