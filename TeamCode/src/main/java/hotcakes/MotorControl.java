@@ -145,15 +145,15 @@ public class MotorControl {
         }
     }
 
-    public void hangRobot(HangState hangstate) {
-        if (hangstate == HangState.HANGING) {
+    public void hangRobot(HangState hangState) {
+        if (hangState == HangState.HANGING) {
             robotHardware.HangMotor.setTargetPosition(WINCH_HANG_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
             robotHardware.ArmMotor.setPower(0);
         }
 
-        if (hangstate == HangState.DOWN) {
+        if (hangState == HangState.DOWN) {
             robotHardware.HangMotor.setTargetPosition(WINCH_DOWN_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
