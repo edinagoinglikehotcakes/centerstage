@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+/**
+ * This class contains Actions related to launching the drone.
+ */
 public class Launch {
     private final double LAUNCHING_SERVO_POSITION = 0.35;
     private final double WAITING_SERVO_POSITION = 0.58;
@@ -32,6 +35,11 @@ public class Launch {
         LAUNCHING
     }
 
+    /**
+     * Constuctor.
+     *
+     * @param robotHardware - RobotHardware to get camera and servos.
+     */
     public Launch(RobotHardware robotHardware) {
         this.robotHardware = robotHardware;
         pixelStackAprilTags = new PixelStackAprilTags(robotHardware.hardwareMap);
@@ -40,14 +48,21 @@ public class Launch {
         angleMovetimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     }
 
+    /**
+     * This is the main class that launches the drone.
+     */
     public class LaunchDrone implements Action {
-
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             return launch();
         }
     }
 
+    /**
+     * Action to launch the drone.
+     *
+     * @return - LaunchDrone object for use in trajectories.
+     */
     public Action LaunchDrone() {
         return new LaunchDrone();
     }
@@ -60,6 +75,11 @@ public class Launch {
         }
     }
 
+    /**
+     * Action used to put launcher is rest position.
+     *
+     * @return LaunchRest object.
+     */
     public Action LaunchRest() {
         return new LaunchRest();
     }
@@ -72,18 +92,26 @@ public class Launch {
         }
     }
 
+    /**
+     * Puts the launch angle in the rest position.
+     *
+     * @return LaunchAngleWaiting object.
+     */
     public Action LaunchAngleRest() {
         return new LaunchAngleWaiting();
     }
 
     public class LaunchAngle implements Action {
-
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             return false;
         }
     }
 
+    /**
+     * Sets the launch angle.
+     * @return LaunchAngle object.
+     */
     public Action LaunchAngle() {
         return new LaunchAngle();
     }
@@ -115,11 +143,10 @@ public class Launch {
             case LAUNCHING:
                 robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
                 return false;
+            default:
+                break;
         }
-
-
-        // Launch!
-        robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
+        // Something is wrong if get here, tell Action to stop.
         return false;
     }
 
