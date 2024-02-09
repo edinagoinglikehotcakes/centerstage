@@ -224,26 +224,24 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(40)
-                                                .turn(Math.toRadians(90))
-                                                .lineToX(-24)
-                                                .lineToX(-36)
+
+                                                .splineToConstantHeading(new Vector2d(23.5,47.5),Math.toRadians(270))
+                                                .strafeToLinearHeading(new Vector2d(12,60),Math.toRadians(0))
                                                 .build());
                                 break;
                             case MIDDLE:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(34)
-                                                .lineToY(45)
+                                                .lineToY(40)
+                                                .lineToY(60)
                                                 .build());
                                 break;
                             case RIGHT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(40)
-                                                .turn(Math.toRadians(-45))
-                                                .splineToConstantHeading(new Vector2d(9, 33), Math.toRadians(45))
-                                                .splineToConstantHeading(new Vector2d(14, 38), Math.toRadians(45))
+                                                .lineToY(37)
+                                                .strafeToLinearHeading(new Vector2d(16,36),Math.toRadians(180))
+                                                .strafeToLinearHeading(new Vector2d(12,60),Math.toRadians(0))
                                                 .build());
 
                                 break;
