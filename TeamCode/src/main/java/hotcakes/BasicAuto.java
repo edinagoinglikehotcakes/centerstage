@@ -56,13 +56,13 @@ public class BasicAuto extends OpMode {
                 setCameraResolution(new Size(640, 480)).
                 build();
         robotHardware = new RobotHardware(this);
-        robotHardware.init();
+//        robotHardware.init();
         motorControl = new MotorControl(robotHardware);
 
         runTime = new ElapsedTime();
         teleSelected = telemetry.addData("Selected", teleSelected);
         autonomousConfiguration.init(gamepad, this.telemetry, hardwareMap.appContext);
-        motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
+//        motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
     }
 
     @Override
@@ -162,9 +162,10 @@ public class BasicAuto extends OpMode {
                         case MIDDLE:
                             Actions.runBlocking(
                                     drive.actionBuilder(drive.pose)
-                                            .lineToY(-45)
-//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
-                                            .lineToY(-58)
+//                                            .lineToY(-45)
+////TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
+//                                            .lineToY(-58)
+                                            .lineToY(-24)
                                             .build());
                             break;
                         case RIGHT:
