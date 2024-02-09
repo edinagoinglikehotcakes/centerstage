@@ -255,7 +255,7 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToY(40)
+                                                .lineToY(47.5)
                                                 .turn(Math.toRadians(90))
                                                 .lineToX(-24)
                                                 .lineToX(-36)
@@ -271,7 +271,7 @@ public class BasicAuto extends OpMode {
                             case RIGHT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .splineTo(new Vector2d(-46,40), Math.toRadians(270))
+                                                .splineTo(new Vector2d(-46,47.5), Math.toRadians(270))
                                                 .lineToY(60)
                                                 .build());
                                 break;
