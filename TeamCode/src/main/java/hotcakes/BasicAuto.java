@@ -228,8 +228,10 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .splineToConstantHeading(new Vector2d(29, 41), Math.toRadians(-120))
-                                                .lineToY(45)
+                                                .lineToY(40)
+                                                .turn(Math.toRadians(90))
+                                                .lineToX(-24)
+                                                .lineToX(-36)
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -360,9 +362,13 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToX(15)
-                                                .lineToY(58)
-                                                .lineToX(58)
+                                                .turn(Math.toRadians(-90))
+                                                .lineToY(60)
+                                                .turn(Math.toRadians(90))
+                                                .lineToX(47)
+                                                .turn(Math.toRadians(-90))
+                                                .lineToY(36)
+                                                .turn(Math.toRadians(90))
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -390,9 +396,13 @@ public class BasicAuto extends OpMode {
                             case LEFT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .lineToX(-40)
-                                                .lineToY(58)
-                                                .lineToX(58)
+                                                .turn(Math.toRadians(-90))
+                                                .lineToY(60)
+                                                .turn(Math.toRadians(90))
+                                                .lineToX(47)
+                                                .turn(Math.toRadians(-90))
+                                                .lineToY(36)
+                                                .turn(Math.toRadians(90))
                                                 .build());
                                 break;
                             case MIDDLE:
