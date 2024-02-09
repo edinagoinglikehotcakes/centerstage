@@ -153,7 +153,7 @@ public class MotorControl {
             robotHardware.ArmMotor.setPower(0);
         }
 
-        if (hangstate == HangState.DOWN) {
+        if (hangState == HangState.DOWN) {
             robotHardware.HangMotor.setTargetPosition(WINCH_DOWN_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
