@@ -29,6 +29,7 @@
 
 package hotcakes;
 
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
@@ -51,7 +52,6 @@ public class CenterstageDrive extends LinearOpMode {
     private final double MAX_POWER = .9;
     private final double SLOW_POWER = .3;
     private double motorPower = MAX_POWER;
-    private double denominator = 0;
     GamepadEx gamePadEx1;
     GamepadEx gamePadEx2;
     double axial = 0;
@@ -68,6 +68,8 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
+        // RR will use this to see april tags and launch.
+        Launch launch = new Launch(robotHardware);
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -157,7 +159,7 @@ public class CenterstageDrive extends LinearOpMode {
 
             // Launching plane, only during end game.
             if (gamepad1.x && runtime.seconds() >= 90) {
-                robotHardware.DroneLaunch.setPosition(0.35);
+                Actions.runBlocking(launch);
             }
 
             // Waiting launch position, resets the launch servo.
