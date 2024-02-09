@@ -42,7 +42,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
  * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
  */
-@TeleOp(name = "CenterstageDc")
+
+@TeleOp(name = "CenterstageDc", group = "Competition")
 //@Disabled
 public class CenterstageDrive extends LinearOpMode {
     private RobotHardware robotHardware;
@@ -59,8 +60,8 @@ public class CenterstageDrive extends LinearOpMode {
     public void runOpMode() {
         gamePadEx = new GamepadEx(gamepad1);
         gamePadEx2 = new GamepadEx(gamepad2);
-        TriggerReader triggerRight = new TriggerReader(gamePadEx1, GamepadKeys.Trigger.RIGHT_TRIGGER);
-        TriggerReader triggerLeft = new TriggerReader(gamePadEx1, GamepadKeys.Trigger.LEFT_TRIGGER);
+        TriggerReader triggerRight = new TriggerReader(gamePadEx, GamepadKeys.Trigger.RIGHT_TRIGGER);
+        TriggerReader triggerLeft = new TriggerReader(gamePadEx, GamepadKeys.Trigger.LEFT_TRIGGER);
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
@@ -91,8 +92,12 @@ public class CenterstageDrive extends LinearOpMode {
             double lateral = gamepad1.left_stick_x * 1.1;
             double yaw = gamepad1.right_stick_x;
             // Reduce speed
-            motorPower = gamepad1.left_bumper ? SLOW_POWER : MAX_POWER;
-            // Arm angles
+            if (gamepad1.left_bumper) {
+                maxPower = 0.3;
+            } else {
+                maxPower = 0.9;
+            }
+            // Gamepad 1 changing the arm angles
             if (gamepad1.dpad_up) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
@@ -107,15 +112,14 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad1.dpad_left) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.MAXANGLE);
             }
-//              Launching plane gamepad 1
+            // Launching plane gamepad 1
             if (gamepad1.a) {
                 motorControl.launchPlane(MotorControl.LaunchState.WAITING);
             }
             if (gamepad1.x) {
                 robotHardware.DroneLaunch.setPosition(0.35);
             }
-
-            // Hanging
+            // Hanging gamepad 1
             if (triggerRight.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.HANGING);
             }
@@ -123,8 +127,7 @@ public class CenterstageDrive extends LinearOpMode {
             if (triggerLeft.wasJustPressed()) {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
             }
-
-            // Controls gripper flipping
+            // Controls gripper flipping gamepad 2
             if (gamepad2.dpad_up) {
                 motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
             }
@@ -132,8 +135,7 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx2.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
             }
-
-            // Gripper controls
+            // Controls Gripper gamepad 2
             if (gamepad2.left_bumper) {
                 motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
             }
@@ -141,22 +143,19 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamePadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
             }
-
-            // Backdrop arm extension
+            // Controls backdrop arm extension gamepad 2
             if (gamepad2.y) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
             }
-            // Retracting arm extension
+            // Gamepad 2 arm extension for retracting
             if (gamepad2.b) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
             }
-            // Pickup arm extension
+            // arm extension for picking up
             if (gamepad2.x) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
             }
-
-            // Launch angle
-            //TODO Clarify what this does.
+            // CHANGE LAUNCH ANGLE
             if (gamepad1.start) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.LAUNCH);
             }
@@ -168,15 +167,17 @@ public class CenterstageDrive extends LinearOpMode {
             if (gamepad2.start) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
-
-            motorControl.drive(axial, lateral, yaw, motorPower);
-            // Messages to the driver.
+            // This line is the whole drive code from the Motor Control class
+            motorControl.drive(axial, lateral, yaw, maxPower);
+            // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm Position", robotHardware.ArmMotor.getCurrentPosition());
             telemetry.addData("Game pad 2 right stick Y", gamepad2.right_stick_y);
             telemetry.addData("Game pad 2 left stick Y", gamepad2.left_stick_y);
             telemetry.addData("Arm servo position", robotHardware.ArmAngle.getPosition());
             telemetry.addData("Winch motor position", robotHardware.HangMotor.getCurrentPosition());
+            telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
+            telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
             telemetry.update();
         }
     }

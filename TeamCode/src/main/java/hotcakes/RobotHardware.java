@@ -32,7 +32,6 @@ public class RobotHardware {
     }
 
     public void init() {
-        imu = myOpMode.hardwareMap.get(IMU.class, "imu");
         // SERVOS
         GripperRight = myOpMode.hardwareMap.get(Servo.class, "gripperright");
         GripperLeft = myOpMode.hardwareMap.get(Servo.class, "gripperleft");
@@ -55,7 +54,6 @@ public class RobotHardware {
         ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         ArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         //TODO Default to built-in PIDF. Tune this if needed.
         ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
         HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
@@ -75,20 +73,5 @@ public class RobotHardware {
         Backleft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Frontright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Backright.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        ArmMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
-        HangMotor = myOpMode.hardwareMap.get(DcMotorEx.class, "Hangmotor");
-
-        ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        HangMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        ArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //TODO Default to built-in PIDF. Tune this if needed.
-        ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
-        HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER));
-        // These motors are used in RUN_TO_POSITION.
-        ArmMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, ArmMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION));
-        HangMotor.setPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION, HangMotor.getPIDFCoefficients(DcMotorEx.RunMode.RUN_TO_POSITION));
     }
 }
