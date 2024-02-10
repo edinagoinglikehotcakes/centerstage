@@ -4,12 +4,25 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class ArmExtension {
+
+    private RobotHardware robotHardware;
+
+    public ArmExtension(RobotHardware robotHardware) {
+        this.robotHardware = robotHardware;
+    }
+
+
     public class ArmPickup implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            robotHardware.ArmMotor.setTargetPosition(-480);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(0.5);
+
             return false;
         }
     }
@@ -22,6 +35,11 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+            robotHardware.ArmMotor.setTargetPosition(-1050);
+            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmMotor.setPower(-0.5);
+
             return false;
         }
     }
