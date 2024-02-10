@@ -4,33 +4,36 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmLift {
     private boolean initialized = false;
-    private RobotHardware robotHardware;
+    private OpMode opMode;
+    private DcMotorEx ArmAngle;
 
-    public ArmLift(RobotHardware robotHardware) {
-        this.robotHardware = robotHardware;
+    public ArmLift(OpMode opMode) {
+        this.opMode = opMode;
+
     }
 
     public class LiftPickupAngle implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             if (!initialized) {
-                robotHardware.ArmAngle.setTargetPosition(35);
-                robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robotHardware.ArmAngle.setPower(0.5);
+                ArmAngle.setTargetPosition(35);
+                ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmAngle.setPower(0.5);
                 initialized = true;
             }
 
-            double pos = robotHardware.ArmAngle.getCurrentPosition();
+            double pos = ArmAngle.getCurrentPosition();
             telemetryPacket.put("liftPos", pos);
-            if (pos < robotHardware.ArmAngle.getTargetPosition()) {
+            if (pos < ArmAngle.getTargetPosition()) {
                 return true;
             } else {
-                robotHardware.ArmAngle.setPower(0);
+                ArmAngle.setPower(0);
                 return false;
             }
         }
