@@ -33,6 +33,10 @@ public class BasicAuto extends OpMode {
     private ElapsedTime runTime;
     private GamepadEx gamepad;
     private int delaySeconds;
+    private ArmExtension armExtension;
+    private ArmLift armlift;
+    private Gripper gripper;
+    private GripperAngle gripperAngle;
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
 
     private enum AutoState {
@@ -47,6 +51,10 @@ public class BasicAuto extends OpMode {
 
     @Override
     public void init() {
+        armExtension = new ArmExtension(robotHardware);
+        gripper = new Gripper(robotHardware);
+        armlift = new ArmLift(robotHardware);
+        gripperAngle = new GripperAngle(robotHardware);
         gamepad = new GamepadEx(gamepad1);
         imageProcessor = new ImageProcessor(telemetry);
         visionPortalBuilder = new VisionPortal.Builder();
@@ -225,8 +233,8 @@ public class BasicAuto extends OpMode {
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
 
-                                                .splineToConstantHeading(new Vector2d(23.5,47.5),Math.toRadians(270))
-                                                .strafeToLinearHeading(new Vector2d(12,60),Math.toRadians(0))
+                                                .splineToConstantHeading(new Vector2d(23.5, 47.5), Math.toRadians(270))
+                                                .strafeToLinearHeading(new Vector2d(12, 60), Math.toRadians(0))
                                                 .build());
                                 break;
                             case MIDDLE:
@@ -240,8 +248,8 @@ public class BasicAuto extends OpMode {
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
                                                 .lineToY(37)
-                                                .strafeToLinearHeading(new Vector2d(16,36),Math.toRadians(180))
-                                                .strafeToLinearHeading(new Vector2d(12,60),Math.toRadians(0))
+                                                .strafeToLinearHeading(new Vector2d(16, 36), Math.toRadians(180))
+                                                .strafeToLinearHeading(new Vector2d(12, 60), Math.toRadians(0))
                                                 .build());
 
                                 break;
@@ -269,7 +277,7 @@ public class BasicAuto extends OpMode {
                             case RIGHT:
                                 Actions.runBlocking(
                                         drive.actionBuilder(drive.pose)
-                                                .splineTo(new Vector2d(-46,47.5), Math.toRadians(270))
+                                                .splineTo(new Vector2d(-46, 47.5), Math.toRadians(270))
                                                 .lineToY(60)
                                                 .build());
                                 break;
