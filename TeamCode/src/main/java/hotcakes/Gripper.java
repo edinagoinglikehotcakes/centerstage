@@ -4,19 +4,25 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Gripper {
-    private RobotHardware robotHardware;
+    private OpMode opMode;
+    private Servo GripperLeft;
+    private Servo GripperRight;
 
-    public Gripper(RobotHardware robotHardware) {
-        this.robotHardware = robotHardware;
+    public Gripper(OpMode opmode) {
+        this.opMode=opmode;
+        GripperLeft = opMode.hardwareMap.get(Servo.class, "gripperleft");
+        GripperRight = opMode.hardwareMap.get(Servo.class, "gripperright");
     }
 
     public class GripperLeftOpen implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            robotHardware.GripperLeft.setPosition(0.78);
+            GripperLeft.setPosition(0.78);
             return false;
         }
     }
@@ -29,7 +35,7 @@ public class Gripper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            robotHardware.GripperLeft.setPosition(0.66);
+            GripperLeft.setPosition(0.66);
 
             return false;
         }
@@ -43,7 +49,7 @@ public class Gripper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            robotHardware.GripperRight.setPosition(0.07);
+            GripperRight.setPosition(0.07);
 
             return false;
         }
@@ -57,7 +63,7 @@ public class Gripper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            robotHardware.GripperRight.setPosition(0.20);
+            GripperRight.setPosition(0.20);
 
             return false;
         }

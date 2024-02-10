@@ -4,26 +4,41 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class ArmExtension {
 
-    private RobotHardware robotHardware;
+    private boolean initialized = false;
+    private OpMode opMode;
+    private DcMotorEx ArmMotor;
 
-    public ArmExtension(RobotHardware robotHardware) {
-        this.robotHardware = robotHardware;
+    public ArmExtension(OpMode opMode) {
+        this.opMode=opMode;
+        ArmMotor = opMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
+
     }
 
 
     public class ArmPickup implements Action {
-
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            robotHardware.ArmMotor.setTargetPosition(-480);
-            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.ArmMotor.setPower(0.5);
+            if (!initialized) {
+                ArmMotor.setTargetPosition(-480);
+                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmMotor.setPower(0.5);
+                initialized = true;
+            }
+            double pos = ArmMotor.getCurrentPosition();
+            telemetryPacket.put("liftPos", pos);
+            if (pos > ArmMotor.getTargetPosition()) {
+                return true;
+            } else {
+                ArmMotor.setPower(0);
+                return false;
+            }
 
-            return false;
         }
     }
 
@@ -36,9 +51,9 @@ public class ArmExtension {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-            robotHardware.ArmMotor.setTargetPosition(-1050);
-            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.ArmMotor.setPower(-0.5);
+            ArmMotor.setTargetPosition(-1050);
+            ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ArmMotor.setPower(-0.5);
 
             return false;
         }
@@ -52,6 +67,9 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            ArmMotor.setTargetPosition(-40);
+            ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ArmMotor.setPower(-0.5);
             return false;
         }
     }
