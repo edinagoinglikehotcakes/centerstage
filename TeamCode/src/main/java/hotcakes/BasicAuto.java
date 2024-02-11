@@ -200,6 +200,7 @@ public class BasicAuto extends OpMode {
                             break;
                         case RIGHT:
                             RedLeft = drive.actionBuilder(drive.pose)
+//                                    TODO CHANGE THE CODE TO GET TO SPIKE
                                     .lineToY(-30)
                                     .turn(Math.toRadians(-90))
                                     .lineToX(-46)

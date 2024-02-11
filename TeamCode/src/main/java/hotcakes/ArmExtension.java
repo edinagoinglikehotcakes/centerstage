@@ -15,7 +15,7 @@ public class ArmExtension {
     private DcMotorEx ArmMotor;
 
     public ArmExtension(OpMode opMode) {
-        this.opMode=opMode;
+        this.opMode = opMode;
         ArmMotor = opMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
 
     }
@@ -31,7 +31,7 @@ public class ArmExtension {
                 initialized = true;
             }
             double pos = ArmMotor.getCurrentPosition();
-            telemetryPacket.put("liftPos", pos);
+            telemetryPacket.put("ArmPos", pos);
             if (pos > ArmMotor.getTargetPosition()) {
                 return true;
             } else {
@@ -50,12 +50,21 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (!initialized) {
+                ArmMotor.setTargetPosition(-1050);
+                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmMotor.setPower(-0.5);
+                initialized = true;
 
-            ArmMotor.setTargetPosition(-1050);
-            ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            ArmMotor.setPower(-0.5);
-
-            return false;
+            }
+            double pos = ArmMotor.getCurrentPosition();
+            telemetryPacket.put("ArmPos", pos);
+            if (pos > ArmMotor.getTargetPosition()) {
+                return true;
+            } else {
+                ArmMotor.setPower(0);
+                return false;
+            }
         }
     }
 
@@ -67,10 +76,19 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            ArmMotor.setTargetPosition(-40);
-            ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            ArmMotor.setPower(-0.5);
-            return false;
+            if (!initialized) {
+                ArmMotor.setTargetPosition(-40);
+                ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmMotor.setPower(-0.5);
+            }
+            double pos = ArmMotor.getCurrentPosition();
+            telemetryPacket.put("ArmPos", pos);
+            if (pos < ArmMotor.getTargetPosition()) {
+                return true;
+            } else {
+                ArmMotor.setPower(0);
+                return false;
+            }
         }
     }
 
