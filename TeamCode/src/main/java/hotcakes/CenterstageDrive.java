@@ -51,15 +51,15 @@ public class CenterstageDrive extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private double maxPower = .9;
     private double denominator = 0;
-    GamepadEx gamePadEx;
+    GamepadEx gamePadEx1;
     GamepadEx gamePadEx2;
 
     @Override
     public void runOpMode() {
-        gamePadEx = new GamepadEx(gamepad1);
+        gamePadEx1 = new GamepadEx(gamepad1);
         gamePadEx2 = new GamepadEx(gamepad2);
-        TriggerReader triggerRight = new TriggerReader(gamePadEx, GamepadKeys.Trigger.RIGHT_TRIGGER);
-        TriggerReader triggerLeft = new TriggerReader(gamePadEx, GamepadKeys.Trigger.LEFT_TRIGGER);
+        TriggerReader triggerRight = new TriggerReader(gamePadEx1, GamepadKeys.Trigger.RIGHT_TRIGGER);
+        TriggerReader triggerLeft = new TriggerReader(gamePadEx1, GamepadKeys.Trigger.LEFT_TRIGGER);
         robotHardware = new RobotHardware(this);
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
@@ -78,8 +78,8 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            gamePadEx.readButtons();
+        while (opModeIsActive() && !isStopRequested()) {
+            gamePadEx1.readButtons();
             gamePadEx2.readButtons();
             // trigger reader is the right trigger and trigger1 is the left one
             triggerRight.readValue();
@@ -90,22 +90,22 @@ public class CenterstageDrive extends LinearOpMode {
             double lateral = gamepad1.left_stick_x * 1.1;
             double yaw = gamepad1.right_stick_x;
             // Reduce speed
-            if (gamepad1.left_bumper) {
+            if (gamePadEx1.isDown(GamepadKeys.Button.LEFT_BUMPER)) {
                 maxPower = 0.3;
             } else {
                 maxPower = 0.9;
             }
             // Gamepad 1 changing the arm angles
-            if (gamepad1.dpad_up) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
-            if (gamepad1.dpad_down) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.PICKUP);
             }
-            if (gamepad1.dpad_right) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
-            if (gamepad1.dpad_left) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.MAXANGLE);
             }
             // Launching plane gamepad 1
@@ -123,39 +123,39 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.hangRobot(MotorControl.HangState.DOWN);
             }
             // Controls gripper flipping gamepad 2
-            if (gamepad2.dpad_up) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
             }
-            if (gamepad2.dpad_down) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
             }
             // Controls Gripper gamepad 2
-            if (gamepad2.left_bumper) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
                 motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
             }
-            if (gamepad2.right_bumper) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
             }
             // Controls backdrop arm extension gamepad 2
-            if (gamepad2.y) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.Y)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
             }
             // Gamepad 2 arm extension for retracting
-            if (gamepad2.b) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.A)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
             }
             // arm extension for picking up
-            if (gamepad2.x) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.X)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
             }
             // CHANGE LAUNCH ANGLE
-            if (gamepad1.start) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.START)) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.LAUNCH);
             }
-            if (gamepad1.back) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.BACK)) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.WAITING);
             }
-            if (gamepad2.start) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.START)) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
             }
             // This line is the whole drive code from the Motor Control class
