@@ -14,17 +14,33 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
  * Drone launching with april tags is managed here.
  */
 public class Launch {
-    private static final double DEFAULT_LAUNCH_RANGE = 72;
     private OpMode opMode;
     private Servo angleServo;
     private Servo laucnhServo;
+    private AprilTagDetection detectedTag;
     private final double LAUNCHING_SERVO_POSITION = 0.35;
     private final double WAITING_SERVO_POSITION = 0.58;
+    // Default launch range assuming no dynamic angle adjustment.
+    private final double DEFAULT_LAUNCH_RANGE = 72;
+    // Distance within which the drone can be launched.
     private final double TAG_RANGE = 72;
-    // Launch
+    // Default launching angle without dynamic angle adjustment.
     private final double LAUNCH_SERVO_ANGLE = 0.5;
+    // The waiting angle for the drone launch servo.
     private final double WAITING_SERVO_ANGLE = 0;
     private PixelStackAprilTags pixelStacklAprilTags;
+    private ElapsedTime launchTimer;
+
+    private enum LaunchState {
+        DETECTING_TAG,
+        MOVING_SERVO,
+        WAITING_FOR_SEVO_MOVE,
+        LAUNCHING
+    }
+
+    private LaunchState launchState = LaunchState.DETECTING_TAG;
+    private double TAG_DETECT_MILLISECONDS = 1000;
+    private double LAUNCH_ANGLE_WAIT_MILLICSECONDS = 1000;
 
     /***
      * Constructor
@@ -35,6 +51,7 @@ public class Launch {
         angleServo = opMode.hardwareMap.get(Servo.class, "launchangle");
         laucnhServo = opMode.hardwareMap.get(Servo.class, "launchservo");
         pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
+        launchTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     }
 
     public class LaunchAngle implements Action {
@@ -62,10 +79,36 @@ public class Launch {
     }
 
     public class LaunchDrone implements Action {
-
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            return false;
+            switch (launchState) {
+                case DETECTING_TAG:
+                    launchTimer.reset();
+                    if (!isTagDetedted()) {
+                        if (launchTimer.milliseconds() >= TAG_DETECT_MILLISECONDS) {
+                            launchState = LaunchState.MOVING_SERVO;
+                        }
+                    }
+
+                    return true;
+                case MOVING_SERVO:
+                    double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
+                    pixelStacklAprilTags.disableTagProcessing();
+                    // Set the launch angle
+                    angleServo.setPosition(getLaunchPosition(launchRange));
+                    launchState = LaunchState.WAITING_FOR_SEVO_MOVE;
+                    return true;
+                case WAITING_FOR_SEVO_MOVE:
+                    launchTimer.reset();
+                    if (launchTimer.milliseconds() >= LAUNCH_ANGLE_WAIT_MILLICSECONDS) {
+                        return true;
+                    }
+                case LAUNCHING:
+                    laucnhServo.setPosition(LAUNCHING_SERVO_POSITION);
+                    return false;
+                default:
+                    return true;
+            }
         }
     }
 
@@ -73,25 +116,15 @@ public class Launch {
         return new LaunchDrone();
     }
 
-    private void launch() {
-        pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
-        pixelStacklAprilTags.init();
-        AprilTagDetection detectedTag = pixelStacklAprilTags.detectTags();
-        double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
-        pixelStacklAprilTags.disableTagProcessing();
-        // Set the launch angle
-        angleServo.setPosition(getLaunchPosition(launchRange));
-        // Wait for the servo to move.
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        while (timer.milliseconds() <= 4000) {
-        }
-
-        // Launch!
-        laucnhServo.setPosition(LAUNCHING_SERVO_POSITION);
-    }
-
     private double getLaunchPosition(double range) {
         return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
                 (LAUNCH_SERVO_ANGLE)));
+    }
+
+    private boolean isTagDetedted() {
+        pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
+        pixelStacklAprilTags.init();
+        detectedTag = pixelStacklAprilTags.detectTags();
+        return detectedTag == null ? false : true;
     }
 }
