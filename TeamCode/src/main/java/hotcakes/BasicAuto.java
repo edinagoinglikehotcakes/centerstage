@@ -4,7 +4,6 @@ import android.util.Size;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -24,8 +23,6 @@ import hotcakes.processors.ImageProcessor;
 public class BasicAuto extends OpMode {
     MecanumDrive drive;
     private ImageProcessor imageProcessor;
-    private RobotHardware robotHardware;
-    private MotorControl motorControl;
     private VisionPortal.Builder visionPortalBuilder;
     private VisionPortal visionPortal;
     private ImageProcessor.Selected selectedSpike;
@@ -153,8 +150,8 @@ public class BasicAuto extends OpMode {
 
         }
 //        drive.updatePoseEstimate();
-        telemetry.addData("Selected",selectedSpike);
-        telemetry.addData("State",currentAutoState);
+        telemetry.addData("Selected", selectedSpike);
+        telemetry.addData("State", currentAutoState);
     }
 
     @Override
@@ -187,13 +184,13 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
                                     .waitSeconds(1)
-                                            .lineToY(-40)
+                                    .lineToY(-40)
 ////TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(gripper.GripperLeftOpen())
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                            .lineToY(-58)
+                                    .lineToY(-58)
                                     .build();
                             break;
                         case RIGHT:
@@ -210,7 +207,7 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
                                     .turn(Math.toRadians(40))
-                                    .strafeToConstantHeading(new Vector2d(-36,-59))
+                                    .strafeToConstantHeading(new Vector2d(-36, -59))
 //                                    .strafeToConstantHeading(new Vector2d(-35, -58))
                                     .build();
 
@@ -234,7 +231,7 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
                                     .turn(Math.toRadians(-30))
-                                    .strafeToSplineHeading(new Vector2d(23,-59),Math.toRadians(0))
+                                    .strafeToSplineHeading(new Vector2d(23, -59), Math.toRadians(0))
                                     .build();
                             break;
                         case MIDDLE:
@@ -261,7 +258,7 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .strafeToSplineHeading(new Vector2d(23,-59),Math.toRadians(0))
+                                    .strafeToSplineHeading(new Vector2d(23, -59), Math.toRadians(0))
                                     .build();
 
                             break;
@@ -313,7 +310,7 @@ public class BasicAuto extends OpMode {
                                         .stopAndAdd(gripperAngle.GripperRetract())
                                         .waitSeconds(2)
                                         .turn(Math.toRadians(40))
-                                        .strafeToSplineHeading(new Vector2d(23,50),Math.toRadians(0))
+                                        .strafeToSplineHeading(new Vector2d(23, 50), Math.toRadians(0))
                                         .build();
 
                                 break;
@@ -334,7 +331,7 @@ public class BasicAuto extends OpMode {
                                         .stopAndAdd(armExtension.ArmRetract())
                                         .stopAndAdd(gripperAngle.GripperRetract())
                                         .turn(Math.toRadians(-30))
-                                        .splineToConstantHeading(new Vector2d(-36,60),Math.toRadians(-90))
+                                        .splineToConstantHeading(new Vector2d(-36, 60), Math.toRadians(-90))
                                         .build();
                                 break;
                             case MIDDLE:
@@ -360,7 +357,7 @@ public class BasicAuto extends OpMode {
                                         .waitSeconds(2)
                                         .stopAndAdd(armExtension.ArmRetract())
                                         .stopAndAdd(gripperAngle.GripperRetract())
-                                        .strafeToLinearHeading(new Vector2d(-36,60),Math.toRadians(0))
+                                        .strafeToLinearHeading(new Vector2d(-36, 60), Math.toRadians(0))
                                         .build();
                                 break;
                             case NONE:
@@ -535,65 +532,6 @@ public class BasicAuto extends OpMode {
         }
 
         return new Pose2d(startPositionX, startPositionY, startHeading);
-    }
-
-    private Action buildSpikeActions() {
-        AutonomousOptions.AllianceColor allianceColor = autonomousConfiguration.getAlliance();
-        AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
-        double heading = allianceColor == AutonomousOptions.AllianceColor.Red ? -90 : 90;
-        double positionXLeftSpike;
-        double positionXRightSpike;
-        double positionYLeftRightSpike;
-        double positionYMiddleSpike;
-        double positionYAdjustStart;
-        double positionYEnd;
-
-        TrajectoryActionBuilder trajectoryActionBuilder = drive.actionBuilder(drive.pose);
-        positionYMiddleSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? 30 : -30;
-        positionYLeftRightSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? 36 : -36;
-        positionYAdjustStart = allianceColor == AutonomousOptions.AllianceColor.Blue ? 40 : -40;
-        positionYEnd = allianceColor == AutonomousOptions.AllianceColor.Blue ? 60 : -60;
-        if (startPosition == AutonomousOptions.StartPosition.Left) {
-            positionXLeftSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? 24 : -46;
-            positionXRightSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? 1 : -30;
-        } else {
-            // Start Right
-            positionXLeftSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? 1 : 24;
-            positionXRightSpike = allianceColor == AutonomousOptions.AllianceColor.Blue ? -46 : 30;
-        }
-
-        switch (selectedSpike) {
-            case LEFT:
-                if (startPosition == AutonomousOptions.StartPosition.Left) {
-                    trajectoryActionBuilder
-                            .lineToY(positionYLeftRightSpike);
-                } else {
-                    // Start Right
-                    trajectoryActionBuilder
-                            .lineToY(positionYAdjustStart)
-                            .splineTo(new Vector2d(positionXLeftSpike, positionYLeftRightSpike), Math.toRadians(heading));
-                }
-                break;
-            case MIDDLE:
-                trajectoryActionBuilder
-                        .lineToY(positionYMiddleSpike)
-                        .lineToY(positionYEnd);
-                break;
-            case RIGHT:
-                if (startPosition == AutonomousOptions.StartPosition.Left) {
-                    trajectoryActionBuilder
-                            .lineToY(positionYAdjustStart)
-                            .splineTo(new Vector2d(positionXRightSpike, positionYLeftRightSpike), Math.toRadians(heading));
-                } else {
-                    // Start Right
-                    trajectoryActionBuilder
-                            .lineToY(positionYLeftRightSpike)
-                            .splineTo(new Vector2d(positionXLeftSpike, positionYLeftRightSpike), Math.toRadians(heading));
-                }
-                break;
-        }
-        return trajectoryActionBuilder
-                .build();
     }
 
     private void placePixelOnBackDrop() {
