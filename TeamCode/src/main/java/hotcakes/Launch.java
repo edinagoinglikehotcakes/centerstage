@@ -4,154 +4,147 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 /**
- * This class contains Actions related to launching the drone.
+ * Drone launching with april tags is managed here.
  */
 public class Launch {
-    private final double LAUNCHING_SERVO_POSITION = 0.35;
-    private final double WAITING_SERVO_POSITION = 0.58;
-    private final double LAUNCH_SERVO_ANGLE = 0.5;
-    private final double WAITING_SERVO_ANGLE = 0;
-    private final double DEFAULT_LAUNCH_RANGE = 72;
-    private final double TAG_RANGE = 72;
-    private RobotHardware robotHardware;
-    private PixelStackAprilTags pixelStackAprilTags;
+    private OpMode opMode;
+    private Servo angleServo;
+    private Servo laucnhServo;
     private AprilTagDetection detectedTag;
-    private ElapsedTime detectionTimer;
-    private ElapsedTime angleMovetimer;
-    private final int DETECTION_WAIT_SECONDS = 2;
-    private final double ANGLE_MOVE_WAIT_MILLI_SECONDS = 2000;
-    private boolean initialized = false;
-    private LAUNCH_ACTION_STATE launchActionState = LAUNCH_ACTION_STATE.DETECTING_TAG;
+    private final double LAUNCHING_SERVO_POSITION = 0.35;
+    private final double LAUNCH_WAITING_SERVO_POSITION = 0.58;
+    // Default launching angle without dynamic angle adjustment.
+    private final double LAUNCH_SERVO_ANGLE = 0.5;
+    // The waiting angle for the drone launch servo.
+    private final double WAITING_SERVO_ANGLE = 0;
+    // Default launch range assuming no dynamic angle adjustment.
+    private final double DEFAULT_LAUNCH_RANGE = 72;
+    // Distance within which the drone can be launched.
+    private final double TAG_RANGE = 72;
+    private PixelStackAprilTags pixelStacklAprilTags;
+    private ElapsedTime launchTimer;
 
-    private enum LAUNCH_ACTION_STATE {
+    private enum LaunchState {
+        INITIALIZING,
         DETECTING_TAG,
-        SETTING_ANGLE,
-        WAITING_FOR_SERVO,
+        MOVING_SERVO,
+        WAITING_FOR_SERVO_MOVE,
         LAUNCHING
     }
 
-    /**
-     * Constuctor.
-     *
-     * @param robotHardware - RobotHardware to get camera and servos.
+    private LaunchState launchState = LaunchState.INITIALIZING;
+    private double TAG_DETECT_MILLISECONDS = 1000;
+    private double LAUNCH_ANGLE_WAIT_MILLICSECONDS = 1000;
+
+    /***
+     * Constructor
+     * @param opMode - Used to get hardware map.
      */
-    public Launch(RobotHardware robotHardware) {
-        this.robotHardware = robotHardware;
-        pixelStackAprilTags = new PixelStackAprilTags(robotHardware.hardwareMap);
-        pixelStackAprilTags.init();
-        detectionTimer = new ElapsedTime(ElapsedTime.Resolution.SECONDS);
-        angleMovetimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+    public Launch(OpMode opMode) {
+        this.opMode = opMode;
+        angleServo = opMode.hardwareMap.get(Servo.class, "launchangle");
+        laucnhServo = opMode.hardwareMap.get(Servo.class, "launchservo");
+        pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
+        launchTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     }
 
-    /**
-     * This is the main class that launches the drone.
-     */
-    public class LaunchDrone implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            return launch();
-        }
-    }
-
-    /**
-     * Action to launch the drone.
-     *
-     * @return - LaunchDrone object for use in trajectories.
-     */
-    public Action LaunchDrone() {
-        return new LaunchDrone();
-    }
-
-    public class LaunchRest implements Action {
+    public class LaunchAngle implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            angleServo.setPosition(LAUNCH_SERVO_ANGLE);
             return false;
         }
     }
 
-    /**
-     * Action used to put launcher is rest position.
-     *
-     * @return LaunchRest object.
-     */
-    public Action LaunchRest() {
-        return new LaunchRest();
+    public Action LaunchAngle() {
+        return new LaunchAngle();
     }
 
     public class LaunchAngleWaiting implements Action {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            angleServo.setPosition(WAITING_SERVO_ANGLE);
             return false;
         }
     }
 
-    /**
-     * Puts the launch angle in the rest position.
-     *
-     * @return LaunchAngleWaiting object.
-     */
-    public Action LaunchAngleRest() {
+    public Action LaunchAngleWaiting() {
         return new LaunchAngleWaiting();
     }
 
-    public class LaunchAngle implements Action {
+    public class LaunchWaiting implements Action {
+
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            laucnhServo.setPosition(LAUNCH_WAITING_SERVO_POSITION);
             return false;
         }
     }
 
-    /**
-     * Sets the launch angle.
-     * @return LaunchAngle object.
-     */
-    public Action LaunchAngle() {
-        return new LaunchAngle();
+    public Action LaunchWaiting() {
+        return new LaunchWaiting();
     }
 
-    private boolean launch() {
-        switch (launchActionState) {
-            case DETECTING_TAG:
-                detectedTag = pixelStackAprilTags.detectTags();
-                if (detectedTag == null && detectionTimer.seconds() < DETECTION_WAIT_SECONDS) {
-                    return true;
-                }
-
-                launchActionState = LAUNCH_ACTION_STATE.SETTING_ANGLE;
-                break;
-            case SETTING_ANGLE:
-                double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
-                pixelStackAprilTags.disableTagProcessing();
-                // Set the launch angle
-                robotHardware.LaunchAngle.setPosition(getLaunchPosition(launchRange));
-                angleMovetimer.reset();
-                launchActionState = LAUNCH_ACTION_STATE.WAITING_FOR_SERVO;
-                angleMovetimer.reset();
-                return true;
-            case WAITING_FOR_SERVO:
-                if (angleMovetimer.milliseconds() <= ANGLE_MOVE_WAIT_MILLI_SECONDS) {
-                    return true;
-                }
-                break;
-            case LAUNCHING:
-                robotHardware.DroneLaunch.setPosition(LAUNCHING_SERVO_POSITION);
-                return false;
-            default:
-                break;
+    public class LaunchDrone implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            switch (launchState) {
+                case INITIALIZING:
+                    pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
+                    pixelStacklAprilTags.init();
+                    launchTimer.reset();
+                    launchState = LaunchState.DETECTING_TAG;
+                    break;
+                case DETECTING_TAG:
+                    detectedTag = pixelStacklAprilTags.detectTags();
+                    // Keep looking until one is found or timer runs out.
+                    if (detectedTag != null || launchTimer.milliseconds() >= TAG_DETECT_MILLISECONDS) {
+                        launchState = LaunchState.MOVING_SERVO;
+                    }
+                    break;
+                case MOVING_SERVO:
+                    pixelStacklAprilTags.disableTagProcessing();
+                    double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
+                    // Set the launch angle
+                    angleServo.setPosition(getLaunchPosition(launchRange));
+                    launchState = LaunchState.WAITING_FOR_SERVO_MOVE;
+                    launchTimer.reset();
+                    break;
+                case WAITING_FOR_SERVO_MOVE:
+                    if (launchTimer.milliseconds() >= LAUNCH_ANGLE_WAIT_MILLICSECONDS) {
+                        launchState = LaunchState.LAUNCHING;
+                    }
+                    break;
+                case LAUNCHING:
+                    laucnhServo.setPosition(LAUNCHING_SERVO_POSITION);
+                    return false;
+            }
+            return true;
         }
-        // Something is wrong if get here, tell Action to stop.
-        return false;
+    }
+
+    public Action LaunchDrone() {
+        return new LaunchDrone();
     }
 
     private double getLaunchPosition(double range) {
         return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
                 (LAUNCH_SERVO_ANGLE)));
+    }
+
+    private boolean isTagDetedted() {
+        pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
+        pixelStacklAprilTags.init();
+        detectedTag = pixelStacklAprilTags.detectTags();
+        return detectedTag == null ? false : true;
     }
 }

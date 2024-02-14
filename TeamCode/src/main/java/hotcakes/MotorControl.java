@@ -125,22 +125,22 @@ public class MotorControl {
 
         if (armanglestate == ArmAngle.DRIVE) {
             robotHardware.ArmAngle.setTargetPosition(600);
-            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmAngle.setPower(ARM_ANGLE_MOTOR_POWER);
             robotHardware.GripperAngle.setPosition(0.34);
         }
 
         if (armanglestate == ArmAngle.BACKDROP) {
             robotHardware.ArmAngle.setTargetPosition(735);
-            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmAngle.setPower(ARM_ANGLE_MOTOR_POWER);
             robotHardware.GripperAngle.setPosition(0.235);
         }
 
         if (armanglestate == ArmAngle.MAXANGLE) {
             robotHardware.ArmAngle.setTargetPosition(770);
-            robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robotHardware.ArmMotor.setPower(ARM_ANGLE_MOTOR_POWER);
+            robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robotHardware.ArmAngle.setPower(ARM_ANGLE_MOTOR_POWER);
             robotHardware.GripperAngle.setPosition(0.235);
         }
     }
@@ -150,7 +150,6 @@ public class MotorControl {
             robotHardware.HangMotor.setTargetPosition(WINCH_HANG_POSITION);
             robotHardware.HangMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.HangMotor.setPower(WINCH_MOTOR_POWER);
-            robotHardware.ArmMotor.setPower(0);
         }
 
         if (hangState == HangState.DOWN) {

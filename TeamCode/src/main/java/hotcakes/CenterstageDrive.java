@@ -49,9 +49,9 @@ public class CenterstageDrive extends LinearOpMode {
     private RobotHardware robotHardware;
     private MotorControl motorControl;
     private ElapsedTime runtime = new ElapsedTime();
-    private final double MAX_POWER = .9;
-    private final double SLOW_POWER = .3;
-    private double motorPower = MAX_POWER;
+    private double maxPower = .9;
+    private Launch launch;
+    private
     GamepadEx gamePadEx1;
     GamepadEx gamePadEx2;
     double axial = 0;
@@ -85,7 +85,7 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         robotHardware.ArmAngle.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while (opModeIsActive() && !isStopRequested()) {
             gamePadEx1.readButtons();
             gamePadEx2.readButtons();
             // trigger reader is the right trigger and trigger1 is the left one
@@ -93,25 +93,26 @@ public class CenterstageDrive extends LinearOpMode {
             triggerLeft.readValue();
 
             //Joystick movement
-            axial = -gamepad1.left_stick_y;
-            lateral = gamepad1.left_stick_x * 1.1;
-            yaw = gamepad1.right_stick_x;
-            // Reduce speed with left bumper
-            motorPower = gamepad1.left_bumper ? SLOW_POWER : MAX_POWER;
+            double axial = -gamepad1.left_stick_y;
+            double lateral = gamepad1.left_stick_x * 1.1;
+            double yaw = gamepad1.right_stick_x;
+            // Reduce speed
+            if (gamePadEx1.isDown(GamepadKeys.Button.LEFT_BUMPER)) {
+                maxPower = 0.3;
+            } else {
+                maxPower = 0.9;
+            }
             // Gamepad 1 changing the arm angles
-            if (gamepad1.dpad_up) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.BACKDROP);
             }
-
-            if (gamepad1.dpad_down) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.PICKUP);
             }
-
-            if (gamepad1.dpad_right) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
-
-            if (gamepad1.dpad_left) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)) {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.MAXANGLE);
             }
 
@@ -125,54 +126,49 @@ public class CenterstageDrive extends LinearOpMode {
             }
 
             // Controls gripper flipping gamepad 2
-            if (gamepad2.dpad_up) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
                 motorControl.flipGripper(MotorControl.GripperAngle.BACKSTAGE);
             }
-
-            if (gamepad2.dpad_down) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)) {
                 motorControl.flipGripper(MotorControl.GripperAngle.PICKUP);
             }
-
-            // Gripper control gamepad 2
-            if (gamepad2.left_bumper) {
+            // Controls Gripper gamepad 2
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)) {
                 motorControl.moveGripper(MotorControl.GripperState.CLOSE, MotorControl.GripperSelection.BOTH);
             }
-
-            if (gamepad2.right_bumper) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)) {
                 motorControl.moveGripper(MotorControl.GripperState.OPEN, MotorControl.GripperSelection.BOTH);
             }
-
-            // Controls arm extension gamepad 2
-            if (gamepad2.y) {
+            // Controls backdrop arm extension gamepad 2
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.Y)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.BACKDROP);
             }
 
             // Gamepad 2 arm extension for retracting
-            if (gamepad2.b) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.A)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.RETRACT);
             }
 
             // arm extension for picking up
-            if (gamepad2.x) {
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.X)) {
                 motorControl.mobilizeArm(MotorControl.ArmExtension.PICKUP);
             }
-
-            // Launching plane, only during end game.
-            if (gamepad1.x && runtime.seconds() >= 90) {
-                Actions.runBlocking(launch);
+            // CHANGE LAUNCH ANGLE
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.START)) {
+                motorControl.changeLaunchAngle(MotorControl.LaunchAngle.LAUNCH);
             }
-
-            // Waiting launch position, resets the launch servo.
-            if (gamepad1.back) {
+            if (gamePadEx1.wasJustPressed(GamepadKeys.Button.BACK)) {
                 motorControl.changeLaunchAngle(MotorControl.LaunchAngle.WAITING);
             }
 
-            // Just trigger launch, not angle adjustment. For testing.
-            if (gamepad2.start) {
-                motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
+            // Launch drone during end game.
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.START) && runtime.seconds() >= 90) {
+                launch = new Launch(this);
+                Actions.runBlocking(launch.LaunchDrone());
             }
 
-            motorControl.drive(axial, lateral, yaw, motorPower);
+            // This line is the whole drive code from the Motor Control class
+            motorControl.drive(axial, lateral, yaw, maxPower);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Arm position", robotHardware.ArmMotor.getCurrentPosition());

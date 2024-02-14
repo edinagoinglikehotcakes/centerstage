@@ -172,7 +172,7 @@ public class BasicAuto extends OpMode {
                     switch (selectedSpike) {
                         case LEFT:
                             RedLeft = drive.actionBuilder(drive.pose)
-                                    .splineToConstantHeading(new Vector2d(-47.5, -50), Math.toRadians(90))
+                                    .splineToConstantHeading(new Vector2d(-46, -50), Math.toRadians(90))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
@@ -189,7 +189,7 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
                                     .waitSeconds(1)
-                                            .lineToY(-37)
+                                            .lineToY(-40)
 ////TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(gripper.GripperLeftOpen())
                                     .waitSeconds(2)
@@ -200,9 +200,8 @@ public class BasicAuto extends OpMode {
                             break;
                         case RIGHT:
                             RedLeft = drive.actionBuilder(drive.pose)
-                                    .lineToY(-30)
-                                    .turn(Math.toRadians(-90))
-                                    .lineToX(-46)
+//                                    TODO CHANGE THE CODE TO GET TO SPIKE
+                                    .splineTo(new Vector2d(-43,-30),Math.toRadians(0))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
@@ -211,6 +210,7 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
+                                    .strafeToConstantHeading(new Vector2d(-36,-59))
 //                                    .strafeToConstantHeading(new Vector2d(-35, -58))
                                     .build();
 
@@ -222,9 +222,7 @@ public class BasicAuto extends OpMode {
                     switch (selectedSpike) {
                         case LEFT:
                             RedRight = drive.actionBuilder(drive.pose)
-                                    .lineToY(-45)
-                                    .turn(Math.toRadians(90))
-                                    .splineToConstantHeading(new Vector2d(9, -45), Math.toRadians(180))
+                                    .splineTo(new Vector2d(18,-30),Math.toRadians(180))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
@@ -233,17 +231,15 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .lineToX(23)
-                                    .strafeToLinearHeading(new Vector2d(23, -58), Math.toRadians(0))
+                                    .strafeToSplineHeading(new Vector2d(23,-59),Math.toRadians(0))
                                     .build();
                             break;
                         case MIDDLE:
                             RedRight = drive.actionBuilder(drive.pose)
-                                    .lineToY(-45)
-//TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
                                     .waitSeconds(1)
+                                    .lineToY(-40)
                                     .stopAndAdd(gripper.GripperLeftOpen())
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
@@ -253,7 +249,7 @@ public class BasicAuto extends OpMode {
                             break;
                         case RIGHT:
                             RedRight = drive.actionBuilder(drive.pose)
-                                    .splineToConstantHeading(new Vector2d(29, -50), Math.toRadians(-120))
+                                    .splineToConstantHeading(new Vector2d(24, -50), Math.toRadians(90))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
@@ -262,7 +258,7 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .lineToY(-58)
+                                    .strafeToSplineHeading(new Vector2d(23,-59),Math.toRadians(0))
                                     .build();
 
                             break;

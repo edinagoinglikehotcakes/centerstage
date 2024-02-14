@@ -24,7 +24,7 @@ public class ArmLift {
             if (!initialized) {
                 ArmAngle.setTargetPosition(35);
                 ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                ArmAngle.setPower(0.5);
+                ArmAngle.setPower(0.4);
                 initialized = true;
             }
 
@@ -47,7 +47,20 @@ public class ArmLift {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            return false;
+            if (!initialized) {
+                ArmAngle.setTargetPosition(735);
+                ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ArmAngle.setPower(0.5);
+            }
+            double pos = ArmAngle.getCurrentPosition();
+            telemetryPacket.put("liftPos", pos);
+            if (pos < ArmAngle.getTargetPosition()) {
+                return true;
+            } else {
+                ArmAngle.setPower(0);
+//TODO                Might have to add break mode
+                return false;
+            }
         }
     }
 
