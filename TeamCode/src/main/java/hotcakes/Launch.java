@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -130,7 +131,7 @@ public class Launch {
                     launchState = LaunchState.LOWER_LAUNCHER;
                     break;
                 case LOWER_LAUNCHER:
-                    angleServo.setPosition(WAITING_SERVO_ANGLE);
+                    Actions.runBlocking(LaunchAngleWaiting());
                     return false;
             }
             return true;
@@ -144,12 +145,5 @@ public class Launch {
     private double getLaunchPosition(double range) {
         return ((1 - ((range - TAG_RANGE) / (TAG_RANGE)) *
                 (LAUNCH_SERVO_ANGLE)));
-    }
-
-    private boolean isTagDetected() {
-        pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
-        pixelStacklAprilTags.init();
-        detectedTag = pixelStacklAprilTags.detectTags();
-        return detectedTag == null ? false : true;
     }
 }
