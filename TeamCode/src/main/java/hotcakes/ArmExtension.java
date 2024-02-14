@@ -24,7 +24,7 @@ public class ArmExtension {
     public class ArmPickup implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
+//            if (!initialized) {
                 ArmMotor.setTargetPosition(-480);
                 ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ArmMotor.setPower(0.5);
@@ -37,8 +37,6 @@ public class ArmExtension {
             } else {
                 ArmMotor.setPower(0);
                 return false;
-            }
-
         }
     }
 
