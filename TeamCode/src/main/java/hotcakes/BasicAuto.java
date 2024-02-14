@@ -202,14 +202,14 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
                                     .lineToY(-43)
-                                    .turn(Math.toRadians(-30))
+                                    .turn(Math.toRadians(-40))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .waitSeconds(1)
                                     .stopAndAdd(gripper.GripperLeftOpen())
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .turn(Math.toRadians(30))
+                                    .turn(Math.toRadians(40))
                                     .strafeToConstantHeading(new Vector2d(-36,-59))
 //                                    .strafeToConstantHeading(new Vector2d(-35, -58))
                                     .build();
