@@ -36,12 +36,13 @@ public class Launch {
         DETECTING_TAG,
         MOVING_SERVO,
         WAITING_FOR_SERVO_MOVE,
-        LAUNCHING
+        LAUNCHING,
+        LOWER_LAUNCHER
     }
 
     private LaunchState launchState = LaunchState.INITIALIZING;
-    private double TAG_DETECT_MILLISECONDS = 1000;
-    private double LAUNCH_ANGLE_WAIT_MILLICSECONDS = 1000;
+    private double TAG_DETECT_MILLISECONDS = 1500;
+    private double LAUNCH_ANGLE_WAIT_MILLICSECONDS = 4000;
 
     /***
      * Constructor
@@ -126,6 +127,10 @@ public class Launch {
                     break;
                 case LAUNCHING:
                     laucnhServo.setPosition(LAUNCHING_SERVO_POSITION);
+                    launchState = LaunchState.LOWER_LAUNCHER;
+                    break;
+                case LOWER_LAUNCHER:
+                    angleServo.setPosition(WAITING_SERVO_ANGLE);
                     return false;
             }
             return true;

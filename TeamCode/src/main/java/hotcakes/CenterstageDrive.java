@@ -69,7 +69,7 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
         // RR will use this to see april tags and launch.
-        Launch launch = new Launch(this);
+        launch = new Launch(this);
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -163,7 +163,6 @@ public class CenterstageDrive extends LinearOpMode {
 
             // Launch drone during end game.
             if (gamePadEx2.wasJustPressed(GamepadKeys.Button.START) && runtime.seconds() >= 90) {
-                launch = new Launch(this);
                 Actions.runBlocking(launch.LaunchDrone());
             }
 
