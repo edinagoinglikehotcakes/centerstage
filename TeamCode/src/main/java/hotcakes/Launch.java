@@ -141,7 +141,7 @@ public class Launch {
                 (LAUNCH_SERVO_ANGLE)));
     }
 
-    private boolean isTagDetedted() {
+    private boolean isTagDetected() {
         pixelStacklAprilTags = new PixelStackAprilTags(opMode.hardwareMap);
         pixelStacklAprilTags.init();
         detectedTag = pixelStacklAprilTags.detectTags();
