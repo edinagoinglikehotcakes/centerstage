@@ -115,7 +115,8 @@ public class Launch {
                     break;
                 case MOVING_SERVO:
                     pixelStacklAprilTags.disableTagProcessing();
-                    double launchRange = detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
+                    double launchRange =
+                            detectedTag == null ? DEFAULT_LAUNCH_RANGE : detectedTag.ftcPose.range;
                     // Set the launch angle
                     angleServo.setPosition(getLaunchPosition(launchRange));
                     launchState = LaunchState.WAITING_FOR_SERVO_MOVE;

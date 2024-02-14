@@ -32,7 +32,7 @@ public class ArmExtension {
             }
             double pos = ArmMotor.getCurrentPosition();
             telemetryPacket.put("ArmPos", pos);
-            if (pos > ArmMotor.getTargetPosition()) {
+            if (ArmMotor.isBusy()) {
                 return true;
             } else {
                 ArmMotor.setPower(0);
@@ -59,7 +59,7 @@ public class ArmExtension {
             }
             double pos = ArmMotor.getCurrentPosition();
             telemetryPacket.put("ArmPos", pos);
-            if (pos > ArmMotor.getTargetPosition()) {
+            if (ArmMotor.isBusy()) {
                 return true;
             } else {
                 ArmMotor.setPower(0);
@@ -83,7 +83,7 @@ public class ArmExtension {
             }
             double pos = ArmMotor.getCurrentPosition();
             telemetryPacket.put("ArmPos", pos);
-            if (pos < ArmMotor.getTargetPosition()) {
+            if (ArmMotor.isBusy()) {
                 return true;
             } else {
                 ArmMotor.setPower(0);

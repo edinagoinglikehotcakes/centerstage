@@ -30,7 +30,7 @@ public class ArmLift {
 
             double pos = ArmAngle.getCurrentPosition();
             telemetryPacket.put("liftPos", pos);
-            if (pos < ArmAngle.getTargetPosition()) {
+            if (ArmAngle.isBusy()) {
                 return true;
             } else {
                 ArmAngle.setPower(0);
@@ -54,7 +54,7 @@ public class ArmLift {
             }
             double pos = ArmAngle.getCurrentPosition();
             telemetryPacket.put("liftPos", pos);
-            if (pos < ArmAngle.getTargetPosition()) {
+            if (ArmAngle.isBusy()) {
                 return true;
             } else {
                 ArmAngle.setPower(0);
