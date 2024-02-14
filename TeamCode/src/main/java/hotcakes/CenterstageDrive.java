@@ -69,7 +69,7 @@ public class CenterstageDrive extends LinearOpMode {
         robotHardware.init();
         motorControl = new MotorControl(robotHardware);
         // RR will use this to see april tags and launch.
-        Launch launch = new Launch(robotHardware);
+        Launch launch = new Launch(this);
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
