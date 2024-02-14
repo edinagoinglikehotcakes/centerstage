@@ -1,19 +1,21 @@
 package hotcakes;
 
+import android.graphics.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class RobotHardware {
     public OpMode myOpMode;
+    public IMU imu;
     public DcMotorEx Frontleft = null;
     public DcMotorEx Backleft = null;
     public DcMotorEx Frontright = null;
     public DcMotorEx Backright = null;
-    //    public DcMotorEx TurnMotor = null;
-    public IMU imu = null;
     public DcMotorEx ArmMotor = null;
     public DcMotorEx HangMotor = null;
     public DcMotorEx ArmAngle = null;
@@ -22,10 +24,11 @@ public class RobotHardware {
     public Servo DroneLaunch = null;
     public Servo LaunchAngle = null;
     public Servo GripperAngle = null;
-
+    public HardwareMap hardwareMap;
 
     public RobotHardware(OpMode opMode) {
         myOpMode = opMode;
+        hardwareMap = opMode.hardwareMap;
     }
 
     public void init() {
