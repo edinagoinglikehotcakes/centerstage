@@ -24,21 +24,21 @@ public class ArmExtension {
     public class ArmPickup implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
+//            if (!initialized) {
                 ArmMotor.setTargetPosition(-480);
                 ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ArmMotor.setPower(0.5);
-                initialized = true;
-            }
-            double pos = ArmMotor.getCurrentPosition();
-            telemetryPacket.put("ArmPos", pos);
-            if (pos > ArmMotor.getTargetPosition()) {
-                return true;
-            } else {
-                ArmMotor.setPower(0);
+//                initialized = true;
+//            }
+//            double pos = ArmMotor.getCurrentPosition();
+//            telemetryPacket.put("ArmPos", pos);
+//            if (pos >= ArmMotor.getTargetPosition()) {
+//                return true;
+//            } else {
+//                ArmMotor.setPower(0);
+//                return false;
+//            }
                 return false;
-            }
-
         }
     }
 
