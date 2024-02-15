@@ -17,6 +17,9 @@ public class ArmExtension {
     public ArmExtension(OpMode opMode) {
         this.opMode = opMode;
         ArmMotor = opMode.hardwareMap.get(DcMotorEx.class, "Armmotor");
+        ArmMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
 
     }
 

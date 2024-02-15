@@ -15,6 +15,9 @@ public class ArmLift {
 
     public ArmLift(OpMode opMode) {
         this.opMode = opMode;
+        ArmAngle = opMode.hardwareMap.get(DcMotorEx.class, "Armangle");
+        ArmAngle.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        ArmAngle.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
