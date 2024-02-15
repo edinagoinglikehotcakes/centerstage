@@ -39,9 +39,7 @@ public class ArmLift {
         }
     }
 
-    public Action liftPickup() {
-        return new LiftPickupAngle();
-    }
+    public Action liftPickup() {return new LiftPickupAngle();}
 
     public class LiftBackDropAngle implements Action {
 
