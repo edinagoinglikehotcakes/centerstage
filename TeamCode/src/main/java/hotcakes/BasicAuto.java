@@ -143,6 +143,7 @@ public class BasicAuto extends OpMode {
             case BACKSTAGE:
                 if (autonomousConfiguration.getPlacePixelsInBackstage() == AutonomousOptions.PlacePixelsInBackstage.Yes) {
                     placePixelInBackstage();
+                    Actions.runBlocking(BackdropActions);
                 }
                 currentAutoState = AutoState.PARK;
                 break;
