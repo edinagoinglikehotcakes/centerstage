@@ -28,6 +28,7 @@ public class PixelStackAprilTags {
 
     /**
      * Pass in the hardware map to find the camera for the VisionPortal.
+     *
      * @param hardwareMap
      */
     public PixelStackAprilTags(HardwareMap hardwareMap) {
@@ -55,6 +56,7 @@ public class PixelStackAprilTags {
      * Returns the range or 0 if we did not find the tag.
      */
     public double getRangeToWall() {
+
         return desiredTag != null ? desiredTag.ftcPose.range : 0;
     }
 
@@ -73,6 +75,7 @@ public class PixelStackAprilTags {
      * @return AprilTagDetection
      */
     public AprilTagDetection getDetection() {
+
         return desiredTag;
     }
 
@@ -80,6 +83,7 @@ public class PixelStackAprilTags {
      * Disable april tag processing to conserve resources.
      */
     public void disableTagProcessing() {
+
         visionPortal.setProcessorEnabled(aprilTag, false);
     }
 
