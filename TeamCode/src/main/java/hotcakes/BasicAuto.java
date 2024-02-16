@@ -13,6 +13,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.WhiteBalanceControl;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import hotcakes.processors.ImageProcessor;
 
@@ -40,9 +42,11 @@ public class BasicAuto extends OpMode {
     private ArmLift armlift;
     private Gripper gripper;
     private GripperAngle gripperAngle;
+//    private BackdropAprilTags backdropAprilTags = null;
     AutonomousConfiguration autonomousConfiguration = new AutonomousConfiguration();
     Action SpikeActions;
     Action BackdropActions;
+//    Action AprilTag;
 
     private enum AutoState {
         SPIKE,
@@ -51,6 +55,22 @@ public class BasicAuto extends OpMode {
         PARK,
         DONE,
     }
+
+//    private Action AprilTag() {
+//        AutonomousOptions.StartPosition startPosition = autonomousConfiguration.getStartPosition();
+//        backdropAprilTags = new BackdropAprilTags(robotHardware.myOpMode.hardwareMap);
+//        backdropAprilTags.init();
+//        AprilTagDetection detectedTag = backdropAprilTags.detectTags();
+//        if (startPosition == AutonomousOptions.StartPosition.Left) {
+//            if (selectedSpike == AutonomousOptions. {
+//                if (detectedTag == backdropAprilTags.getDetection()) {
+//                }
+//            }
+//        }
+//        backdropAprilTags.disableTagProcessing();
+//        // Set the launch angle
+//
+//    }
 
     AutoState currentAutoState = AutoState.SPIKE;
 
