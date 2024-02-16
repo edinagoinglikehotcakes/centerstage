@@ -57,7 +57,7 @@ public class MotorControl {
         PICKUP,
         DRIVE,
         BACKDROP,
-        MAXANGLE,
+        LOWDROPANGLE,
     }
 
     public enum GripperState {
@@ -137,8 +137,8 @@ public class MotorControl {
             robotHardware.GripperAngle.setPosition(0.235);
         }
 
-        if (armanglestate == ArmAngle.MAXANGLE) {
-            robotHardware.ArmAngle.setTargetPosition(770);
+        if (armanglestate == ArmAngle.LOWDROPANGLE) {
+            robotHardware.ArmAngle.setTargetPosition(650);
             robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmAngle.setPower(ARM_ANGLE_MOTOR_POWER);
             robotHardware.GripperAngle.setPosition(0.235);

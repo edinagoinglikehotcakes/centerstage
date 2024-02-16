@@ -174,7 +174,7 @@ public class BasicAuto extends OpMode {
                     switch (selectedSpike) {
                         case LEFT:
                             SpikeActions = drive.actionBuilder(drive.pose)
-                                    .splineToConstantHeading(new Vector2d(-45, -50), Math.toRadians(90))
+                                    .splineToConstantHeading(new Vector2d(-46.5, -50), Math.toRadians(90))
 //TODO                                         INSERT ARM EXTENSION, GRIPPER OPEN, AND ARM RETRACTION HERE
                                     .stopAndAdd(armExtension.ArmPickup())
                                     .stopAndAdd(gripperAngle.GripperPickup())
@@ -183,7 +183,9 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .lineToYSplineHeading((-59), Math.toRadians(0))
+                                    .lineToY(-59)
+                                    .turn(Math.toRadians(-90))
+
                                     .build();
                             break;
                         case MIDDLE:
@@ -197,7 +199,8 @@ public class BasicAuto extends OpMode {
                                     .waitSeconds(2)
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
-                                    .lineToYSplineHeading((-59), Math.toRadians(0))
+                                    .lineToY(-59)
+                                    .turn(Math.toRadians(-90))
                                     .build();
                             break;
                         case RIGHT:
@@ -214,7 +217,8 @@ public class BasicAuto extends OpMode {
                                     .stopAndAdd(armExtension.ArmRetract())
                                     .stopAndAdd(gripperAngle.GripperRetract())
                                     .turn(Math.toRadians(40))
-                                    .strafeToSplineHeading(new Vector2d(-40, -59), Math.toRadians(0))
+                                    .lineToY(-59)
+                                    .turn(Math.toRadians(-90))
 //                                    .strafeToConstantHeading(new Vector2d(-35, -58))
                                     .build();
 
@@ -356,6 +360,7 @@ public class BasicAuto extends OpMode {
                             case RIGHT:
                                 SpikeActions = drive.actionBuilder(drive.pose)
                                         .splineToConstantHeading(new Vector2d(-50, 50), Math.toRadians(-90))
+                                        .stopAndAdd(armExtension.ArmPickup())
                                         .stopAndAdd(gripperAngle.GripperPickup())
                                         .waitSeconds(1)
                                         .stopAndAdd(gripper.GripperLeftOpen())
@@ -384,40 +389,35 @@ public class BasicAuto extends OpMode {
                         case LEFT:
                             BackdropActions = drive.actionBuilder(drive.pose)
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -28), Math.toRadians(0))
-//                                    .stopAndAdd(armlift.LiftBackDropAngle())
-//                                    .stopAndAdd(armExtension.ArmBackDrop())
-//                                    .waitSeconds(3)
-//                                    .stopAndAdd(gripperAngle.GripperBackDrop())
-//                                    .waitSeconds(1)
-//                                    .stopAndAdd(gripper.GripperRightOpen())
-//                                    .waitSeconds(0.5)
-//                                    .stopAndAdd(armExtension.ArmRetract())
-//                                    .stopAndAdd(armlift.liftPickup())
+                                    .lineToX(50)
+                                    .splineToConstantHeading(new Vector2d(53, -18.7), Math.toRadians(0))
                                     .stopAndAdd(getBackdropActions())
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
-
+                                    .setTangent(0)
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(50, -2), Math.toRadians(0))
                                     .build();
                             break;
                         case MIDDLE:
                             BackdropActions = drive.actionBuilder(drive.pose)
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -35), Math.toRadians(0))
+                                    .lineToX(50)
+                                    .splineToConstantHeading(new Vector2d(53, -29), Math.toRadians(0))
                                     .stopAndAdd(getBackdropActions())
-
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
+                                    .setTangent(0)
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(50, -2), Math.toRadians(0))
                                     .build();
                             break;
                         case RIGHT:
                             BackdropActions = drive.actionBuilder(drive.pose)
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -42), Math.toRadians(0))
+                                    .lineToX(50)
+                                    .splineToConstantHeading(new Vector2d(57, -37.6), Math.toRadians(10))
                                     .stopAndAdd(getBackdropActions())
+                                    .setTangent(0)
+                                    .lineToX(45)
 
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
+                                    .splineToConstantHeading(new Vector2d(53, -2), Math.toRadians(0))
                                     .build();
 
                             break;
@@ -430,33 +430,37 @@ public class BasicAuto extends OpMode {
                             BackdropActions = drive.actionBuilder(drive.pose)
 
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -28), Math.toRadians(0))
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(50, -22), Math.toRadians(0))
                                     .stopAndAdd(getBackdropActions())
-
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
+                                    .setTangent(0)
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(50, -2), Math.toRadians(0))
                                     .build();
                             break;
                         case MIDDLE:
                             BackdropActions = drive.actionBuilder(drive.pose)
 
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -35), Math.toRadians(0))
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(48.5, -27.5), Math.toRadians(0))
                                     .stopAndAdd(getBackdropActions())
-
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
+                                    .setTangent(0)
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(50, -2), Math.toRadians(0))
                                     .build();
                             break;
                         case RIGHT:
                             BackdropActions = drive.actionBuilder(drive.pose)
 
                                     .setTangent(0)
-                                    .lineToX(42)
-                                    .splineToConstantHeading(new Vector2d(42, -42), Math.toRadians(0))
+                                    .lineToX(45)
+                                    .splineToConstantHeading(new Vector2d(51, -36), Math.toRadians(10))
                                     .stopAndAdd(getBackdropActions())
+                                    .setTangent(0)
+                                    .lineToX(45)
 
-                                    .splineToConstantHeading(new Vector2d(47, -13), Math.toRadians(0))
+                                    .splineToConstantHeading(new Vector2d(50, -2), Math.toRadians(0))
                                     .build();
 
                             break;
@@ -473,10 +477,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 42), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(51, 42), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
                                 break;
                             case MIDDLE:
@@ -484,10 +489,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 35), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(50, 35), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
                                 break;
                             case RIGHT:
@@ -495,10 +501,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 28), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(50, 28), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
 
                                 break;
@@ -512,10 +519,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 42), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(51, 42), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
                                 break;
                             case MIDDLE:
@@ -523,10 +531,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 35), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(50, 35), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
                                 break;
                             case RIGHT:
@@ -534,10 +543,11 @@ public class BasicAuto extends OpMode {
 
                                         .setTangent(0)
                                         .lineToX(42)
-                                        .splineToConstantHeading(new Vector2d(42, 28), Math.toRadians(0))
+                                        .splineToConstantHeading(new Vector2d(50, 28), Math.toRadians(0))
                                         .stopAndAdd(getBackdropActions())
-
-                                        .splineToConstantHeading(new Vector2d(47, 12), Math.toRadians(0))
+                                        .setTangent(0)
+                                        .lineToX(45)
+                                        .splineToConstantHeading(new Vector2d(50, 12), Math.toRadians(0))
                                         .build();
                                 break;
                             case NONE:

@@ -106,7 +106,7 @@ public class CenterstageDrive extends LinearOpMode {
                 motorControl.changeArmAngle(MotorControl.ArmAngle.DRIVE);
             }
             if (gamepad1.dpad_left) {
-                motorControl.changeArmAngle(MotorControl.ArmAngle.MAXANGLE);
+                motorControl.changeArmAngle(MotorControl.ArmAngle.LOWDROPANGLE);
             }
             // Launching plane gamepad 1
             if (gamepad1.a) {

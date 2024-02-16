@@ -53,21 +53,22 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
+//            if (!initialized) {
                 ArmMotor.setTargetPosition(-1050);
                 ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ArmMotor.setPower(-0.5);
-                initialized = true;
-
-            }
-            double pos = ArmMotor.getCurrentPosition();
-            telemetryPacket.put("ArmPos", pos);
-            if (pos > ArmMotor.getTargetPosition()) {
-                return true;
-            } else {
-                ArmMotor.setPower(0);
-                return false;
-            }
+//                initialized = true;
+//
+//            }
+//            double pos = ArmMotor.getCurrentPosition();
+//            telemetryPacket.put("ArmPos", pos);
+//            if (pos > ArmMotor.getTargetPosition()) {
+//                return true;
+//            } else {
+//                ArmMotor.setPower(0);
+//                return false;
+//            }
+            return false;
         }
     }
 
@@ -79,19 +80,20 @@ public class ArmExtension {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if (!initialized) {
+//            if (!initialized) {
                 ArmMotor.setTargetPosition(-40);
                 ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ArmMotor.setPower(-0.5);
-            }
-            double pos = ArmMotor.getCurrentPosition();
-            telemetryPacket.put("ArmPos", pos);
-            if (pos < ArmMotor.getTargetPosition()) {
-                return true;
-            } else {
-                ArmMotor.setPower(0);
-                return false;
-            }
+//            }
+//            double pos = ArmMotor.getCurrentPosition();
+//            telemetryPacket.put("ArmPos", pos);
+//            if (pos < ArmMotor.getTargetPosition()) {
+//                return true;
+//            } else {
+//                ArmMotor.setPower(0);
+//                return false;
+//            }
+            return false;
         }
     }
 

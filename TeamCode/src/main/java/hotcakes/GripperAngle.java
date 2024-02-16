@@ -45,7 +45,7 @@ public class GripperAngle {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            GripperAngle.setPosition(0.235);
+            GripperAngle.setPosition(0.24);
             return false;
         }
     }
