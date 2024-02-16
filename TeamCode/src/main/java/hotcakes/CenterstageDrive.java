@@ -29,6 +29,7 @@
 
 package hotcakes;
 
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
@@ -51,6 +52,7 @@ public class CenterstageDrive extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private double maxPower = .9;
     private double denominator = 0;
+    private Launch launch;
     GamepadEx gamePadEx;
     GamepadEx gamePadEx2;
 
@@ -157,6 +159,10 @@ public class CenterstageDrive extends LinearOpMode {
             }
             if (gamepad2.start) {
                 motorControl.launchPlane(MotorControl.LaunchState.LAUNCH);
+            }
+            // Launch drone during end game.
+            if (gamePadEx2.wasJustPressed(GamepadKeys.Button.START) && runtime.seconds() >= 90) {
+                Actions.runBlocking(launch.LaunchDrone());
             }
             // This line is the whole drive code from the Motor Control class
             motorControl.drive(axial, lateral, yaw, maxPower);
