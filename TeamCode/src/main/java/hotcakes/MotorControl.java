@@ -91,7 +91,7 @@ public class MotorControl {
             robotHardware.ArmMotor.setTargetPosition(ARM_PICKUP_TARGET_POSITION);
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
-            if (robotHardware.GripperAngle.getPosition() != 0.235) {
+            if (robotHardware.GripperAngle.getPosition() != 0.237) {
                 robotHardware.GripperAngle.setPosition(0.30);
             }
         }
@@ -134,7 +134,7 @@ public class MotorControl {
             robotHardware.ArmAngle.setTargetPosition(735);
             robotHardware.ArmAngle.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmAngle.setPower(ARM_ANGLE_MOTOR_POWER);
-            robotHardware.GripperAngle.setPosition(0.235);
+            robotHardware.GripperAngle.setPosition(0.237);
         }
 
         if (armanglestate == ArmAngle.LOWDROPANGLE) {
