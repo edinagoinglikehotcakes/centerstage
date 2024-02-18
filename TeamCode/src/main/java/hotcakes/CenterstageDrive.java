@@ -53,6 +53,7 @@ public class CenterstageDrive extends LinearOpMode {
     private double maxPower = .9;
     private double denominator = 0;
     private Launch launch;
+//    private PixelStackAprilTags pixelStackAprilTags;
     GamepadEx gamePadEx;
     GamepadEx gamePadEx2;
 
@@ -175,6 +176,9 @@ public class CenterstageDrive extends LinearOpMode {
             telemetry.addData("Winch motor position", robotHardware.HangMotor.getCurrentPosition());
             telemetry.addData("gripper pos left", robotHardware.GripperLeft.getPosition());
             telemetry.addData("gripper pos right", robotHardware.GripperRight.getPosition());
+//            telemetry.addData("AprilTag",pixelStackAprilTags.detectTags());
+//            telemetry.addData("LaunchAngle", launch.LaunchAngle());
+//            telemetry.addData("AprilTagRange",launch.LaunchDrone());
             telemetry.update();
         }
     }
