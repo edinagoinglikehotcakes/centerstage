@@ -2,6 +2,7 @@ package hotcakes;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+//import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -17,6 +18,7 @@ import java.util.List;
  * Manage april tags behind the pixel stacks.
  */
 public class PixelStackAprilTags {
+
     private static final int LARGE_BLUE_WALL_TAG_ID = 7;
     private static final int SMALL_BLUE_WALL_TAG_ID = 8;
     private static final int LARGE_RED_WALL_TAG_ID = 10;
@@ -134,3 +136,4 @@ public class PixelStackAprilTags {
                 .build();
     }
 }
+
