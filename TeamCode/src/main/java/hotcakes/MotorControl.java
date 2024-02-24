@@ -9,7 +9,7 @@ public class MotorControl {
     //    set limits
     private final double ARM_POWER = 0.5;
     // TODO CHANGE SOME OF THESE VALUES ACCORDING TO TUNING
-    private final int ARM_PICKUP_TARGET_POSITION = -530;
+    private final int ARM_PICKUP_TARGET_POSITION = -640;
     private final int ARM_DOWN_TARGET_POSITION = -40;
     private final int ARM_BACKDROP_TARGET_POSITION = -1050;
     private final double DEFAULT_LAUNCH_RANGE = 72;
@@ -92,7 +92,7 @@ public class MotorControl {
             robotHardware.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robotHardware.ArmMotor.setPower(ARM_POWER);
             if (robotHardware.GripperAngle.getPosition() != 0.28) {
-                robotHardware.GripperAngle.setPosition(0.334);
+                robotHardware.GripperAngle.setPosition(0.42);
             }
         }
 
